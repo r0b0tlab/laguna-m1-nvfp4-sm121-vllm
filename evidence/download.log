@@ -1,3 +1,0 @@
-Fetching 40 files:   0%|          | 0/40 [00:00<?, ?it/s]Still waiting to acquire lock on /home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Still waiting to acquire lock on /home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Fetching 40 files:   2%|▎         | 1/40 [00:00<00:08,  4.71it/s]Fetching 40 files:  10%|█         | 4/40 [00:00<00:02, 14.84it/s]Fetching 40 files:  10%|█         | 4/40 [00:19<00:02, 14.84it/s]Fetching 40 files:  20%|██        | 8/40 [08:20<40:29, 75.93s/it]
