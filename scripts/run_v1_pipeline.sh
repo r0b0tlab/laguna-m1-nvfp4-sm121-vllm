@@ -12,17 +12,19 @@ while [ ! -f "$MODEL_DIR/model.safetensors.index.json" ]; do
   sleep 120
 done
 echo "download complete"
+bash "$ROOT/scripts/preflight_headless.sh"
 
 cd "$ROOT"
-export MODEL_DIR PORT=30100 KV_CACHE_DTYPE=nvfp4 MAX_MODEL_LEN=8192 GPU_UTIL=0.85
+export MODEL_DIR PORT=30100
 
-# Try NVFP4 KV; fallback FP8 if serve fails
+# Conservative first boot (IMPLEMENTATION_PLAN Phase 1); ladder to nvfp4 KV after smoke
+export GPU_UTIL=0.75 MAX_MODEL_LEN=4096 MAX_NUM_SEQS=4 KV_CACHE_DTYPE=fp8 ENFORCE_EAGER=1
 if ! ./scripts/serve.sh; then
   echo "serve failed"
   exit 1
 fi
 
-for i in $(seq 1 120); do
+for i in $(seq 1 360); do
   if curl -sf "http://127.0.0.1:${PORT}/v1/models" >/dev/null; then
     echo "server ready"
     break

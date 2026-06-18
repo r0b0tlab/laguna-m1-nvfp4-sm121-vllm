@@ -9,6 +9,13 @@ GPU_UTIL=${GPU_UTIL:-0.85}
 KV_CACHE_DTYPE=${KV_CACHE_DTYPE:-nvfp4}
 NAME=${NAME:-laguna-m1-vllm}
 SERVED_NAME=${SERVED_NAME:-laguna-m1-nvfp4}
+MAX_BATCHED="${MAX_BATCHED:-4096}"
+ENFORCE_EAGER="${ENFORCE_EAGER:-0}"
+
+EXTRA_VLLM_ARGS=()
+if [[ "$ENFORCE_EAGER" == "1" || "$ENFORCE_EAGER" == "true" ]]; then
+  EXTRA_VLLM_ARGS+=(--enforce-eager)
+fi
 
 if [[ ! -f "$MODEL_DIR/config.json" ]]; then
   echo "Missing model at $MODEL_DIR — run: hf download poolside/Laguna-M.1-NVFP4 --local-dir $MODEL_DIR"
@@ -30,8 +37,10 @@ docker run -d --name "$NAME" --gpus all --ipc=host --network=host \
     --gpu-memory-utilization "$GPU_UTIL" \
     --max-model-len "$MAX_MODEL_LEN" \
     --max-num-seqs "$MAX_NUM_SEQS" \
+    --max-num-batched-tokens "$MAX_BATCHED" \
     --kv-cache-dtype "$KV_CACHE_DTYPE" \
     --load-format fastsafetensors \
+    "${EXTRA_VLLM_ARGS[@]}" \
     --enable-auto-tool-choice \
     --tool-call-parser poolside_v1 \
     --reasoning-parser poolside_v1 \
