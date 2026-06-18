@@ -2,8 +2,8 @@
 
 Optimized **vLLM** serving and benchmarks for [`poolside/Laguna-M.1-NVFP4`](https://huggingface.co/poolside/Laguna-M.1-NVFP4) on **NVIDIA GB10 / SM12.1**.
 
-- **TP=1** (single Spark); dual-node TP=2 and DFlash are expansion milestones.
-- Headline config: **NVFP4 weights** + **`--kv-cache-dtype nvfp4`** (FP8 KV documented as baseline if NVFP4 KV is blocked).
+- **TP=2** on dual GB10 is **required** for full M.1 weights (single Spark OOM at ~113 GiB during MoE init — see `docs/MEMORY.md`).
+- Headline config on TP=2: **NVFP4 weights** + **`--kv-cache-dtype fp8`** first boot (nvfp4 KV ladder after stable API).
 - Agent metric (v1): **[BFCL](https://gorilla.cs.berkeley.edu/leaderboard.html)** via `bfcl-eval` + `--backend vllm` / `--skip-server-setup`.
 
 ## Quick start
