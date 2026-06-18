@@ -1,0 +1,8 @@
+evidence/download.log
+evidence/telemetry/
+.venv/
+__pycache__/
+*.pyc
+benchmarks/bfcl/result/
+benchmarks/bfcl/score/
+.env
