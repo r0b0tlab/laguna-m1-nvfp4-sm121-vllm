@@ -27,7 +27,9 @@ export VLLM_SPARK_EXTRA_DOCKER_ARGS="-v ${MODEL_DIR}:/mnt/model:ro \
   -e ENFORCE_EAGER=${ENFORCE_EAGER:-1} \
   -e GPU_UTIL=${GPU_UTIL:-0.82} \
   -e MAX_MODEL_LEN=${MAX_MODEL_LEN:-4096} \
-  -e MAX_NUM_SEQS=${MAX_NUM_SEQS:-4}"
+  -e MAX_NUM_SEQS=${MAX_NUM_SEQS:-4} \
+  -e LOAD_FORMAT=${LOAD_FORMAT:-safetensors} \
+  -e DISTRIBUTED_EXECUTOR_BACKEND=${DISTRIBUTED_EXECUTOR_BACKEND:-ray}"
 export CONTAINER_NCCL_IB_GID_INDEX=3
 export CONTAINER_NCCL_IB_DISABLE=0
 export CONTAINER_NCCL_SOCKET_IFNAME=enp1s0f0np0
@@ -47,6 +49,5 @@ exec ./launch-cluster.sh \
   --name "$NAME" \
   --eth-if enp1s0f0np0 \
   --ib-if rocep1s0f0 \
-  --no-ray \
   --launch-script examples/laguna-m1-launch.sh \
   -d

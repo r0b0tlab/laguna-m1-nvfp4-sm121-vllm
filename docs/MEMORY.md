@@ -17,18 +17,32 @@ Conservative settings still OOM during **weight init** (not KV):
 | Setting | First boot |
 |---------|------------|
 | `tensor_parallel_size` | 2 |
-| `distributed_executor_backend` | `mp` |
+| `distributed_executor_backend` | **ray** (mp hit NCCL deadlock at load — see below) |
+| `load_format` | **safetensors** |
 | `GPU_UTIL` | 0.82 |
 | `MAX_MODEL_LEN` | 4096 |
 | `KV_CACHE_DTYPE` | fp8 |
 | `ENFORCE_EAGER` | 1 |
 | NCCL | `NCCL_IB_GID_INDEX=3`, RoCE `rocep1s0f0`, `enp1s0f0np0` |
 
-Launch: `scripts/serve_tp2_cluster.sh` (uses `spark-vllm-docker/launch-cluster.sh`).
+Launch: `scripts/serve_tp2_cluster.sh` (uses `spark-vllm-docker/launch-cluster.sh` + Ray).
 
 Nodes: **192.168.100.10** (head), **192.168.100.11** (worker). Model path on **both**:
 
 `/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4` → `/mnt/model`
+
+## 2026-06-19 — TP=2 load NCCL deadlock (mp backend)
+
+Two runs failed at **NCCL BROADCAST SeqNum=92764** after safetensor load ~50%:
+
+- Run 1: default **600s** timeout
+- Run 2: **7200s** timeout — rank 0 still stuck ~2h (GPU busy, no progress)
+
+**Not OOM.** Worker weights 28/28 on both nodes.
+
+**Mitigation (next launch):** Ray cluster (remove `--no-ray`), `--distributed-executor-backend ray`, `--load-format safetensors`, `--disable-custom-all-reduce`.
+
+**Blocker:** SSH to **192.168.100.11** intermittently fails (ping OK) — fix worker `sshd`/reboot before `launch-cluster`.
 
 ## Ladder (after stable API)
 
