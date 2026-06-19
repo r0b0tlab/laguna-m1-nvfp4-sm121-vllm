@@ -12,6 +12,10 @@ flock -n "$LOCK" bash -c '
     echo "API already up"
     exit 0
   fi
+  if docker ps --filter name=laguna_tp2 --filter status=running -q | grep -q .; then
+    echo "laguna_tp2 already running (load in progress) — skip relaunch"
+    exit 0
+  fi
   if ! ssh -i /home/r0b0tdgx/.ssh/id_ed25519_shared -o BatchMode=yes -o ConnectTimeout=12 r0b0tdgx@192.168.100.11 hostname >/dev/null 2>&1; then
     echo "node2 SSH down — skip"
     exit 0
