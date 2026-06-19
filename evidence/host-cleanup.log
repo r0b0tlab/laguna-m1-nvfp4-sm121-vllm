@@ -1,0 +1,13 @@
+=== host cleanup 2026-06-18T18:13:42-05:00 ===
+               total        used        free      shared  buff/cache   available
+Mem:           121Gi        12Gi        94Gi        14Mi        16Gi       109Gi
+gdm3 stopped
+--- kept processes ---
+71465 /usr/bin/bash -lic set +m; export MODEL_DIR=/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4 ~/.local/bin/hf download poolside/Laguna-M.1-NVFP4 --local-dir "$MODEL_DIR" 2>&1 | tee -a /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/evidence/hf-download.log
+71480 /usr/bin/python3 /home/r0b0tdgx/.local/bin/hf download poolside/Laguna-M.1-NVFP4 --local-dir /home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4
+71688 /usr/bin/bash -lic set +m; cd /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm && ./scripts/wait_weights_then_v1.sh
+71704 bash ./scripts/wait_weights_then_v1.sh
+--- after ---
+               total        used        free      shared  buff/cache   available
+Mem:           121Gi        11Gi        94Gi        11Mi        16Gi       110Gi
+=== done 2026-06-18T18:13:46-05:00 ===

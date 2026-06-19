@@ -1,0 +1,9 @@
+=== pipeline start 2026-06-18T14:41:45-05:00 ===
+waiting download shards=8
+waiting download shards=14
+waiting download shards=15
+waiting download shards=19
+download complete
+145bad58f0e19cfc1941f533c746c4a53a965e66b73cba22510fab8fbc417c46
+Started laguna-m1-vllm on :30100 (KV=nvfp4, max_len=8192)
+Logs: docker logs -f laguna-m1-vllm

@@ -1,0 +1,22 @@
+=== rsync to node2 2026-06-18T18:30:46-05:00 ===
+
+Number of files: 86 (reg: 82, dir: 4)
+Number of created files: 85 (reg: 82, dir: 3)
+Number of deleted files: 0
+Number of regular files transferred: 82
+Total file size: 139,321,392,839 bytes
+Total transferred file size: 139,321,392,839 bytes
+Literal data: 139,321,392,839 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 128,590,129,084
+Total bytes received: 1,597
+
+sent 128,590,129,084 bytes  received 1,597 bytes  281,071,323.89 bytes/sec
+total size is 139,321,392,839  speedup is 1.08
+=== rsync done 2026-06-18T18:38:23-05:00 ===
+expected_shards=28 disk=28 missing=0
+MemAvailable_GiB=114 (min 90)
+PREFLIGHT OK: weights complete, download idle, memory gate passed

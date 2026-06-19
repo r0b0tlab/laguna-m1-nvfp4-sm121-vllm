@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laguna M.1 NVFP4 — SM121 Report</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:ui-monospace,monospace;background:#0d1117;color:#c9d1d9;padding:16px;line-height:1.5;font-size:14px;overflow-x:hidden}
+h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:1.1rem;margin:1.5rem 0 .75rem;border-bottom:1px solid #21262d;padding-bottom:.5rem}
+.sub{color:#8b949e;margin:.5rem 0 1rem;font-size:.85rem}.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin:.75rem 0}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:480px;font-size:13px}th,td{padding:8px 10px;border-bottom:1px solid #21262d;text-align:left}th{color:#79c0ff}
+.badge{display:inline-block;background:#238636;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin:2px}
+</style></head><body>
+<h1>Laguna M.1 NVFP4 on SM121</h1>
+<p class="sub">Single GB10 · TP=1 · NVFP4 KV · vLLM · BFCL v1 · 2026-06-19 23:29 UTC</p>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">BFCL public harness</span></p>
+<h2>Throughput (chat completions)</h2>
+<div class="table-wrap"><table><thead><tr><th>Concurrency</th><th>Output tok/s</th><th>Power</th><th>$/M out tok†</th></tr></thead><tbody>
+<tr><td>c1</td><td>13.07</td><td>35 W†</td><td>0.0893</td></tr>
+<tr><td>c2</td><td>24.74</td><td>35 W†</td><td>0.0472</td></tr>
+<tr><td>c4</td><td>38.08</td><td>35 W†</td><td>0.0306</td></tr>
+<tr><td>c5</td><td>38.59</td><td>35 W†</td><td>0.0302</td></tr>
+<tr><td>c8</td><td>38.49</td><td>35 W†</td><td>0.0303</td></tr>
+
+</tbody></table></div>
+<p class="sub">† Power from telemetry or meta default; electricity @ $0.12/kWh.</p>
+<h2>BFCL (function calling)</h2>
+<div class="card"><pre style="white-space:pre-wrap;font-size:12px">[]</pre></div>
+<h2>Environment</h2>
+<div class="card"><pre>{}</pre></div>
+</body></html>

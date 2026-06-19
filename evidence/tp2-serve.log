@@ -1,0 +1,182 @@
+Checking model on worker...
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: vllm-node
+Action: stop
+
+Stopping cluster...
+Stopping head node (192.168.100.10)...
+Stopping worker node (192.168.100.11)...
+Cluster stopped.
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Using launch script: /home/r0b0tdgx/spark-vllm-docker/examples/laguna-m1-launch.sh
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Action: exec
+Checking SSH connectivity to worker nodes...
+  SSH to 192.168.100.11: OK
+Starting Head Node on 192.168.100.10...
+Unable to find image 'ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b' locally
+cu130-sm121-arm64-dda4668b: Pulling from r0b0tlab/vllm-dsv4-flash-gb10
+2b9585699ff1: Pulling fs layer
+18218423db25: Pulling fs layer
+067f10bdf22e: Pulling fs layer
+09e9408034f3: Pulling fs layer
+3fa23874706e: Pulling fs layer
+314a2f652b6c: Pulling fs layer
+15039e7d116d: Pulling fs layer
+e5e5f1aa8be2: Pulling fs layer
+949f935e0756: Pulling fs layer
+6f596c6704f1: Pulling fs layer
+32cc32da7083: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+9e4aabb282ff: Pulling fs layer
+c96e3d9deca7: Pulling fs layer
+1f8a7a69243e: Pulling fs layer
+7bd822918484: Pulling fs layer
+022357c0a57c: Pulling fs layer
+6a2acba3032c: Pulling fs layer
+e331a7c9667c: Pulling fs layer
+84907aef480a: Pulling fs layer
+65b5051134b4: Pulling fs layer
+b20f41cb191f: Pulling fs layer
+6f596c6704f1: Waiting
+32cc32da7083: Waiting
+7bd822918484: Waiting
+4f4fb700ef54: Waiting
+022357c0a57c: Waiting
+9e4aabb282ff: Waiting
+6a2acba3032c: Waiting
+e331a7c9667c: Waiting
+84907aef480a: Waiting
+c96e3d9deca7: Waiting
+1f8a7a69243e: Waiting
+314a2f652b6c: Waiting
+65b5051134b4: Waiting
+b20f41cb191f: Waiting
+15039e7d116d: Waiting
+e5e5f1aa8be2: Waiting
+949f935e0756: Waiting
+3fa23874706e: Waiting
+09e9408034f3: Waiting
+18218423db25: Verifying Checksum
+18218423db25: Download complete
+2b9585699ff1: Verifying Checksum
+2b9585699ff1: Download complete
+3fa23874706e: Verifying Checksum
+3fa23874706e: Download complete
+314a2f652b6c: Verifying Checksum
+314a2f652b6c: Download complete
+2b9585699ff1: Pull complete
+18218423db25: Pull complete
+09e9408034f3: Verifying Checksum
+09e9408034f3: Download complete
+e5e5f1aa8be2: Verifying Checksum
+e5e5f1aa8be2: Download complete
+949f935e0756: Verifying Checksum
+949f935e0756: Download complete
+6f596c6704f1: Verifying Checksum
+6f596c6704f1: Download complete
+067f10bdf22e: Verifying Checksum
+067f10bdf22e: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+9e4aabb282ff: Verifying Checksum
+9e4aabb282ff: Download complete
+067f10bdf22e: Pull complete
+09e9408034f3: Pull complete
+3fa23874706e: Pull complete
+314a2f652b6c: Pull complete
+c96e3d9deca7: Verifying Checksum
+c96e3d9deca7: Download complete
+1f8a7a69243e: Download complete
+7bd822918484: Verifying Checksum
+7bd822918484: Download complete
+15039e7d116d: Verifying Checksum
+15039e7d116d: Download complete
+32cc32da7083: Verifying Checksum
+32cc32da7083: Download complete
+15039e7d116d: Pull complete
+e5e5f1aa8be2: Pull complete
+949f935e0756: Pull complete
+6f596c6704f1: Pull complete
+32cc32da7083: Pull complete
+4f4fb700ef54: Pull complete
+9e4aabb282ff: Pull complete
+6a2acba3032c: Verifying Checksum
+6a2acba3032c: Download complete
+e331a7c9667c: Verifying Checksum
+e331a7c9667c: Download complete
+65b5051134b4: Verifying Checksum
+65b5051134b4: Download complete
+b20f41cb191f: Download complete
+022357c0a57c: Verifying Checksum
+022357c0a57c: Download complete
+84907aef480a: Verifying Checksum
+84907aef480a: Download complete
+c96e3d9deca7: Pull complete
+1f8a7a69243e: Pull complete
+7bd822918484: Pull complete
+Checking model on worker...
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: vllm-node
+Action: stop
+
+Stopping cluster...
+Stopping head node (192.168.100.10)...
+Stopping worker node (192.168.100.11)...
+Cluster stopped.
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Using launch script: /home/r0b0tdgx/spark-vllm-docker/examples/laguna-m1-launch.sh
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Action: exec
+Checking SSH connectivity to worker nodes...
+  SSH to 192.168.100.11: OK
+Starting Head Node on 192.168.100.10...
+aa8f5392c33098931c65f4ce33921f68a60ea34ae763f6f0c494edcf792e8436
+Starting Worker Node on 192.168.100.11...
+6c89a26563d91df68faa5b37ce3909cdf5641a74d6ddd7778848acc21c77a7ed
+Copying launch script to head node (192.168.100.10)...
+Copying launch script to worker 192.168.100.11...
+Executing command: /workspace/exec-script.sh
+Launching worker (rank 1) on 192.168.100.11...
+Executing command on head node (rank 0): /workspace/exec-script.sh
+Command dispatched in background (Daemon mode). Container: laguna_tp2

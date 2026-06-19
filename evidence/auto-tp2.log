@@ -1,0 +1,152 @@
+=== auto check 2026-06-19T17:38:48-05:00 ===
+node2 SSH down — skip
+=== auto check 2026-06-19T17:49:48-05:00 ===
+node2 SSH up — launching TP=2 Ray
+laguna_tp2
+laguna_tp2
+Checking model on worker...
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: vllm-node
+Action: stop
+
+Stopping cluster...
+Stopping head node (192.168.100.10)...
+Stopping worker node (192.168.100.11)...
+Cluster stopped.
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Using launch script: /home/r0b0tdgx/spark-vllm-docker/examples/laguna-m1-launch.sh
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Action: exec
+Checking SSH connectivity to worker nodes...
+  SSH to 192.168.100.11: OK
+Starting Head Node on 192.168.100.10...
+1a5bef98c9e0b6fce873826acf6a1e61863f55ba910d48d3a1ec24c7a79f213b
+Starting Worker Node on 192.168.100.11...
+eab30bf42393b9341e6bae019329ab6c8142c43d263e3f2a1f8911ed149a2fcd
+Copying launch script to head node...
+Starting Ray HEAD node on 192.168.100.10...
+Starting Ray WORKER node on 192.168.100.11...
+Waiting for cluster to be ready...
+Cluster head is responsive.
+Executing command: /workspace/exec-script.sh
+Command dispatched in background (Daemon mode). Container: laguna_tp2
+=== auto check 2026-06-19T18:00:48-05:00 ===
+node2 SSH up — launching TP=2 Ray
+laguna_tp2
+laguna_tp2
+Checking model on worker...
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: vllm-node
+Action: stop
+
+Stopping cluster...
+Stopping head node (192.168.100.10)...
+Stopping worker node (192.168.100.11)...
+Cluster stopped.
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Using launch script: /home/r0b0tdgx/spark-vllm-docker/examples/laguna-m1-launch.sh
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Action: exec
+Checking SSH connectivity to worker nodes...
+  SSH to 192.168.100.11: OK
+Starting Head Node on 192.168.100.10...
+48e442e6d81a71329d948b15688543b886b797dbbdaf098715f1bb19ad86c21e
+Starting Worker Node on 192.168.100.11...
+6e492e1f8330f9f509ac40ee58757334bf7f5219d0fa1328ed608bc30a62277b
+Copying launch script to head node...
+Starting Ray HEAD node on 192.168.100.10...
+Starting Ray WORKER node on 192.168.100.11...
+Waiting for cluster to be ready...
+Cluster head is responsive.
+Executing command: /workspace/exec-script.sh
+Command dispatched in background (Daemon mode). Container: laguna_tp2
+=== auto check 2026-06-19T18:11:48-05:00 ===
+node2 SSH up — launching TP=2 Ray
+laguna_tp2
+laguna_tp2
+Checking model on worker...
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: vllm-node
+Action: stop
+
+Stopping cluster...
+Stopping head node (192.168.100.10)...
+Stopping worker node (192.168.100.11)...
+Cluster stopped.
+Loading configuration from .env file...
+Loaded .env variables: DOTENV_CLUSTER_NODES DOTENV_CONTAINER_GLOO_SOCKET_IFNAME DOTENV_CONTAINER_NAME DOTENV_CONTAINER_NCCL_IB_DISABLE DOTENV_CONTAINER_NCCL_IB_GID_INDEX DOTENV_CONTAINER_NCCL_IB_HCA DOTENV_CONTAINER_NCCL_SOCKET_IFNAME DOTENV_CONTAINER_TP_SOCKET_IFNAME DOTENV_ETH_IF DOTENV_IB_IF DOTENV_LOCAL_IP DOTENV_MASTER_PORT 
+Adding container env: GLOO_SOCKET_IFNAME
+Adding container env: NCCL_IB_DISABLE
+Adding container env: NCCL_IB_GID_INDEX
+Adding container env: NCCL_IB_HCA
+Adding container env: NCCL_SOCKET_IFNAME
+Adding container env: TP_SOCKET_IFNAME
+Using launch script: /home/r0b0tdgx/spark-vllm-docker/examples/laguna-m1-launch.sh
+Head Node: 192.168.100.10
+Worker Nodes: 192.168.100.11
+Container Name: laguna_tp2
+Image Name: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Action: exec
+Checking SSH connectivity to worker nodes...
+  SSH to 192.168.100.11: OK
+Starting Head Node on 192.168.100.10...
+ab2b5b98993dccc7b1a7321a7ed10876bad56f5a8bd33d18bb1039669925055a
+Starting Worker Node on 192.168.100.11...
+7fe5664a02ec8101b564165b8959235c70a9f9f7794d04c9e68ceb602ebfcc46
+Copying launch script to head node...
+Starting Ray HEAD node on 192.168.100.10...
+Starting Ray WORKER node on 192.168.100.11...
+Waiting for cluster to be ready...
+Cluster head is responsive.
+Executing command: /workspace/exec-script.sh
+Command dispatched in background (Daemon mode). Container: laguna_tp2

@@ -1,0 +1,9 @@
+=== tp2 pipeline 2026-06-18T18:30:46-05:00 ===
+Checking model on worker...
+Auto-detecting interfaces...
+Error: Interfaces enP2p1s0f0np0 and enp1s0f0np0 share the same subnet (192.168.100.0/24). Check network configuration.
+Error: Launch script 'examples/laguna-m1-launch.sh' not found.
+Searched in:
+  - examples/laguna-m1-launch.sh
+  - /home/r0b0tdgx/spark-vllm-docker/examples/examples/laguna-m1-launch.sh
+  - /home/r0b0tdgx/spark-vllm-docker/examples/examples/laguna-m1-launch.sh.sh
