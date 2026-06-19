@@ -18,13 +18,24 @@ ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=8 "$REMOTE" \
   exit 1
 }
 
-export VLLM_SPARK_EXTRA_DOCKER_ARGS="-v ${MODEL_DIR}:/mnt/model:ro -e NCCL_IB_GID_INDEX=3 -e VLLM_NVFP4_GEMM_BACKEND=flashinfer-cutlass -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True"
+export VLLM_SPARK_EXTRA_DOCKER_ARGS="-v ${MODEL_DIR}:/mnt/model:ro \
+  -e NCCL_IB_GID_INDEX=3 \
+  -e VLLM_NVFP4_GEMM_BACKEND=flashinfer-cutlass \
+  -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+  -e PORT=${PORT:-30100} \
+  -e KV_CACHE_DTYPE=${KV_CACHE_DTYPE:-fp8} \
+  -e ENFORCE_EAGER=${ENFORCE_EAGER:-1} \
+  -e GPU_UTIL=${GPU_UTIL:-0.82} \
+  -e MAX_MODEL_LEN=${MAX_MODEL_LEN:-4096} \
+  -e MAX_NUM_SEQS=${MAX_NUM_SEQS:-4}"
 export CONTAINER_NCCL_IB_GID_INDEX=3
 export CONTAINER_NCCL_IB_DISABLE=0
 export CONTAINER_NCCL_SOCKET_IFNAME=enp1s0f0np0
 export CONTAINER_GLOO_SOCKET_IFNAME=enp1s0f0np0
 export CONTAINER_TP_SOCKET_IFNAME=enp1s0f0np0
 export CONTAINER_NCCL_IB_HCA=rocep1s0f0
+
+export CONTAINER_NAME="$NAME"
 
 cd "$SPARK"
 ./launch-cluster.sh stop --name "$NAME" 2>/dev/null || true

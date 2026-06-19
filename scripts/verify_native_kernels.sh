@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-NAME=${NAME:-laguna-m1-vllm}
+NAME=${NAME:-laguna_tp2}
 OUT=${OUT:-$ROOT/evidence/kernels/native-kernel-check.txt}
 mkdir -p "$(dirname "$OUT")"
 {
