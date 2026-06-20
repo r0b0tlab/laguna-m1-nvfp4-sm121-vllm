@@ -1,0 +1,40 @@
+{
+  "headline": {
+    "label": "nvfp4-kv",
+    "kv_cache_dtype": "nvfp4",
+    "block_size": 256,
+    "max_model_len": 8192,
+    "gpu_memory_utilization": 0.85,
+    "gpu_kv_cache_tokens": 507904,
+    "kv_available_gib": [
+      35.22,
+      33.92
+    ],
+    "max_concurrency_at_max_model_len": 62.0,
+    "max_concurrency_token_len": 8192
+  },
+  "baseline_l1_fp8": {
+    "label": "L1_fp8",
+    "kv_cache_dtype": "fp8",
+    "block_size": 256,
+    "max_model_len": 8192,
+    "gpu_memory_utilization": 0.85,
+    "gpu_kv_cache_tokens": 489984,
+    "kv_available_gib": [
+      34.45,
+      32.72
+    ],
+    "max_concurrency_at_max_model_len": 59.81,
+    "max_concurrency_token_len": 8192
+  },
+  "delta_tokens_vs_l1_fp8_pct": 3.66,
+  "throughput_c8": {
+    "nvfp4_kv": 48.98479332044135,
+    "l1_fp8": 49.27014089494558
+  },
+  "bench_kv_usage_pct_max": 0.4,
+  "log_sources": {
+    "headline": "evidence/kernels/native-kernel-check.txt",
+    "l1_fp8": "evidence/l1-optimize.log"
+  }
+}

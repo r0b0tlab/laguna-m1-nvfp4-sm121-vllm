@@ -11,7 +11,7 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 .stat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}.stat b{color:#58a6ff;display:block;font-size:1.1rem}
 </style></head><body>
 <h1>Laguna M.1 NVFP4 on SM121</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · BFCL v1 · 2026-06-20 12:01 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · BFCL v1 · 2026-06-20 14:32 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span> <span class="badge">BFCL public harness</span></p>
 <h2>Throughput (chat completions)</h2>
 <p class="sub">Profile: <code>nvfp4-kv</code> · source: <code>chat-concurrency-summary-nvfp4-kv.json</code></p>
@@ -29,9 +29,23 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>47 / 64 / 58 °C</b></div>
 <div class="stat"><span class="sub">Power avg (loaded)</span><b>33.0 W</b></div>
 <div class="stat"><span class="sub">GPU util avg</span><b>96%</b></div>
-<div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">laguna_tp2</b></div>
+<div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">laguna-m1-vllm</b></div>
 </div>
 <p class="sub">Source: <code>evidence/telemetry/gpu-sample.jsonl</code></p>
+<h2>KV cache</h2>
+
+<div class="stat-grid">
+<div class="stat"><span class="sub">KV dtype</span><b>nvfp4</b></div>
+<div class="stat"><span class="sub">GPU KV tokens</span><b>507,904</b></div>
+<div class="stat"><span class="sub">KV memory (GiB)</span><b style="font-size:.85rem">35.22 / 33.92</b></div>
+<div class="stat"><span class="sub">max_model_len</span><b>8192</b></div>
+<div class="stat"><span class="sub">block_size</span><b>256</b></div>
+<div class="stat"><span class="sub">Max conc @ len</span><b>62.0×</b></div>
+</div><div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>KV dtype</th><th>GPU KV tokens</th><th>c8 out tok/s</th>
+</tr></thead><tbody><tr><td>L1 fp8</td><td>fp8</td><td>489,984</td><td>49.27014089494558</td></tr>
+<tr><td>nvfp4-kv</td><td>nvfp4</td><td>507,904</td><td>48.98479332044135</td></tr>
+</tbody></table></div><p class="sub">Δ tokens vs L1 fp8: <b>+3.66%</b></p><p class="sub">Peak GPU KV usage @ c8 bench: <b>0.4%</b></p>
 <h2>BFCL (function calling)</h2>
 <div class="table-wrap"><table><thead><tr><th>Category</th><th>Score</th></tr></thead><tbody>
 <tr><td colspan="2">Pending — run scripts/run_bfcl_v1.sh</td></tr></tbody></table></div>
@@ -42,12 +56,13 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 <div class="card"><pre>{
   "topology": "dual GB10 TP=2 Ray",
   "served_model_name": "laguna-m1-nvfp4",
-  "container_name": "laguna_tp2",
+  "container_name": "laguna-m1-vllm",
   "port": 30100,
   "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
   "image_note": "Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).",
   "headline_profile": "nvfp4-kv",
   "headline_kv": "nvfp4",
+  "kv_cache_metrics_file": "kv_cache_metrics.json",
   "headline": {
     "tensor_parallel_size": 2,
     "distributed_executor_backend": "ray",
