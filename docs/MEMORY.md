@@ -44,8 +44,15 @@ Two runs failed at **NCCL BROADCAST SeqNum=92764** after safetensor load ~50%:
 
 **Blocker:** SSH to **192.168.100.11** intermittently fails (ping OK) — fix worker `sshd`/reboot before `launch-cluster`.
 
-## Ladder (after stable API)
+## Published benchmarks (Ray TP=2)
 
-1. fp8 KV @ 4096  
-2. fp8 KV @ 8192  
-3. nvfp4 KV @ 8192 if SM121 KV path works (see `docs/NVFP4_KV_SM121.md`)
+| Profile | KV | max_len | graphs | c8 output tok/s |
+|---------|-----|---------|--------|-----------------|
+| L0 | fp8 | 4096 | eager | 38.5 |
+| L1 | fp8 | 8192 | PIECEWISE | **49.3** |
+
+## Ladder (in progress / next)
+
+1. **nvfp4-kv** @ 8192 — `scripts/run_kv_opt_ladder.sh` (running)
+2. **fp8-tuned** fallback: util 0.88, seqs 16, batched 16384
+3. nvfp4 KV blocked → document in `docs/NVFP4_KV_SM121.md`

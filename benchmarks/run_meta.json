@@ -1,7 +1,35 @@
 {
   "topology": "dual GB10 TP=2 Ray",
   "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
-  "L0": {"enforce_eager": true, "max_model_len": 4096, "kv_cache_dtype": "fp8", "gpu_util": 0.82},
-  "L1": {"cudagraph_mode": "PIECEWISE", "max_model_len": 8192, "kv_cache_dtype": "fp8", "gpu_util": 0.85, "max_num_seqs": 8},
-  "avg_power_w": 35
+  "L0": {
+    "enforce_eager": true,
+    "max_model_len": 4096,
+    "kv_cache_dtype": "fp8",
+    "gpu_util": 0.82
+  },
+  "L1": {
+    "cudagraph_mode": "PIECEWISE",
+    "max_model_len": 8192,
+    "kv_cache_dtype": "fp8",
+    "gpu_util": 0.85,
+    "max_num_seqs": 8
+  },
+  "avg_power_w": 35,
+  "headline_profile": "nvfp4-kv",
+  "headline_kv": "nvfp4",
+  "L1_fp8": {
+    "max_model_len": 8192,
+    "gpu_util": 0.85,
+    "max_num_seqs": 8
+  },
+  "nvfp4_attempt": {
+    "max_model_len": 8192,
+    "kv_cache_dtype": "nvfp4"
+  },
+  "fp8_tuned": {
+    "max_model_len": 8192,
+    "gpu_util": 0.88,
+    "max_num_seqs": 16,
+    "max_num_batched_tokens": 16384
+  }
 }
