@@ -40,16 +40,17 @@ Env:
 
 1. **Throughput:** `scripts/bench_concurrency.sh` — c1–c8; headline JSON `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json`.
 2. **Accuracy (pre-publish):** `scripts/run_gsm8k_100.sh` — GSM8K `limit=100` via lm-evaluation-harness → `benchmarks/lm_eval/gsm8k_100_results.json`.
-3. **Agent (pre-publish):** `scripts/run_hermes_terminal_micro.sh` — hermes-bench `t01_terminal_smoke` (5 tasks, real agent) → `benchmarks/hermesbench/terminal_micro_results.json`.
-4. **Telemetry:** `scripts/capture_telemetry.sh` during bench → `evidence/telemetry/gpu-sample.jsonl`.
-5. **KV metrics:** `scripts/extract_kv_metrics.py` → `benchmarks/kv_cache_metrics.json`.
-6. **Report:** `python3 scripts/build_report.py` → `publication/html/index.html`.
-7. **Publish:** `bash scripts/finish_publish.sh` (GSM8K + Hermes micro if missing). `SKIP_GSM8K=1` / `SKIP_HERMES_TERMINAL=1` to skip.
-8. **Regression:** >10% drop vs FP8-KV baseline on c1 output tok/s blocks calling config optimized.
+3. **Agent (pre-publish):** `scripts/run_hermes_terminal_micro.sh` — `t01_terminal_smoke` (5/5) → `benchmarks/hermesbench/terminal_micro_results.json`.
+4. **Agent coding:** `scripts/run_hermes_humaneval_micro.sh` — `t13_humaneval_micro` (n=10) → `benchmarks/hermesbench/humaneval_micro_results.json`.
+5. **Telemetry:** `scripts/capture_telemetry.sh` during bench → `evidence/telemetry/gpu-sample.jsonl`.
+6. **KV metrics:** `scripts/extract_kv_metrics.py` → `benchmarks/kv_cache_metrics.json`.
+7. **Report:** `python3 scripts/build_report.py` → `publication/html/index.html`.
+8. **Publish:** `bash scripts/finish_publish.sh`. Skips: `SKIP_GSM8K=1`, `SKIP_HERMES_TERMINAL=1`, `SKIP_HUMANEVAL_MICRO=1`.
+9. **Regression:** >10% drop vs FP8-KV baseline on c1 output tok/s blocks calling config optimized.
 
 ## HTML gate
 
-Visually verify `publication/html/index.html` (tables, overflow, mobile). Flat dark background, no gradients. Subtitle must match `benchmarks/run_meta.json` topology (dual GB10 TP=2).
+Visually verify `publication/html/index.html` (tables, overflow, mobile). **Light** publication theme (flat surfaces, no page gradients). Subtitle must match `benchmarks/run_meta.json` topology (dual GB10 TP=2).
 
 ## Out of scope on public main
 
@@ -60,4 +61,5 @@ Demo videos, HyperFrames, render pipelines, **BFCL harness results** (local-only
 - [ ] `scripts/verify_native_kernels.sh` PASS
 - [ ] KV dtype documented
 - [ ] Raw concurrency JSON in `benchmarks/concurrency/`
-- [ ] `docs/CONTAINER.md` image pin accurate
+- [ ] `docs/CONTAINER.md` + `docs/GHCR_PACKAGE.md` image pin accurate
+- [ ] `python3 scripts/verify_publish_alignment.py` passes

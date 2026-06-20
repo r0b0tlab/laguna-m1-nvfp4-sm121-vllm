@@ -81,6 +81,12 @@ python3 scripts/build_report.py
 # publication/html/index.html
 ```
 
+**Alignment check (before push):**
+
+```bash
+python3 scripts/verify_publish_alignment.py
+```
+
 ## Normal publish sequence
 
 ```bash

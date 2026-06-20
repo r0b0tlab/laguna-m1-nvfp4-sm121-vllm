@@ -57,12 +57,13 @@ if [[ "${PUSH_GITHUB:-1}" == "1" ]]; then
     benchmarks/hermesbench/humaneval_micro_results.json benchmarks/hermesbench/humaneval_micro_manifest.json \
     benchmarks/hermesbench/humaneval_micro_task_manifest.json \
     publication/html/index.html \
-    README.md AGENTS.md docs/BENCHMARKS.md .gitignore \
+    README.md AGENTS.md docs/BENCHMARKS.md docs/CONTAINER.md docs/GHCR_PACKAGE.md .gitignore \
     scripts/build_report.py scripts/finish_publish.sh scripts/run_gsm8k_100.sh \
     scripts/extract_gsm8k_results.py scripts/run_hermes_terminal_micro.sh \
-    scripts/extract_hermes_terminal_results.py 2>/dev/null || true
+    scripts/run_hermes_humaneval_micro.sh scripts/extract_hermes_terminal_results.py \
+    scripts/extract_hermes_humaneval_results.py scripts/verify_publish_alignment.py 2>/dev/null || true
   if ! git diff --staged --quiet; then
-    git commit -m "Laguna M.1: GSM8K@100, Hermes terminal micro, HTML report"
+    git commit -m "Laguna M.1: benchmark artifacts + HTML report (aligned)"
     git push origin main
   fi
 fi

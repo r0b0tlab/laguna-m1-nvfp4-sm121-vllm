@@ -39,7 +39,9 @@ See [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md). Normal publish order:
 ./scripts/capture_telemetry.sh   # optional during bench
 bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
-bash scripts/run_gsm8k_100.sh    # before HTML / push
+bash scripts/run_gsm8k_100.sh
+bash scripts/run_hermes_terminal_micro.sh
+bash scripts/run_hermes_humaneval_micro.sh
 python3 scripts/build_report.py
 bash scripts/finish_publish.sh
 ```
