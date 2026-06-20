@@ -1,6 +1,6 @@
 # New session handoff — Laguna M.1 NVFP4 SM121
 
-**Updated:** 2026-06-20 · **Git:** `75fff28` on `main` (synced with `origin/main`)
+**Updated:** 2026-06-20 · **Git:** `94d3c91` on `main`
 
 Read this first, then `AGENTS.md` and `benchmarks/run_meta.json`.
 
