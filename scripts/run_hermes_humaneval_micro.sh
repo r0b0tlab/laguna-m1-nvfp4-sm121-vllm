@@ -12,7 +12,10 @@ export OPENAI_API_KEY="${OPENAI_API_KEY:-EMPTY}"
 export HERMES_BENCH_REPO="$HB_REPO"
 export HUMANEVAL_MICRO_LIMIT="$LIMIT"
 
-python3 "$ROOT/scripts/generate_humaneval_hermes_tasks.py"
+source "$ROOT/.venv-lmeval/bin/activate" 2>/dev/null || true
+python -c "import datasets" 2>/dev/null || uv pip install -q "datasets>=2.14"
+
+python3 "$ROOT/scripts/generate_humaneval_hermes_tasks.py" || exit 1
 
 echo "=== hermes HumanEval micro limit=$LIMIT $(date -Is) ===" | tee "$LOG"
 date +%s > "$ROOT/evidence/hermes_humaneval_micro.run_start"

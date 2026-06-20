@@ -1,0 +1,15 @@
+{
+  "benchmark": "gsm8k",
+  "limit": 100.0,
+  "num_fewshot": 5,
+  "metric": "exact_match",
+  "exact_match": 0.97,
+  "exact_match_stderr": 0.017144660799776522,
+  "task_id": "gsm8k",
+  "harness": "lm-evaluation-harness",
+  "harness_version": "0.4.12",
+  "model": "laguna-m1-nvfp4",
+  "base_url": "http://127.0.0.1:30100/v1/chat/completions",
+  "completed_at": "2026-06-20T20:44:22.885449+00:00",
+  "raw_file": "benchmarks/lm_eval/raw/gsm8k_100_20260620T144541_2026-06-20T15-44-19.776065.json"
+}

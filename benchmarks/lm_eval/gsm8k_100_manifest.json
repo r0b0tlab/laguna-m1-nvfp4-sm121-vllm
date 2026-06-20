@@ -1,0 +1,12 @@
+{
+  "summary_file": "benchmarks/lm_eval/gsm8k_100_results.json",
+  "raw_file": "benchmarks/lm_eval/raw/gsm8k_100_20260620T144541_2026-06-20T15-44-19.776065.json",
+  "git_head": "77fa4d91cfd9908a9c5081b5ad1b914fb7ada943",
+  "headline_profile": "nvfp4-kv",
+  "topology": "dual GB10 TP=2 Ray",
+  "image": "ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b",
+  "task": "gsm8k",
+  "num_fewshot": 5,
+  "limit": 100.0,
+  "generated_at": "2026-06-20T20:44:22.885449+00:00"
+}
