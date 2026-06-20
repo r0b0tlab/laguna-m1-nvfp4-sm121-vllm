@@ -2,7 +2,7 @@
 
 ## Critical: do not relaunch during load
 
-`auto_tp2_when_node2_up.sh` must skip when `laguna_tp2` is **running**. Cron `laguna-tp2-auto-launch` paused during bring-up.
+`auto_tp2_when_node2_up.sh` must skip when **`laguna-m1-vllm`** (or legacy `laguna_tp2`) is **running**. Cron `laguna-tp2-auto-launch` paused during bring-up.
 
 ## Bring-up (once)
 
@@ -35,4 +35,4 @@ Run: `OPT_RELAUNCH=1 bash scripts/run_tp2_e2e_pipeline.sh` after first API ready
 
 ## Publish gate
 
-Native NVFP4 weights + honest KV label + BFCL v1 + HTML visual QA.
+Native NVFP4 weights + honest KV label + concurrency benchmarks + HTML visual QA.

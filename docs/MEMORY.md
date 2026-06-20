@@ -27,6 +27,8 @@ Conservative settings still OOM during **weight init** (not KV):
 
 Launch: `scripts/serve_tp2_cluster.sh` (uses `spark-vllm-docker/launch-cluster.sh` + Ray).
 
+**Docker container name:** `laguna-m1-vllm` (override with `NAME=…`). API: `http://127.0.0.1:30100/v1`.
+
 Nodes: **192.168.100.10** (head), **192.168.100.11** (worker). Model path on **both**:
 
 `/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4` → `/mnt/model`

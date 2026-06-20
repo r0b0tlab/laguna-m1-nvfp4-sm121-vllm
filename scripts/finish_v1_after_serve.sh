@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Wait for laguna-m1-vllm API then run benchmarks, BFCL, report, push.
+# Wait for laguna-m1-vllm API then run benchmarks, report, push.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PORT="${PORT:-30100}"

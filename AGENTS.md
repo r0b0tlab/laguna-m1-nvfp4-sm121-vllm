@@ -34,6 +34,7 @@ Env:
 | `MAX_MODEL_LEN` | `8192` | See `docs/MEMORY.md` |
 | `GPU_UTIL` | `0.85` | GB10: prefer 0.85 over 0.70 |
 | `PORT` | `30100` | OpenAI-compatible API |
+| `NAME` | `laguna-m1-vllm` | Docker container (`launch-cluster.sh --name`) |
 
 ## Benchmark gate (v1)
 

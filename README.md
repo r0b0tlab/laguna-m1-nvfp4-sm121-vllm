@@ -11,10 +11,18 @@ Optimized **vLLM** serving and benchmarks for [`poolside/Laguna-M.1-NVFP4`](http
 ```bash
 export MODEL_DIR=/path/to/Laguna-M.1-NVFP4
 export IMAGE=ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+export NAME=laguna-m1-vllm
 export PORT=30100
 export KV_CACHE_DTYPE=nvfp4
 export MAX_MODEL_LEN=8192
 bash scripts/serve_tp2_cluster.sh
+```
+
+Logs / health:
+
+```bash
+docker logs -f laguna-m1-vllm
+curl -s http://127.0.0.1:30100/health
 ```
 
 Smoke:

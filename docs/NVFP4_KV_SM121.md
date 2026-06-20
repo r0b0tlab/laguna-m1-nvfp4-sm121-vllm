@@ -15,7 +15,7 @@
 | KV capacity (log) | **~508k tokens** vs ~458k fp8 L1 (more headroom) |
 | vs L1 fp8 throughput | c1 **+0.4%**, c8 **−0.3%** (within noise) |
 
-**Headline publish:** dual GB10 TP=2, **NVFP4 weights + NVFP4 KV**, fp8-equivalent throughput at c8 ~**49 tok/s**.
+**Headline publish:** dual GB10 TP=2, container **`laguna-m1-vllm`**, **NVFP4 weights + NVFP4 KV**, fp8-equivalent throughput at c8 ~**49 tok/s**.
 
 ## If blocked on future images
 

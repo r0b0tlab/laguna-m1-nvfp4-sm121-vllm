@@ -17,14 +17,14 @@ for i in $(seq 1 480); do
   fi
   if (( i % 12 == 0 )); then
     echo "$(date -Is) waiting API iter=$i"
-    docker logs laguna_tp2 2>&1 | tail -5 || true
+    docker logs "${NAME:-laguna-m1-vllm}" 2>&1 | tail -5 || true
   fi
   sleep 30
 done
 curl -sf "http://127.0.0.1:${PORT}/v1/models" >/dev/null || exit 1
 
 cd "$ROOT"
-export PORT NAME=laguna_tp2
+export PORT NAME=${NAME:-laguna-m1-vllm}
 bash scripts/verify_native_kernels.sh || true
 bash scripts/smoke_poolside_tools.sh
 bash scripts/capture_telemetry.sh &

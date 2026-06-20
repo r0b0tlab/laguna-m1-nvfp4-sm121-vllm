@@ -6,7 +6,7 @@ LOG="$ROOT/evidence/kv-opt-ladder.log"
 exec > >(tee -a "$LOG") 2>&1
 echo "=== kv-opt ladder $(date -Is) ==="
 
-export PORT=30100 NAME=laguna_tp2 MODEL=laguna-m1-nvfp4
+export PORT=30100 NAME=${NAME:-laguna-m1-vllm} MODEL=laguna-m1-nvfp4
 export DISTRIBUTED_EXECUTOR_BACKEND=ray LOAD_FORMAT=safetensors
 export ENFORCE_EAGER=0 CUDAGRAPH_MODE=PIECEWISE
 export MAX_MODEL_LEN=8192 DISTRIBUTED_TIMEOUT_SECONDS=7200

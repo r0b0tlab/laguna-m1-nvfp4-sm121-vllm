@@ -12,7 +12,7 @@ while pgrep -f 'run_tp2_e2e_pipeline|http_chat_bench' >/dev/null 2>&1; do
   sleep 30
 done
 
-export PORT=30100 NAME=laguna_tp2 MODEL=laguna-m1-nvfp4
+export PORT=30100 NAME=${NAME:-laguna-m1-vllm} MODEL=laguna-m1-nvfp4
 export ENFORCE_EAGER=0 CUDAGRAPH_MODE=PIECEWISE
 export MAX_MODEL_LEN=8192 MAX_NUM_SEQS=8 MAX_BATCHED=8192 GPU_UTIL=0.85
 export KV_CACHE_DTYPE=fp8 LOAD_FORMAT=safetensors DISTRIBUTED_EXECUTOR_BACKEND=ray
@@ -37,7 +37,7 @@ for i in $(seq 1 480); do
   fi
   if (( i % 6 == 0 )); then
     echo "$(date -Is) waiting L1 API iter=$i"
-    docker logs laguna_tp2 2>&1 | grep 'Loading safetensors' | tail -1 || true
+    docker logs "${NAME:-laguna-m1-vllm}" 2>&1 | grep 'Loading safetensors' | tail -1 || true
   fi
   sleep 30
 done

@@ -84,7 +84,7 @@ def main() -> int:
     bench_kv = None
     tel = _read(ROOT / "evidence/telemetry/gpu-sample.jsonl")
     # optional: engine log snippet during bench — use run_meta default if missing
-    bench_kv = 0.4  # from laguna_tp2 c8 logs in prior session
+    bench_kv = 0.4  # from laguna-m1-vllm c8 bench logs
 
     payload = {
         "headline": headline,
