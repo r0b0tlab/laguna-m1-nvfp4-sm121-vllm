@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IMAGE=${IMAGE:-ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b}
+IMAGE=${IMAGE:-ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b}
 MODEL_DIR=${MODEL_DIR:-/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4}
 PORT=${PORT:-30100}
 MAX_MODEL_LEN=${MAX_MODEL_LEN:-8192}

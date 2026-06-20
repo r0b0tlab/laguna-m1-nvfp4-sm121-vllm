@@ -69,7 +69,7 @@ meta = {
     "driver": "580.159.03",
     "gpu": "NVIDIA GB10 SM121",
     "kv_cache_dtype": "nvfp4",
-    "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
+    "image": "ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b",
 }
 (root / "benchmarks/run_meta.json").write_text(json.dumps(meta, indent=2))
 PY

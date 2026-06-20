@@ -4,7 +4,7 @@ set -euo pipefail
 MODEL_DIR="${MODEL_DIR:-/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP4}"
 SPARK=/home/r0b0tdgx/spark-vllm-docker
 NODES="${NODES:-192.168.100.10,192.168.100.11}"
-IMAGE="${IMAGE:-ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b}"
+IMAGE="${IMAGE:-ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b}"
 NAME="${NAME:-laguna-m1-vllm}"
 SSH_KEY="${SSH_KEY:-/home/r0b0tdgx/.ssh/id_ed25519_shared}"
 REMOTE=r0b0tdgx@192.168.100.11

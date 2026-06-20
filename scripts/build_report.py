@@ -101,18 +101,21 @@ def kv_cache_html(kv_data: dict | None) -> str:
 def runtime_html(meta: dict) -> str:
     image = meta.get("image", "—")
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
+    alias = meta.get("image_pull_alias", "")
     launch = meta.get("serve_script", "scripts/serve_tp2_cluster.sh")
+    alias_row = (
+        f'<tr><th scope="row">Pull alias</th><td class="mono-sm">{alias}</td></tr>\n'
+        if alias
+        else ""
+    )
     return f"""<div class="table-wrap"><table class="data"><tbody>
 <tr><th scope="row">Registry image</th><td class="mono-sm">{image}</td></tr>
-<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
-<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM with <strong>LagunaForCausalLM</strong>, Poolside parsers, native NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
-<tr><th scope="row">Headline launch</th><td><code>{launch}</code> · container <code>{meta.get('container_name', 'laguna-m1-vllm')}</code></td></tr>
+{alias_row}<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
+<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · LagunaForCausalLM · Poolside parsers · NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
+<tr><th scope="row">Headline launch</th><td><code>{launch}</code> · <code>{meta.get('container_name', 'laguna-m1-vllm')}</code></td></tr>
 </tbody></table></div>
-<ul class="runtime-list">
-<li><strong>v1:</strong> Same GHCR artifact as DeepSeek-V4 Flash GB10; Laguna is configured at <strong>serve time</strong> (weights mount, <code>poolside_v1</code> parsers, KV dtype, TP=2 Ray).</li>
-<li><strong>Future:</strong> Optional dedicated <code>ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121</code> if serve flags diverge.</li>
-</ul>
-<p class="sub">Details: <code>docs/CONTAINER.md</code></p>"""
+<p class="sub">Pull alias is the same SM121 build until the Laguna repository tag is on GHCR.</p>
+<p class="sub"><code>docs/CONTAINER.md</code></p>"""
 
 
 def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price: float, avg_power: float) -> str:
