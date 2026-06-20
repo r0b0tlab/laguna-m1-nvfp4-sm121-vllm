@@ -4,7 +4,7 @@ Optimized **vLLM** serving and benchmarks for [`poolside/Laguna-M.1-NVFP4`](http
 
 - **TP=2** on dual GB10 is **required** for full M.1 weights (single Spark OOM at ~113 GiB during MoE init — see `docs/MEMORY.md`).
 - **Headline:** NVFP4 weights + **`--kv-cache-dtype nvfp4`** on TP=2 (`laguna-m1-vllm`, port `30100`).
-- **Container:** reuses [`docs/CONTAINER.md`](docs/CONTAINER.md) DSV4 SM121 image (no separate Laguna GHCR tag in v1).
+- **Container:** [`docs/CONTAINER.md`](docs/CONTAINER.md) · `ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121`
 
 ## Quick start (dual GB10)
 
