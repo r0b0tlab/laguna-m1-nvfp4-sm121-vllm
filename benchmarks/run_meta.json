@@ -1,35 +1,44 @@
 {
   "topology": "dual GB10 TP=2 Ray",
+  "served_model_name": "laguna-m1-nvfp4",
+  "container_name": "laguna_tp2",
+  "port": 30100,
   "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
+  "image_note": "Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).",
+  "headline_profile": "nvfp4-kv",
+  "headline_kv": "nvfp4",
+  "headline": {
+    "tensor_parallel_size": 2,
+    "distributed_executor_backend": "ray",
+    "kv_cache_dtype": "nvfp4",
+    "max_model_len": 8192,
+    "gpu_memory_utilization": 0.85,
+    "max_num_seqs": 8,
+    "max_num_batched_tokens": 4096,
+    "compilation_cudagraph_mode": "PIECEWISE",
+    "load_format": "safetensors",
+    "native_moe": "FLASHINFER_CUTLASS",
+    "native_gemm": "FlashInferCutlassNvFp4LinearKernel"
+  },
+  "concurrency_summary_file": "chat-concurrency-summary-nvfp4-kv.json",
+  "telemetry_file": "evidence/telemetry/gpu-sample.jsonl",
+  "avg_power_w": 33.0,
+  "temp_c_min": 47,
+  "temp_c_max": 64,
+  "temp_c_avg": 58,
+  "gpu_util_pct_avg": 96,
+  "electricity_usd_per_kwh": 0.12,
   "L0": {
     "enforce_eager": true,
     "max_model_len": 4096,
     "kv_cache_dtype": "fp8",
     "gpu_util": 0.82
   },
-  "L1": {
+  "L1_fp8": {
     "cudagraph_mode": "PIECEWISE",
     "max_model_len": 8192,
     "kv_cache_dtype": "fp8",
     "gpu_util": 0.85,
     "max_num_seqs": 8
-  },
-  "avg_power_w": 35,
-  "headline_profile": "nvfp4-kv",
-  "headline_kv": "nvfp4",
-  "L1_fp8": {
-    "max_model_len": 8192,
-    "gpu_util": 0.85,
-    "max_num_seqs": 8
-  },
-  "nvfp4_attempt": {
-    "max_model_len": 8192,
-    "kv_cache_dtype": "nvfp4"
-  },
-  "fp8_tuned": {
-    "max_model_len": 8192,
-    "gpu_util": 0.88,
-    "max_num_seqs": 16,
-    "max_num_batched_tokens": 16384
   }
 }

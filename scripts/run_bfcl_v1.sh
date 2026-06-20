@@ -18,4 +18,14 @@ curl -sf "${OPENAI_BASE_URL}/models" >/dev/null || { echo "Start vLLM first (scr
 source "$ROOT/.venv/bin/activate"
 python3 "$ROOT/scripts/bfcl_run.py" generate
 python3 "$ROOT/scripts/bfcl_run.py" evaluate
+python3 "$ROOT/scripts/build_report.py"
 echo "BFCL results under $BFCL_PROJECT_ROOT/result and score/"
+if [[ "${PUSH_GITHUB:-0}" == "1" ]]; then
+  cd "$ROOT"
+  git add AGENTS.md README.md benchmarks/ publication/html/index.html scripts/bfcl_run.py scripts/build_report.py scripts/capture_telemetry.sh docs/CONTAINER.md requirements-bfcl.txt configs/bfcl_v1_categories.txt evidence/bfcl-run.log 2>/dev/null || true
+  git add benchmarks/bfcl/score benchmarks/bfcl/result 2>/dev/null || true
+  if ! git diff --staged --quiet; then
+    git commit -m "Laguna M.1: BFCL scores + HTML report (auto-publish)"
+    git push origin main
+  fi
+fi

@@ -10,7 +10,7 @@ echo "{\"event\":\"start\",\"ts\":\"$(date -Is)\",\"duration_s\":$DURATION}" >>"
 end=$((SECONDS + DURATION))
 while (( SECONDS < end )); do
   if nvidia-smi --query-gpu=temperature.gpu,power.draw,utilization.gpu,memory.used --format=csv,noheader,nounits 2>/dev/null | head -1 | \
-    awk -v ts="$(date -Is)" '{printf "{\"ts\":\"%s\",\"temp_c\":%s,\"power_w\":%s,\"gpu_util_pct\":%s,\"mem_used_mib\":%s}\n", ts,$1,$2,$3,$4}' >>"$OUT"; then
+    awk -F', ' -v ts="$(date -Is)" '{gsub(/ /,"",$1); printf "{\"ts\":\"%s\",\"temp_c\":%s,\"power_w\":%s,\"gpu_util_pct\":%s,\"mem_used_mib\":%s}\n", ts,$1,$2,$3,$4}' >>"$OUT"; then
     :
   else
     echo "{\"ts\":\"$(date -Is)\",\"error\":\"nvidia-smi failed\"}" >>"$OUT"
