@@ -9,20 +9,37 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 .badge{display:inline-block;background:#238636;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin:2px}
 </style></head><body>
 <h1>Laguna M.1 NVFP4 on SM121</h1>
-<p class="sub">Single GB10 · TP=1 · NVFP4 KV · vLLM · BFCL v1 · 2026-06-19 23:29 UTC</p>
+<p class="sub">Single GB10 · TP=1 · NVFP4 KV · vLLM · BFCL v1 · 2026-06-20 00:15 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">BFCL public harness</span></p>
 <h2>Throughput (chat completions)</h2>
 <div class="table-wrap"><table><thead><tr><th>Concurrency</th><th>Output tok/s</th><th>Power</th><th>$/M out tok†</th></tr></thead><tbody>
-<tr><td>c1</td><td>13.07</td><td>35 W†</td><td>0.0893</td></tr>
-<tr><td>c2</td><td>24.74</td><td>35 W†</td><td>0.0472</td></tr>
-<tr><td>c4</td><td>38.08</td><td>35 W†</td><td>0.0306</td></tr>
-<tr><td>c5</td><td>38.59</td><td>35 W†</td><td>0.0302</td></tr>
-<tr><td>c8</td><td>38.49</td><td>35 W†</td><td>0.0303</td></tr>
+<tr><td>c1</td><td>11.36</td><td>35 W†</td><td>0.1027</td></tr>
+<tr><td>c2</td><td>19.63</td><td>35 W†</td><td>0.0594</td></tr>
+<tr><td>c4</td><td>30.76</td><td>35 W†</td><td>0.0379</td></tr>
+<tr><td>c5</td><td>32.03</td><td>35 W†</td><td>0.0364</td></tr>
+<tr><td>c8</td><td>49.27</td><td>35 W†</td><td>0.0237</td></tr>
 
 </tbody></table></div>
 <p class="sub">† Power from telemetry or meta default; electricity @ $0.12/kWh.</p>
 <h2>BFCL (function calling)</h2>
 <div class="card"><pre style="white-space:pre-wrap;font-size:12px">[]</pre></div>
 <h2>Environment</h2>
-<div class="card"><pre>{}</pre></div>
+<div class="card"><pre>{
+  "topology": "dual GB10 TP=2 Ray",
+  "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
+  "L0": {
+    "enforce_eager": true,
+    "max_model_len": 4096,
+    "kv_cache_dtype": "fp8",
+    "gpu_util": 0.82
+  },
+  "L1": {
+    "cudagraph_mode": "PIECEWISE",
+    "max_model_len": 8192,
+    "kv_cache_dtype": "fp8",
+    "gpu_util": 0.85,
+    "max_num_seqs": 8
+  },
+  "avg_power_w": 35
+}</pre></div>
 </body></html>
