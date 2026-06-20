@@ -26,6 +26,8 @@ LOG="$ROOT/evidence/humaneval_micro.log"
 
 echo "=== HumanEval standalone limit=$LIMIT task=$TASK $(date -Is) ===" | tee "$LOG"
 
+export HF_ALLOW_CODE_EVAL=1
+
 python -m lm_eval \
   --model local-chat-completions \
   --model_args "model=${MODEL},base_url=${BASE_URL},num_concurrent=${NUM_CONCURRENT},max_retries=3,tokenized_requests=False" \
