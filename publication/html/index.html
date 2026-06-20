@@ -92,7 +92,7 @@ table.data th[scope="row"]{
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:47 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:48 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -139,7 +139,13 @@ table.data th[scope="row"]{
 </tbody></table></div>
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p></section>
 <h2>HumanEval micro (harness vs standalone)</h2>
-<section class="panel"><p class="sub">Pending — <code>scripts/run_humaneval_micro.sh</code> and <code>scripts/run_hermes_humaneval_micro.sh</code>.</p></section>
+<section class="panel"><div class="table-wrap"><table class="data"><thead><tr>
+<th>Mode</th><th>pass@1</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Standalone (lm-eval)</td><td class="num">—</td><td class="sub">— · humaneval_instruct</td></tr>
+<tr><td>Hermes agent</td><td class="num">100.0%</td><td class="sub">n=10 · t13_humaneval_micro</td></tr>
+</tbody></table></div>
+<p class="sub">Compare harness vs API-only on the same problems (default n=10).</p></section>
 <h2>Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
@@ -228,6 +234,12 @@ table.data th[scope="row"]{
       "total": 5,
       "pass_rate": 1.0,
       "completed_at": "2026-06-20T20:11:29.114502+00:00"
+    },
+    "humaneval_micro": {
+      "results_file": "benchmarks/hermesbench/humaneval_micro_results.json",
+      "pass_at_1": 1.0,
+      "passed": 10,
+      "total": 10
     }
   },
   "lm_eval": {
@@ -244,5 +256,5 @@ table.data th[scope="row"]{
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:47 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:48 UTC</footer>
 </div></body></html>

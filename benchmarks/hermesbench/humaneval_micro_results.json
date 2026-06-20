@@ -1,0 +1,85 @@
+{
+  "benchmark": "humaneval",
+  "mode": "hermes_agent",
+  "category": "t13_humaneval_micro",
+  "model": "laguna-m1-nvfp4",
+  "passed": 10,
+  "total": 10,
+  "pass_rate": 1.0,
+  "pass_at_1": 1.0,
+  "tasks": [
+    {
+      "task_id": "t13_humaneval_micro/humaneval_0",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154500_701376bd/t13_humaneval_micro/humaneval_0/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_1",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154522_9d460505/t13_humaneval_micro/humaneval_1/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_2",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154553_9d67cc10/t13_humaneval_micro/humaneval_2/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_3",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154608_a4d69428/t13_humaneval_micro/humaneval_3/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_4",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154619_dc7a95c4/t13_humaneval_micro/humaneval_4/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_5",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154636_e570bd96/t13_humaneval_micro/humaneval_5/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_6",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154646_5ffab6ca/t13_humaneval_micro/humaneval_6/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_7",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154700_192bbd9b/t13_humaneval_micro/humaneval_7/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_8",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154712_2e3cec9a/t13_humaneval_micro/humaneval_8/verifier_result.json"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_9",
+      "status": "PASS",
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-154730_cf8f84bf/t13_humaneval_micro/humaneval_9/verifier_result.json"
+    }
+  ],
+  "run_dirs": [
+    "results/laguna-m1-nvfp4_20260620-154500_701376bd",
+    "results/laguna-m1-nvfp4_20260620-154522_9d460505",
+    "results/laguna-m1-nvfp4_20260620-154553_9d67cc10",
+    "results/laguna-m1-nvfp4_20260620-154608_a4d69428",
+    "results/laguna-m1-nvfp4_20260620-154619_dc7a95c4",
+    "results/laguna-m1-nvfp4_20260620-154636_e570bd96",
+    "results/laguna-m1-nvfp4_20260620-154646_5ffab6ca",
+    "results/laguna-m1-nvfp4_20260620-154700_192bbd9b",
+    "results/laguna-m1-nvfp4_20260620-154712_2e3cec9a",
+    "results/laguna-m1-nvfp4_20260620-154730_cf8f84bf"
+  ],
+  "completed_at": "2026-06-20T20:47:58.202349+00:00"
+}
