@@ -51,8 +51,22 @@ Two runs failed at **NCCL BROADCAST SeqNum=92764** after safetensor load ~50%:
 | L0 | fp8 | 4096 | eager | 38.5 |
 | L1 | fp8 | 8192 | PIECEWISE | **49.3** |
 
-## Ladder (in progress / next)
+## Headline optimized (2026-06-20)
 
-1. **nvfp4-kv** @ 8192 — `scripts/run_kv_opt_ladder.sh` (running)
-2. **fp8-tuned** fallback: util 0.88, seqs 16, batched 16384
-3. nvfp4 KV blocked → document in `docs/NVFP4_KV_SM121.md`
+**`nvfp4-kv` profile** — published `120f6e2`:
+
+| Knob | Value |
+|------|--------|
+| Backend | Ray TP=2 |
+| Weights | NVFP4 (FLASHINFER_CUTLASS) |
+| **KV** | **nvfp4** |
+| max_model_len | 8192 |
+| max_num_seqs | 8 |
+| max_num_batched_tokens | 8192 |
+| gpu_memory_utilization | 0.85 (vLLM suggests **0.852** with cudagraph profiler) |
+| Graphs | PIECEWISE + compile |
+| block-size | 256 |
+
+Throughput vs L1 fp8: **equivalent** (~49 output tok/s @ c8); **more KV tokens** for batching.
+
+Optional next: `fp8-tuned` (0.88 util, 16 seqs) A/B; `GPU_UTIL=0.8522` per vLLM hint.
