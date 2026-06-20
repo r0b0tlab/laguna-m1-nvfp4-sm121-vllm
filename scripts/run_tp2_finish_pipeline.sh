@@ -31,10 +31,12 @@ bash scripts/capture_telemetry.sh &
 TEL=$!
 bash scripts/bench_concurrency.sh
 kill $TEL 2>/dev/null || true
-export BFCL_TEST_CATEGORIES="${BFCL_TEST_CATEGORIES:-simple_python,parallel,multiple}"
-bash scripts/run_bfcl_v1.sh || true
+python3 scripts/extract_kv_metrics.py
+if [[ "${SKIP_GSM8K:-0}" != "1" ]]; then
+  bash scripts/run_gsm8k_100.sh
+fi
 python3 scripts/build_report.py
 git add benchmarks publication docs scripts evidence/kernels 2>/dev/null || true
-git commit -m "SM121 v1 TP=2: benchmarks, BFCL, HTML (single GB10 OOM documented)" || true
+git commit -m "Laguna M.1 TP=2: concurrency, GSM8K@100 gate, HTML report" || true
 git push origin main || true
 echo "=== tp2 pipeline done $(date -Is) ==="

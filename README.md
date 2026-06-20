@@ -33,11 +33,15 @@ bash scripts/smoke_poolside_tools.sh
 
 ## Benchmarks
 
+See [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md). Normal publish order:
+
 ```bash
 ./scripts/capture_telemetry.sh   # optional during bench
 bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
+bash scripts/run_gsm8k_100.sh    # before HTML / push
 python3 scripts/build_report.py
+bash scripts/finish_publish.sh
 ```
 
 Report: [`publication/html/index.html`](publication/html/index.html)

@@ -98,6 +98,32 @@ def kv_cache_html(kv_data: dict | None) -> str:
     return stats + table + extra
 
 
+def gsm8k_html(meta: dict) -> str:
+    lm = meta.get("lm_eval") or {}
+    g = lm.get("gsm8k_100") or {}
+    results_path = ROOT / "benchmarks" / "lm_eval" / "gsm8k_100_results.json"
+    summary = load_json(results_path) if results_path.is_file() else None
+    if not summary and not g.get("exact_match"):
+        return (
+            '<p class="sub">Pending — run <code>scripts/run_gsm8k_100.sh</code> '
+            "before publish (see <code>docs/BENCHMARKS.md</code>).</p>"
+        )
+    em = summary.get("exact_match") if summary else g.get("exact_match")
+    stderr = summary.get("exact_match_stderr") if summary else g.get("exact_match_stderr")
+    limit = summary.get("limit") if summary else g.get("limit", 100)
+    task = summary.get("task_id") if summary else g.get("task_id", "gsm8k")
+    few = summary.get("num_fewshot") if summary else 5
+    em_s = f"{100 * em:.1f}%" if em is not None else "—"
+    stderr_s = f"± {100 * stderr:.1f}%" if stderr is not None else ""
+    return f"""<div class="stat-grid">
+<div class="stat"><span class="sub">GSM8K exact_match</span><b>{em_s}</b></div>
+<div class="stat"><span class="sub">Subset</span><b>n={limit}</b></div>
+<div class="stat"><span class="sub">Few-shot</span><b>{few}</b></div>
+<div class="stat"><span class="sub">Task</span><b class="mono-sm">{task}</b></div>
+</div>
+<p class="sub">lm-evaluation-harness · OpenAI GSM8K test subset {stderr_s} · <code>benchmarks/lm_eval/gsm8k_100_results.json</code></p>"""
+
+
 def runtime_html(meta: dict) -> str:
     image = meta.get("image", "—")
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
@@ -197,6 +223,7 @@ def main():
     image = meta.get("image", "—")
 
     runtime_block = runtime_html(meta)
+    gsm8k_block = gsm8k_html(meta)
 
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -247,6 +274,8 @@ table.data th[scope="row"]{{width:28%;color:#8b949e;font-weight:500;background:t
 </header>
 <h2>Throughput</h2>
 {throughput_html}
+<h2>Accuracy (GSM8K)</h2>
+<section class="panel">{gsm8k_block}</section>
 <h2>Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
