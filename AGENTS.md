@@ -1,5 +1,7 @@
 # Laguna M.1 NVFP4 on SM121 (vLLM)
 
+**New session:** read [`docs/NEW_SESSION.md`](docs/NEW_SESSION.md) first (handoff, HEAD, open items).
+
 Instructions for agents serving or benchmarking `poolside/Laguna-M.1-NVFP4` on **dual GB10 TP=2** (headline) or single GB10 (dev only — full weights OOM).
 
 ## One rule
