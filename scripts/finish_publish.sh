@@ -29,17 +29,29 @@ if [[ "$SKIP_GSM8K" != "1" ]]; then
   fi
 fi
 
+SKIP_HERMES_TERMINAL="${SKIP_HERMES_TERMINAL:-0}"
+HERMES_RESULTS="$ROOT/benchmarks/hermesbench/terminal_micro_results.json"
+if [[ "$SKIP_HERMES_TERMINAL" != "1" ]]; then
+  if [[ "${FORCE_HERMES_TERMINAL:-0}" == "1" ]] || [[ ! -f "$HERMES_RESULTS" ]]; then
+    bash "$ROOT/scripts/run_hermes_terminal_micro.sh"
+  else
+    echo "Hermes terminal micro present — FORCE_HERMES_TERMINAL=1 to re-run"
+  fi
+fi
+
 python3 scripts/extract_kv_metrics.py
 python3 scripts/build_report.py
 if [[ "${PUSH_GITHUB:-1}" == "1" ]]; then
   git add benchmarks/kv_cache_metrics.json benchmarks/run_meta.json \
     benchmarks/lm_eval/gsm8k_100_results.json benchmarks/lm_eval/gsm8k_100_manifest.json \
+    benchmarks/hermesbench/terminal_micro_results.json benchmarks/hermesbench/terminal_micro_manifest.json \
     publication/html/index.html \
     README.md AGENTS.md docs/BENCHMARKS.md .gitignore \
     scripts/build_report.py scripts/finish_publish.sh scripts/run_gsm8k_100.sh \
-    scripts/extract_gsm8k_results.py 2>/dev/null || true
+    scripts/extract_gsm8k_results.py scripts/run_hermes_terminal_micro.sh \
+    scripts/extract_hermes_terminal_results.py 2>/dev/null || true
   if ! git diff --staged --quiet; then
-    git commit -m "Laguna M.1: GSM8K@100 + throughput/KV HTML report"
+    git commit -m "Laguna M.1: GSM8K@100, Hermes terminal micro, HTML report"
     git push origin main
   fi
 fi

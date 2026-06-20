@@ -39,6 +39,22 @@ Raw lm-eval JSON: `benchmarks/lm_eval/raw/` (gitignored).
 
 **Regression:** document baseline in `benchmarks/lm_eval/baseline_gsm8k_100.json`; >10% relative drop in `exact_match` triggers review before push.
 
+## Agent — Hermes terminal micro (pre-publish)
+
+`~/hermes-bench-tool-call` — category **`t01_terminal_smoke`** (5 tasks), **`--real-agent`**.
+
+```bash
+bash scripts/run_hermes_terminal_micro.sh
+```
+
+| Env | Default |
+|-----|---------|
+| `HERMES_BENCH_REPO` | `~/hermes-bench-tool-call` |
+| `PORT` | `30100` |
+| `MODEL` | `laguna-m1-nvfp4` |
+
+**Committed:** `benchmarks/hermesbench/terminal_micro_results.json`, `terminal_micro_manifest.json`
+
 ## Report
 
 ```bash
@@ -52,6 +68,7 @@ python3 scripts/build_report.py
 bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
 bash scripts/run_gsm8k_100.sh
+bash scripts/run_hermes_terminal_micro.sh
 python3 scripts/build_report.py
 bash scripts/finish_publish.sh
 ```

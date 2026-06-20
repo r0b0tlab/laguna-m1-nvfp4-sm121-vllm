@@ -3,6 +3,9 @@ evidence/download.log
 evidence/telemetry/
 evidence/bfcl-run.log
 evidence/bfcl-*.log
+evidence/gsm8k_100.log
+evidence/hermes_terminal_micro.log
+evidence/hermes_terminal_micro.run_start
 .venv/
 .venv-lmeval/
 __pycache__/

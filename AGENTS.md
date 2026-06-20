@@ -40,11 +40,12 @@ Env:
 
 1. **Throughput:** `scripts/bench_concurrency.sh` — c1–c8; headline JSON `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json`.
 2. **Accuracy (pre-publish):** `scripts/run_gsm8k_100.sh` — GSM8K `limit=100` via lm-evaluation-harness → `benchmarks/lm_eval/gsm8k_100_results.json`.
-3. **Telemetry:** `scripts/capture_telemetry.sh` during bench → `evidence/telemetry/gpu-sample.jsonl`.
-4. **KV metrics:** `scripts/extract_kv_metrics.py` → `benchmarks/kv_cache_metrics.json`.
-5. **Report:** `python3 scripts/build_report.py` → `publication/html/index.html`.
-6. **Publish:** `bash scripts/finish_publish.sh` (runs GSM8K if missing, then push). Set `SKIP_GSM8K=1` to skip.
-7. **Regression:** >10% drop vs FP8-KV baseline on c1 output tok/s blocks calling config optimized.
+3. **Agent (pre-publish):** `scripts/run_hermes_terminal_micro.sh` — hermes-bench `t01_terminal_smoke` (5 tasks, real agent) → `benchmarks/hermesbench/terminal_micro_results.json`.
+4. **Telemetry:** `scripts/capture_telemetry.sh` during bench → `evidence/telemetry/gpu-sample.jsonl`.
+5. **KV metrics:** `scripts/extract_kv_metrics.py` → `benchmarks/kv_cache_metrics.json`.
+6. **Report:** `python3 scripts/build_report.py` → `publication/html/index.html`.
+7. **Publish:** `bash scripts/finish_publish.sh` (GSM8K + Hermes micro if missing). `SKIP_GSM8K=1` / `SKIP_HERMES_TERMINAL=1` to skip.
+8. **Regression:** >10% drop vs FP8-KV baseline on c1 output tok/s blocks calling config optimized.
 
 ## HTML gate
 

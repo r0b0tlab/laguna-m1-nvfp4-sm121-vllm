@@ -124,6 +124,41 @@ def gsm8k_html(meta: dict) -> str:
 <p class="sub">lm-evaluation-harness · OpenAI GSM8K test subset {stderr_s} · <code>benchmarks/lm_eval/gsm8k_100_results.json</code></p>"""
 
 
+def hermes_terminal_html(meta: dict) -> str:
+    hb = meta.get("hermesbench") or {}
+    h = hb.get("terminal_micro") or {}
+    results_path = ROOT / "benchmarks" / "hermesbench" / "terminal_micro_results.json"
+    summary = load_json(results_path) if results_path.is_file() else None
+    if not summary and not h.get("total"):
+        return (
+            '<p class="sub">Pending — run <code>scripts/run_hermes_terminal_micro.sh</code> '
+            "(see <code>docs/BENCHMARKS.md</code>).</p>"
+        )
+    passed = summary.get("passed") if summary else h.get("passed", 0)
+    total = summary.get("total") if summary else h.get("total", 5)
+    rate = summary.get("pass_rate") if summary else h.get("pass_rate", 0)
+    rate_s = f"{100 * rate:.0f}%" if rate is not None else "—"
+    rows = ""
+    for t in (summary or {}).get("tasks") or []:
+        tid = t.get("task_id", "").split("/")[-1]
+        st = t.get("status", "—")
+        cls = "num" if st == "PASS" else ""
+        rows += f"<tr><td><code>{tid}</code></td><td class=\"{cls}\">{st}</td></tr>\n"
+    table = ""
+    if rows:
+        table = f"""<div class="table-wrap"><table class="data"><thead><tr>
+<th>Task</th><th>Status</th>
+</tr></thead><tbody>{rows}</tbody></table></div>"""
+    return f"""<div class="stat-grid">
+<div class="stat"><span class="sub">Pass rate</span><b>{passed}/{total} ({rate_s})</b></div>
+<div class="stat"><span class="sub">Category</span><b class="mono-sm">t01_terminal_smoke</b></div>
+<div class="stat"><span class="sub">Harness</span><b>hermes-bench</b></div>
+<div class="stat"><span class="sub">Mode</span><b>real-agent</b></div>
+</div>
+{table}
+<p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p>"""
+
+
 def runtime_html(meta: dict) -> str:
     image = meta.get("image", "—")
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
@@ -224,6 +259,7 @@ def main():
 
     runtime_block = runtime_html(meta)
     gsm8k_block = gsm8k_html(meta)
+    hermes_terminal_block = hermes_terminal_html(meta)
 
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -276,6 +312,8 @@ table.data th[scope="row"]{{width:28%;color:#8b949e;font-weight:500;background:t
 {throughput_html}
 <h2>Accuracy (GSM8K)</h2>
 <section class="panel">{gsm8k_block}</section>
+<h2>Agent tools (Hermes terminal)</h2>
+<section class="panel">{hermes_terminal_block}</section>
 <h2>Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
