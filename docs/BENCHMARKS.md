@@ -1,5 +1,7 @@
 # Benchmarks — Laguna M.1 NVFP4 (SM121)
 
+**Fast sanity (post-restart):** `docs/SANITY_SUITE.md` · `bash scripts/run_sanity_suite.sh`
+
 ## Throughput (publish gate)
 
 ```bash

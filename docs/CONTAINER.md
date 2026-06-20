@@ -10,7 +10,9 @@
 | **Docker name** | `laguna-m1-vllm` |
 | **Launch** | `scripts/serve_tp2_cluster.sh` |
 
-LagunaForCausalLM, Poolside parsers, FlashInfer CUTLASS NVFP4 MoE. Serve-time: weights, KV dtype, TP=2 Ray.
+LagunaForCausalLM, Poolside parsers, FlashInfer CUTLASS NVFP4 MoE. **Weights and Poolside parsers are serve-time flags** (`scripts/serve_tp2_cluster.sh`); the image is the shared SM121 vLLM build.
+
+**Canonical SM121 runtime (pull):** `ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b` — same digest as the headline registry name until a dedicated `vllm-laguna-m1` tag is published on GHCR.
 
 If pull on the Laguna name fails, set `IMAGE` to the **pull alias** (same digest).
 

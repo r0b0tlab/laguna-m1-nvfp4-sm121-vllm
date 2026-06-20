@@ -195,18 +195,20 @@ def runtime_html(meta: dict) -> str:
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
     alias = meta.get("image_pull_alias", "")
     launch = meta.get("serve_script", "scripts/serve_tp2_cluster.sh")
+    pull_note = alias or image
     alias_row = (
         f'<tr><th scope="row">Pull alias</th><td class="mono-sm">{alias}</td></tr>\n'
-        if alias
+        if alias and alias != pull_note
         else ""
     )
     return f"""<div class="table-wrap"><table class="data"><tbody>
+<tr><th scope="row">Canonical SM121 runtime</th><td class="mono-sm">{pull_note}</td></tr>
 <tr><th scope="row">Registry image</th><td class="mono-sm">{image}</td></tr>
 {alias_row}<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
-<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · LagunaForCausalLM · Poolside parsers · NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
-<tr><th scope="row">Headline launch</th><td><code>{launch}</code> · <code>{meta.get('container_name', 'laguna-m1-vllm')}</code></td></tr>
+<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · Laguna weights + Poolside parsers at serve time (<code>{launch}</code>)</td></tr>
+<tr><th scope="row">Container</th><td><code>{meta.get('container_name', 'laguna-m1-vllm')}</code> · TP=2 Ray · nvfp4 KV</td></tr>
 </tbody></table></div>
-<p class="sub">Pull alias is the same SM121 build until the Laguna repository tag is on GHCR.</p>
+<p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated <code>vllm-laguna-m1</code> tag is published on GHCR; pull alias matches the same digest as the headline registry name.</p>
 <p class="sub"><code>docs/CONTAINER.md</code></p>"""
 
 

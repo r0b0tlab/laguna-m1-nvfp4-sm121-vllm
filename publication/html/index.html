@@ -92,7 +92,7 @@ table.data th[scope="row"]{
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:45 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:47 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -166,13 +166,13 @@ table.data th[scope="row"]{
 </tbody></table></div><p class="sub">Δ tokens vs L1 fp8: <b>+3.66%</b></p><p class="sub">Peak GPU KV usage @ c8 bench: <b>0.4%</b></p></section>
 <h2>Runtime (SM121)</h2>
 <section class="panel"><div class="table-wrap"><table class="data"><tbody>
+<tr><th scope="row">Canonical SM121 runtime</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</td></tr>
 <tr><th scope="row">Registry image</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b</td></tr>
-<tr><th scope="row">Pull alias</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</td></tr>
 <tr><th scope="row">Pin (digest)</th><td class="mono-sm">sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8</td></tr>
-<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · LagunaForCausalLM · Poolside parsers · NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
-<tr><th scope="row">Headline launch</th><td><code>scripts/serve_tp2_cluster.sh</code> · <code>laguna-m1-vllm</code></td></tr>
+<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · Laguna weights + Poolside parsers at serve time (<code>scripts/serve_tp2_cluster.sh</code>)</td></tr>
+<tr><th scope="row">Container</th><td><code>laguna-m1-vllm</code> · TP=2 Ray · nvfp4 KV</td></tr>
 </tbody></table></div>
-<p class="sub">Pull alias is the same SM121 build until the Laguna repository tag is on GHCR.</p>
+<p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated <code>vllm-laguna-m1</code> tag is published on GHCR; pull alias matches the same digest as the headline registry name.</p>
 <p class="sub"><code>docs/CONTAINER.md</code></p></section>
 <details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{
   "topology": "dual GB10 TP=2 Ray",
@@ -244,5 +244,5 @@ table.data th[scope="row"]{
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:45 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:47 UTC</footer>
 </div></body></html>

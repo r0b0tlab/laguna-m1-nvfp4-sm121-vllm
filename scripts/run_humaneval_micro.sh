@@ -35,6 +35,7 @@ python -m lm_eval \
   --apply_chat_template \
   --batch_size auto \
   --limit "$LIMIT" \
+  --confirm_run_unsafe_code \
   --output_path "$RAW_OUT" 2>&1 | tee -a "$LOG"
 
 LATEST="$(ls -t "$RAW_DIR"/humaneval_micro_*.json 2>/dev/null | head -1)"
