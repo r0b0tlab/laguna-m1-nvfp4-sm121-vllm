@@ -1,0 +1,45 @@
+{
+  "category": "t13_humaneval_micro",
+  "tasks": [
+    {
+      "task_id": "t13_humaneval_micro/humaneval_0",
+      "he_id": "HumanEval/0"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_1",
+      "he_id": "HumanEval/1"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_2",
+      "he_id": "HumanEval/2"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_3",
+      "he_id": "HumanEval/3"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_4",
+      "he_id": "HumanEval/4"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_5",
+      "he_id": "HumanEval/5"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_6",
+      "he_id": "HumanEval/6"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_7",
+      "he_id": "HumanEval/7"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_8",
+      "he_id": "HumanEval/8"
+    },
+    {
+      "task_id": "t13_humaneval_micro/humaneval_9",
+      "he_id": "HumanEval/9"
+    }
+  ]
+}

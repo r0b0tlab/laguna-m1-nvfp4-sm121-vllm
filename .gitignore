@@ -6,6 +6,9 @@ evidence/bfcl-*.log
 evidence/gsm8k_100.log
 evidence/hermes_terminal_micro.log
 evidence/hermes_terminal_micro.run_start
+evidence/hermes_humaneval_micro.log
+evidence/humaneval_micro.log
+evidence/hermes_humaneval_micro.run_start
 .venv/
 .venv-lmeval/
 __pycache__/

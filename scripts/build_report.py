@@ -159,6 +159,37 @@ def hermes_terminal_html(meta: dict) -> str:
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p>"""
 
 
+def humaneval_compare_html(meta: dict) -> str:
+    lm_path = ROOT / "benchmarks" / "lm_eval" / "humaneval_micro_results.json"
+    he_path = ROOT / "benchmarks" / "hermesbench" / "humaneval_micro_results.json"
+    lm_s = load_json(lm_path) if lm_path.is_file() else None
+    he_s = load_json(he_path) if he_path.is_file() else None
+
+    def fmt_p1(obj):
+        if not obj:
+            return "—", "—"
+        v = obj.get("pass_at_1")
+        if v is None:
+            return "—", "—"
+        n = obj.get("limit") or obj.get("total") or 10
+        return f"{100 * float(v):.1f}%", f"n={n}"
+
+    lm_v, lm_n = fmt_p1(lm_s)
+    he_v, he_n = fmt_p1(he_s)
+    if not lm_s and not he_s:
+        return (
+            '<p class="sub">Pending — <code>scripts/run_humaneval_micro.sh</code> and '
+            "<code>scripts/run_hermes_humaneval_micro.sh</code>.</p>"
+        )
+    return f"""<div class="table-wrap"><table class="data"><thead><tr>
+<th>Mode</th><th>pass@1</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Standalone (lm-eval)</td><td class="num">{lm_v}</td><td class="sub">{lm_n} · humaneval_instruct</td></tr>
+<tr><td>Hermes agent</td><td class="num">{he_v}</td><td class="sub">{he_n} · t13_humaneval_micro</td></tr>
+</tbody></table></div>
+<p class="sub">Compare harness vs API-only on the same problems (default n=10).</p>"""
+
+
 def runtime_html(meta: dict) -> str:
     image = meta.get("image", "—")
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
@@ -260,6 +291,7 @@ def main():
     runtime_block = runtime_html(meta)
     gsm8k_block = gsm8k_html(meta)
     hermes_terminal_block = hermes_terminal_html(meta)
+    humaneval_block = humaneval_compare_html(meta)
 
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -364,6 +396,8 @@ table.data th[scope="row"]{{
 <section class="panel">{gsm8k_block}</section>
 <h2>Agent tools (Hermes terminal)</h2>
 <section class="panel">{hermes_terminal_block}</section>
+<h2>HumanEval micro (harness vs standalone)</h2>
+<section class="panel">{humaneval_block}</section>
 <h2>Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">

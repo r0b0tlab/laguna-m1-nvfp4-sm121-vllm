@@ -55,6 +55,24 @@ bash scripts/run_hermes_terminal_micro.sh
 
 **Committed:** `benchmarks/hermesbench/terminal_micro_results.json`, `terminal_micro_manifest.json`
 
+## HumanEval micro — standalone vs Hermes (compare)
+
+Default **n=10** problems (same subset; harness installs tasks from HF).
+
+| Script | Mode | Artifact |
+|--------|------|----------|
+| `scripts/run_humaneval_micro.sh` | **Standalone** lm-eval `humaneval_instruct` pass@1 | `benchmarks/lm_eval/humaneval_micro_results.json` |
+| `scripts/run_hermes_humaneval_micro.sh` | **Hermes agent** `t13_humaneval_micro` | `benchmarks/hermesbench/humaneval_micro_results.json` |
+
+```bash
+bash scripts/run_humaneval_micro.sh
+bash scripts/run_hermes_humaneval_micro.sh
+```
+
+Env: `LIMIT` / `HUMANEVAL_MICRO_LIMIT` (default 10), `HUMANEVAL_TASK=humaneval_instruct`.
+
+HTML section **HumanEval micro (harness vs standalone)** compares pass@1.
+
 ## Report
 
 ```bash
@@ -69,6 +87,8 @@ bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
 bash scripts/run_gsm8k_100.sh
 bash scripts/run_hermes_terminal_micro.sh
+bash scripts/run_humaneval_micro.sh
+bash scripts/run_hermes_humaneval_micro.sh
 python3 scripts/build_report.py
 bash scripts/finish_publish.sh
 ```
