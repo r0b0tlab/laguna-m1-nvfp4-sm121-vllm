@@ -19,3 +19,54 @@ evaluate: laguna-m1-nvfp4-sm121-FC ['simple_python', 'parallel', 'multiple']
 See /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/score/data_live.csv, /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/score/data_non_live.csv, /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/score/data_multi_turn.csv, /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/score/data_agentic.csv and /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/score/data_format_sensitivity.csv for detailed evaluation results on each sub-section categories respectively.
 Wrote /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/publication/html/index.html
 BFCL results under /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/benchmarks/bfcl/result and score/
+[main 45adb36] Laguna M.1: BFCL scores + HTML report (auto-publish)
+ 48 files changed, 79 insertions(+), 3 deletions(-)
+ create mode 100644 benchmarks/bfcl/.file_locks/0a78e37bceaa2a854c23a5da26aee63aa731fc5d.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/0cf8df03f0cd21a3f60ba63313350128b58b0b92.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/0f1a61c49a7d9f4ed449e789028bfb4f0ebf417f.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/1091477ddcf1578be3b6d35cfd50a3854c015309.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/334352e089b4d3d24204de3bb877ced9cbee88e3.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/364bd8a22cc323fc041ab8289470148aae822852.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/382190f952f4b8545c488352e2fc864e9952f15a.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/3858bc2c1241ece5c147b1e04e06aac4e903a822.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/3a211e91ee274e7f15f483f0c46fd2a9631a70c0.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/3cefedfd4eadb1eee7e61baaf9bde243274a8e6d.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/4c430162ef515c33691496ba530660343b0c571c.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/4e08c64e11f036aaffd49883baca5a3e5132c8cb.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/5cf0aafaf7056a28dbdffe7fc045c14116a0ca59.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/6056a100a8ec6683a1f6c25c81426b04759e5528.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/66a4eb5f3c7bfee0d788305ef35cf72440d8f3d8.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/68baff46d7cab9014387b7ebf1d89549debfaa55.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/6a6cb924e84abeecc09789ea7062841f08a9e7fa.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/6cec29f79ddc59965a9f92b5a514d5dea62daf07.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/6d8ed33bee143c8cdc73f897874535009fdc7514.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/704b317527eef4618bf504e45b2881f2f0720d85.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/79baea3d8445f6bbce864e8f57ff598fe79ca96e.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/7b87bb865a67ac79dc3c75bbab0d8978665a987e.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/845654b1d12419eb57a32fea59df25bac0a6120f.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/87357abc27a88468900fd6b6199b1cbcbbdc30af.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/8761002819d00c9766d28f922ba15999e43b078e.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/87e820c560e157b0c96c344dc24b7ce4ed16029f.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/8911828dd1d62b9e7b345d7014309eb51070ef34.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/891aeed97c130bc013ac3542c1fda3a8b922d2b1.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/8dfd562d3ecf74ad7904e9db31a08ac3ae7e2fb5.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/95e2593a0cb4d3b7b224f824bf876d966bf62014.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/985613b84a828af0a9f343cbc0038dfe024225e3.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/9c0bd857c6f70e4d9626082df734b30366ae9626.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/a48d0cdecef5bb9b4fc6b618ec99a05eb263b937.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/a56ceea0fdfb6c179a420b0c16783aeeb46f8db0.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/ad0f0c9e67d933f4a500b9de9096a2f7fa5cbca8.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/b34c198f8989fca0fe38b63e950498621e132a7c.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/bb19bf5d46068e1211d107499a22ab4ed770f030.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/c81efc939df602e2c4af42ac90448f11324c0391.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/c9494166186ec596c4eebb1a0a5078731f97abed.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/d894e67e2ecb2b292ce12e2783e085c8488fd361.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/dfb5bc35519b65b636ddcf0ea78319342e29896d.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/e9cdaf2d777d2ea1c811b0d22d8eb2d8796a5cd5.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/ee6550be7b38c1f6006964c41101758a01ae445a.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/fbc8928ba725f30d0eb41ac50b797e7ecd3b7c85.lock
+ create mode 100644 benchmarks/bfcl/.file_locks/fd973c909cd58d9166dbb8c542e12330310420c2.lock
+ create mode 100644 benchmarks/kv_cache_metrics.json
+ create mode 100644 evidence/bfcl-run.log
+To https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm.git
+   cc5affe..45adb36  main -> main

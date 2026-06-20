@@ -52,24 +52,26 @@ def bfcl_table(scores_dir: Path) -> tuple[str, list]:
     rows = []
     summary = []
     if scores_dir.is_dir():
-        for p in sorted(scores_dir.glob("**/*.json")):
+        for p in sorted(scores_dir.glob("**/*_score.json")):
             try:
-                data = json.loads(p.read_text())
+                lines = [ln.strip() for ln in p.read_text().splitlines() if ln.strip()]
+                if not lines:
+                    continue
+                data = json.loads(lines[0])
                 summary.append({"file": p.name, "data": data})
-                if isinstance(data, dict):
-                    acc = data.get("accuracy") or data.get("overall_accuracy")
-                    cat = data.get("test_category") or p.stem
-                    if acc is not None:
-                        rows.append((cat, acc))
+                acc = data.get("accuracy")
+                if acc is None:
+                    continue
+                stem = p.stem.replace("BFCL_v4_", "").replace("_score", "")
+                cat = stem
+                correct = data.get("correct_count")
+                total = data.get("total_count")
+                label = cat
+                if correct is not None and total is not None:
+                    label = f"{cat} ({correct}/{total})"
+                rows.append((label, acc))
             except Exception:
                 pass
-    if not rows and summary:
-        for item in summary:
-            d = item.get("data")
-            if isinstance(d, dict):
-                for k, v in d.items():
-                    if isinstance(v, (int, float)) and "acc" in k.lower():
-                        rows.append((k, v))
     html_rows = ""
     for cat, acc in rows[:30]:
         pct = f"{acc * 100:.1f}%" if isinstance(acc, float) and acc <= 1 else str(acc)
@@ -108,12 +110,12 @@ def kv_cache_html(kv_data: dict | None) -> str:
     if b_tok:
         rows += (
             f"<tr><td>L1 fp8</td><td>fp8</td><td>{fmt_tokens(b_tok)}</td>"
-            f"<td>{tp.get('l1_fp8') or '—'}</td></tr>\n"
+            f"<td>{tp.get('l1_fp8') and round(tp['l1_fp8'], 2) or '—'}</td></tr>\n"
         )
     if h_tok:
         rows += (
             f"<tr><td>nvfp4-kv</td><td>{h.get('kv_cache_dtype', 'nvfp4')}</td>"
-            f"<td>{fmt_tokens(h_tok)}</td><td>{tp.get('nvfp4_kv') or '—'}</td></tr>\n"
+            f"<td>{fmt_tokens(h_tok)}</td><td>{tp.get('nvfp4_kv') and round(tp['nvfp4_kv'], 2) or '—'}</td></tr>\n"
         )
     table = f"""<div class="table-wrap"><table><thead><tr>
 <th>Profile</th><th>KV dtype</th><th>GPU KV tokens</th><th>c8 out tok/s</th>
