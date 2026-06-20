@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Laguna M.1 NVFP4 — SM121 Report</title>
+<meta name="description" content="NVFP4 serve report: dual GB10 TP=2 Ray, concurrency c1–c8, GSM8K@100, Hermes agent micros.">
+<meta name="theme-color" content="#0f766e">
+<meta name="generator" content="scripts/build_report.py">
+<title>Laguna M.1 NVFP4 — SM121 Benchmark Report</title>
 <style>
 :root{
   --bg:#f4f5f7;--surface:#fff;--surface-muted:#f9fafb;--text:#111827;--text-secondary:#4b5563;
@@ -20,6 +23,7 @@ body{
   padding:28px 28px 24px;margin-bottom:36px;box-shadow:var(--shadow);
 }
 h1{font-size:clamp(1.5rem,4vw,2.125rem);font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.2}
+.eyebrow{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-text);margin-bottom:8px}
 h2{
   color:var(--text);font-size:.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
   margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);
@@ -67,6 +71,27 @@ table.data tr.peak td{background:var(--peak);color:var(--peak-text);font-weight:
 .bar-track{height:8px;background:var(--code-bg);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
 .bar-fill{height:100%;background:var(--accent);border-radius:99px;min-width:3px}
 .bar-val{text-align:right;font-size:.8rem;color:var(--text-secondary);font-family:ui-monospace,monospace;font-weight:600}
+.skip-link{position:absolute;left:-9999px;top:auto}
+.skip-link:focus{left:16px;top:16px;z-index:99;background:var(--surface);padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:var(--shadow)}
+.toc{display:flex;flex-wrap:wrap;gap:8px 10px;margin:0 0 28px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.toc a{color:var(--accent-text);text-decoration:none;font-size:.8125rem;font-weight:600;padding:6px 10px;border-radius:999px;background:var(--surface-muted);border:1px solid var(--border)}
+.toc a:hover{background:var(--accent-soft);border-color:#99f6e4}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.kpi{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px}
+.kpi-label{display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px}
+.kpi-value{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);font-family:ui-monospace,Menlo,monospace}
+.kpi-highlight{color:var(--accent-text)}
+.section-lead{color:var(--text-secondary);font-size:.9375rem;margin-bottom:12px}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}
+.compare-card{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;text-align:center}
+.compare-card-accent{border-color:#99f6e4;background:var(--accent-soft)}
+.compare-label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px}
+.score-lg{display:block;font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent-text);line-height:1.1;margin-bottom:6px}
+.callout{font-size:.875rem;padding:12px 14px;border-radius:var(--radius-sm);margin:12px 0 0}
+.callout-ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857}
+.callout-warn{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+.repro-cmd{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;margin:0}
+.anchor{scroll-margin-top:16px}
 details.panel summary{
   cursor:pointer;color:var(--text-secondary);font-size:.875rem;font-weight:500;padding:2px 0;list-style:none;
 }
@@ -87,15 +112,34 @@ table.data th[scope="row"]{
   .hero{padding:20px 18px}
   .bar-row{grid-template-columns:32px 1fr 48px}
   table.data{min-width:340px}
+  .toc{gap:6px}
+  .kpi-value{font-size:1.15rem}
+}
+@media print{
+  .toc{display:none}
+  .panel,.hero{box-shadow:none}
+  body{background:#fff}
 }
 </style></head><body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div class="wrap">
 <header class="hero">
+<p class="eyebrow">SM121 · NVFP4 MoE · Publication template</p>
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:48 UTC</p>
-<p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 21:01 UTC</p>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span><span class="badge">nvfp4 KV</span></p>
+<div class="kpi-strip" role="list">
+<div class="kpi" role="listitem"><span class="kpi-label">c1 out tok/s</span><span class="kpi-value">11.41</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">48.98</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">97%</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">5/5</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval agent</span><span class="kpi-value">100%</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval lm-eval</span><span class="kpi-value">0%</span></div>
+</div>
 </header>
-<h2>Throughput</h2>
+<nav class="toc" aria-label="Report sections"><a href="#throughput">Throughput</a><a href="#accuracy">GSM8K</a><a href="#agent">Agent</a><a href="#humaneval">HumanEval</a><a href="#thermals">Thermals</a><a href="#kv">KV cache</a><a href="#runtime">Runtime</a><a href="#repro">Reproduce</a></nav>
+<main id="main">
+<h2 class="anchor" id="throughput">Throughput</h2>
 <p class="sub">Profile: <code>nvfp4-kv</code> · <code>chat-concurrency-summary-nvfp4-kv.json</code></p>
 <section class="panel">
 <div class="chart"><div class="bar-row"><span class="bar-label">c1</span><div class="bar-track"><div class="bar-fill" style="width:23%"></div></div><span class="bar-val">11.41</span></div>
@@ -114,7 +158,7 @@ table.data th[scope="row"]{
 </tbody></table></div>
 </section>
 <p class="sub">Electricity @ $0.12/kWh · telemetry power during loaded bench.</p>
-<h2>Accuracy (GSM8K)</h2>
+<h2 class="anchor" id="accuracy">Accuracy (GSM8K)</h2>
 <section class="panel"><div class="stat-grid">
 <div class="stat"><span class="sub">GSM8K exact_match</span><b>97.0%</b></div>
 <div class="stat"><span class="sub">Subset</span><b>n=100.0</b></div>
@@ -122,7 +166,7 @@ table.data th[scope="row"]{
 <div class="stat"><span class="sub">Task</span><b class="mono-sm">gsm8k</b></div>
 </div>
 <p class="sub">lm-evaluation-harness · OpenAI GSM8K test subset ± 1.7% · <code>benchmarks/lm_eval/gsm8k_100_results.json</code></p></section>
-<h2>Agent tools (Hermes terminal)</h2>
+<h2 class="anchor" id="agent">Agent tools (Hermes terminal)</h2>
 <section class="panel"><div class="stat-grid">
 <div class="stat"><span class="sub">Pass rate</span><b>5/5 (100%)</b></div>
 <div class="stat"><span class="sub">Category</span><b class="mono-sm">t01_terminal_smoke</b></div>
@@ -138,15 +182,21 @@ table.data th[scope="row"]{
 <tr><td><code>t05_env_check</code></td><td class="status-pass">PASS</td></tr>
 </tbody></table></div>
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p></section>
-<h2>HumanEval micro (harness vs standalone)</h2>
-<section class="panel"><div class="table-wrap"><table class="data"><thead><tr>
+<h2 class="anchor" id="humaneval">HumanEval micro (harness vs standalone)</h2>
+<section class="panel"><div class="compare-grid">
+<div class="compare-card"><span class="compare-label">Standalone</span><span class="score-lg">0.0%</span><span class="sub">n=10.0 · humaneval_instruct</span></div>
+<div class="compare-card compare-card-accent"><span class="compare-label">Hermes agent</span><span class="score-lg">100.0%</span><span class="sub">n=10 · t13_humaneval_micro</span></div>
+</div>
+<div class="table-wrap"><table class="data"><thead><tr>
 <th>Mode</th><th>pass@1</th><th>Notes</th>
 </tr></thead><tbody>
-<tr><td>Standalone (lm-eval)</td><td class="num">—</td><td class="sub">— · humaneval_instruct</td></tr>
+<tr><td>Standalone (lm-eval)</td><td class="num">0.0%</td><td class="sub">n=10.0 · humaneval_instruct</td></tr>
 <tr><td>Hermes agent</td><td class="num">100.0%</td><td class="sub">n=10 · t13_humaneval_micro</td></tr>
 </tbody></table></div>
-<p class="sub">Compare harness vs API-only on the same problems (default n=10).</p></section>
-<h2>Thermals &amp; power</h2>
+<p class="callout callout-warn">Gap between API-only lm-eval and real-agent harness — expect tool/reasoning overhead.</p>
+<p class="sub">Same n=10 problem subset; standalone uses chat completions only; Hermes runs real agent + verifiers.</p>
+<p class="sub">Standalone lm-eval uses <code>scripts/run_lm_eval_cli.py</code> with <code>enable_thinking=false</code> so code lands in <code>content</code>. If pass@1 still trails Hermes, the gap reflects harness extraction (markdown fences) vs agent verifiers — Hermes micro is the agent-ground-truth path.</p></section>
+<h2 class="anchor" id="thermals">Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>47 / 64 / 58 °C</b></div>
@@ -156,7 +206,7 @@ table.data th[scope="row"]{
 </div>
 <p class="sub">Telemetry: <code>evidence/telemetry/gpu-sample.jsonl</code></p>
 </section>
-<h2>KV cache</h2>
+<h2 class="anchor" id="kv">KV cache</h2>
 <section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">KV dtype</span><b>nvfp4</b></div>
@@ -170,7 +220,7 @@ table.data th[scope="row"]{
 </tr></thead><tbody><tr><td>L1 fp8</td><td>fp8</td><td>489,984</td><td>49.27</td></tr>
 <tr><td>nvfp4-kv</td><td>nvfp4</td><td>507,904</td><td>48.98</td></tr>
 </tbody></table></div><p class="sub">Δ tokens vs L1 fp8: <b>+3.66%</b></p><p class="sub">Peak GPU KV usage @ c8 bench: <b>0.4%</b></p></section>
-<h2>Runtime (SM121)</h2>
+<h2 class="anchor" id="runtime">Runtime (SM121)</h2>
 <section class="panel"><div class="table-wrap"><table class="data"><tbody>
 <tr><th scope="row">Canonical SM121 runtime</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</td></tr>
 <tr><th scope="row">Registry image</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b</td></tr>
@@ -180,6 +230,19 @@ table.data th[scope="row"]{
 </tbody></table></div>
 <p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated <code>vllm-laguna-m1</code> tag is published on GHCR; pull alias matches the same digest as the headline registry name.</p>
 <p class="sub"><code>docs/CONTAINER.md</code></p></section>
+<h2 class="anchor" id="repro">Reproduce</h2>
+<section class="panel" id="repro">
+<p class="section-lead">Regenerate this page from committed JSON under <code>benchmarks/</code>.</p>
+<pre class="mono-block repro-cmd">cd laguna-m1-nvfp4-sm121-vllm
+bash scripts/bench_concurrency.sh
+python3 scripts/extract_kv_metrics.py
+bash scripts/run_gsm8k_100.sh
+bash scripts/run_hermes_terminal_micro.sh
+bash scripts/run_humaneval_micro.sh
+bash scripts/run_hermes_humaneval_micro.sh
+python3 scripts/build_report.py</pre>
+<p class="sub">Fast post-restart check: <code>bash scripts/run_sanity_suite.sh</code> · API <code>:30100</code> · see <code>docs/BENCHMARKS.md</code></p>
+</section>
 <details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{
   "topology": "dual GB10 TP=2 Ray",
   "served_model_name": "laguna-m1-nvfp4",
@@ -251,10 +314,16 @@ table.data th[scope="row"]{
       "limit": 100.0,
       "task_id": "gsm8k",
       "completed_at": "2026-06-20T20:44:22.885449+00:00"
+    },
+    "humaneval_micro": {
+      "results_file": "benchmarks/lm_eval/humaneval_micro_results.json",
+      "pass_at_1": 0.0,
+      "limit": 10.0
     }
   },
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:48 UTC</footer>
+</main>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git 56ac1cf · generated 2026-06-20 21:01 UTC</footer>
 </div></body></html>

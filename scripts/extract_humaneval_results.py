@@ -39,6 +39,19 @@ def _find_pass_at_k(data: dict) -> tuple[float | None, float | None, str]:
                         stderr = sv
                         break
                 return float(v), float(stderr) if stderr is not None else None, task_key
+    # lm-eval 0.4.x table keys like pass@1,pass@1_stderr
+    results = data.get("results") or {}
+    for task_key, task_res in results.items():
+        if "humaneval" not in task_key.lower() or not isinstance(task_res, dict):
+            continue
+        for k, v in task_res.items():
+            if not (k == "pass@1" or k.startswith("pass@1,") or k.endswith(",pass@1")):
+                continue
+            if "stderr" in k:
+                continue
+            stderr = task_res.get("pass@1_stderr,create_test") or task_res.get("pass@1_stderr")
+            if isinstance(v, (int, float)):
+                return float(v), float(stderr) if stderr is not None else None, task_key
     return None, None, ""
 
 

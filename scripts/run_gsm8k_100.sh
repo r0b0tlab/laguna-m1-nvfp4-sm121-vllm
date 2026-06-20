@@ -48,7 +48,7 @@ LOG="$ROOT/evidence/gsm8k_100.log"
 
 echo "=== GSM8K limit=$LIMIT fewshot=$NUM_FEWSHOT task=$GSM8K_TASK $(date -Is) ===" | tee "$LOG"
 
-python -m lm_eval \
+python "$ROOT/scripts/run_lm_eval_cli.py" \
   --model local-chat-completions \
   --model_args "model=${MODEL},base_url=${BASE_URL},num_concurrent=${NUM_CONCURRENT},max_retries=3,tokenized_requests=False" \
   --tasks "$GSM8K_TASK" \

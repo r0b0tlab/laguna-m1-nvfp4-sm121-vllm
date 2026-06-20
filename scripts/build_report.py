@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
@@ -181,13 +182,25 @@ def humaneval_compare_html(meta: dict) -> str:
             '<p class="sub">Pending — <code>scripts/run_humaneval_micro.sh</code> and '
             "<code>scripts/run_hermes_humaneval_micro.sh</code>.</p>"
         )
-    return f"""<div class="table-wrap"><table class="data"><thead><tr>
+    match_note = ""
+    if lm_s and he_s and lm_s.get("pass_at_1") is not None and he_s.get("pass_at_1") is not None:
+        if abs(float(lm_s["pass_at_1"]) - float(he_s["pass_at_1"])) < 0.001:
+            match_note = '<p class="callout callout-ok">Harness and standalone pass@1 align on this micro subset.</p>'
+        else:
+            match_note = '<p class="callout callout-warn">Gap between API-only lm-eval and real-agent harness — expect tool/reasoning overhead.</p>'
+    return f"""<div class="compare-grid">
+<div class="compare-card"><span class="compare-label">Standalone</span><span class="score-lg">{lm_v}</span><span class="sub">{lm_n} · humaneval_instruct</span></div>
+<div class="compare-card compare-card-accent"><span class="compare-label">Hermes agent</span><span class="score-lg">{he_v}</span><span class="sub">{he_n} · t13_humaneval_micro</span></div>
+</div>
+<div class="table-wrap"><table class="data"><thead><tr>
 <th>Mode</th><th>pass@1</th><th>Notes</th>
 </tr></thead><tbody>
 <tr><td>Standalone (lm-eval)</td><td class="num">{lm_v}</td><td class="sub">{lm_n} · humaneval_instruct</td></tr>
 <tr><td>Hermes agent</td><td class="num">{he_v}</td><td class="sub">{he_n} · t13_humaneval_micro</td></tr>
 </tbody></table></div>
-<p class="sub">Compare harness vs API-only on the same problems (default n=10).</p>"""
+{match_note}
+<p class="sub">Same n=10 problem subset; standalone uses chat completions only; Hermes runs real agent + verifiers.</p>
+<p class="sub">Standalone lm-eval uses <code>scripts/run_lm_eval_cli.py</code> with <code>enable_thinking=false</code> so code lands in <code>content</code>. If pass@1 still trails Hermes, the gap reflects harness extraction (markdown fences) vs agent verifiers — Hermes micro is the agent-ground-truth path.</p>"""
 
 
 def runtime_html(meta: dict) -> str:
@@ -249,6 +262,88 @@ def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price:
 <p class="sub">Electricity @ ${kwh_price}/kWh · telemetry power during loaded bench.</p>"""
 
 
+def git_short_sha() -> str:
+    try:
+        return (
+            subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"],
+                cwd=ROOT,
+                stderr=subprocess.DEVNULL,
+                text=True,
+            )
+            .strip()
+        )
+    except Exception:
+        return ""
+
+
+def kpi_strip_html(conc: list, meta: dict) -> str:
+    c1 = c8 = None
+    for s in conc or []:
+        if s.get("concurrency") == 1:
+            c1 = s.get("output_tps")
+        if s.get("concurrency") == 8:
+            c8 = s.get("output_tps")
+    lm = (meta.get("lm_eval") or {}).get("gsm8k_100") or {}
+    em = lm.get("exact_match")
+    em_s = f"{100 * em:.0f}%" if em is not None else "—"
+    hb = meta.get("hermesbench") or {}
+    term = hb.get("terminal_micro") or {}
+    t_pass = term.get("passed")
+    t_tot = term.get("total") or 5
+    term_s = f"{t_pass}/{t_tot}" if t_pass is not None else "—"
+    he = hb.get("humaneval_micro") or {}
+    he_s = "—"
+    if he.get("pass_at_1") is not None:
+        he_s = f"{100 * float(he['pass_at_1']):.0f}%"
+    lm_he_path = ROOT / "benchmarks" / "lm_eval" / "humaneval_micro_results.json"
+    lm_he = load_json(lm_he_path) if lm_he_path.is_file() else None
+    lm_he_s = "—"
+    if lm_he and lm_he.get("pass_at_1") is not None:
+        lm_he_s = f"{100 * float(lm_he['pass_at_1']):.0f}%"
+    c1_s = f"{c1:.2f}" if c1 is not None else "—"
+    c8_s = f"{c8:.2f}" if c8 is not None else "—"
+    return f"""<div class="kpi-strip" role="list">
+<div class="kpi" role="listitem"><span class="kpi-label">c1 out tok/s</span><span class="kpi-value">{c1_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">{c8_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">{em_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">{term_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval agent</span><span class="kpi-value">{he_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval lm-eval</span><span class="kpi-value">{lm_he_s}</span></div>
+</div>"""
+
+
+def nav_html() -> str:
+    links = [
+        ("throughput", "Throughput"),
+        ("accuracy", "GSM8K"),
+        ("agent", "Agent"),
+        ("humaneval", "HumanEval"),
+        ("thermals", "Thermals"),
+        ("kv", "KV cache"),
+        ("runtime", "Runtime"),
+        ("repro", "Reproduce"),
+    ]
+    items = "".join(f'<a href="#{aid}">{label}</a>' for aid, label in links)
+    return f'<nav class="toc" aria-label="Report sections">{items}</nav>'
+
+
+def repro_html(meta: dict) -> str:
+    port = meta.get("port", 30100)
+    return f"""<section class="panel" id="repro">
+<p class="section-lead">Regenerate this page from committed JSON under <code>benchmarks/</code>.</p>
+<pre class="mono-block repro-cmd">cd laguna-m1-nvfp4-sm121-vllm
+bash scripts/bench_concurrency.sh
+python3 scripts/extract_kv_metrics.py
+bash scripts/run_gsm8k_100.sh
+bash scripts/run_hermes_terminal_micro.sh
+bash scripts/run_humaneval_micro.sh
+bash scripts/run_hermes_humaneval_micro.sh
+python3 scripts/build_report.py</pre>
+<p class="sub">Fast post-restart check: <code>bash scripts/run_sanity_suite.sh</code> · API <code>:{port}</code> · see <code>docs/BENCHMARKS.md</code></p>
+</section>"""
+
+
 def main():
     meta = load_json(ROOT / "benchmarks" / "run_meta.json") or {}
     conc_name = meta.get("concurrency_summary_file", "chat-concurrency-summary.json")
@@ -294,10 +389,19 @@ def main():
     gsm8k_block = gsm8k_html(meta)
     hermes_terminal_block = hermes_terminal_html(meta)
     humaneval_block = humaneval_compare_html(meta)
+    kpi_block = kpi_strip_html(conc, meta)
+    nav_block = nav_html()
+    repro_block = repro_html(meta)
+    git_sha = git_short_sha()
+    tel_rel = tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path
+    page_desc = f"NVFP4 serve report: {topology}, concurrency c1–c8, GSM8K@100, Hermes agent micros."
 
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Laguna M.1 NVFP4 — SM121 Report</title>
+<meta name="description" content="{page_desc}">
+<meta name="theme-color" content="#0f766e">
+<meta name="generator" content="scripts/build_report.py">
+<title>Laguna M.1 NVFP4 — SM121 Benchmark Report</title>
 <style>
 :root{{
   --bg:#f4f5f7;--surface:#fff;--surface-muted:#f9fafb;--text:#111827;--text-secondary:#4b5563;
@@ -317,6 +421,7 @@ body{{
   padding:28px 28px 24px;margin-bottom:36px;box-shadow:var(--shadow);
 }}
 h1{{font-size:clamp(1.5rem,4vw,2.125rem);font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.2}}
+.eyebrow{{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-text);margin-bottom:8px}}
 h2{{
   color:var(--text);font-size:.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
   margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);
@@ -364,6 +469,27 @@ table.data tr.peak td{{background:var(--peak);color:var(--peak-text);font-weight
 .bar-track{{height:8px;background:var(--code-bg);border-radius:99px;overflow:hidden;border:1px solid var(--border)}}
 .bar-fill{{height:100%;background:var(--accent);border-radius:99px;min-width:3px}}
 .bar-val{{text-align:right;font-size:.8rem;color:var(--text-secondary);font-family:ui-monospace,monospace;font-weight:600}}
+.skip-link{{position:absolute;left:-9999px;top:auto}}
+.skip-link:focus{{left:16px;top:16px;z-index:99;background:var(--surface);padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:var(--shadow)}}
+.toc{{display:flex;flex-wrap:wrap;gap:8px 10px;margin:0 0 28px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}}
+.toc a{{color:var(--accent-text);text-decoration:none;font-size:.8125rem;font-weight:600;padding:6px 10px;border-radius:999px;background:var(--surface-muted);border:1px solid var(--border)}}
+.toc a:hover{{background:var(--accent-soft);border-color:#99f6e4}}
+.kpi-strip{{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}}
+.kpi{{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px}}
+.kpi-label{{display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px}}
+.kpi-value{{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);font-family:ui-monospace,Menlo,monospace}}
+.kpi-highlight{{color:var(--accent-text)}}
+.section-lead{{color:var(--text-secondary);font-size:.9375rem;margin-bottom:12px}}
+.compare-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}}
+.compare-card{{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;text-align:center}}
+.compare-card-accent{{border-color:#99f6e4;background:var(--accent-soft)}}
+.compare-label{{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px}}
+.score-lg{{display:block;font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent-text);line-height:1.1;margin-bottom:6px}}
+.callout{{font-size:.875rem;padding:12px 14px;border-radius:var(--radius-sm);margin:12px 0 0}}
+.callout-ok{{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857}}
+.callout-warn{{background:#fffbeb;border:1px solid #fde68a;color:#b45309}}
+.repro-cmd{{background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;margin:0}}
+.anchor{{scroll-margin-top:16px}}
 details.panel summary{{
   cursor:pointer;color:var(--text-secondary);font-size:.875rem;font-weight:500;padding:2px 0;list-style:none;
 }}
@@ -384,23 +510,35 @@ table.data th[scope="row"]{{
   .hero{{padding:20px 18px}}
   .bar-row{{grid-template-columns:32px 1fr 48px}}
   table.data{{min-width:340px}}
+  .toc{{gap:6px}}
+  .kpi-value{{font-size:1.15rem}}
+}}
+@media print{{
+  .toc{{display:none}}
+  .panel,.hero{{box-shadow:none}}
+  body{{background:#fff}}
 }}
 </style></head><body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div class="wrap">
 <header class="hero">
+<p class="eyebrow">SM121 · NVFP4 MoE · Publication template</p>
 <h1>Laguna M.1 NVFP4</h1>
 <p class="sub">{subtitle}</p>
-<p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span><span class="badge">nvfp4 KV</span></p>
+{kpi_block}
 </header>
-<h2>Throughput</h2>
+{nav_block}
+<main id="main">
+<h2 class="anchor" id="throughput">Throughput</h2>
 {throughput_html}
-<h2>Accuracy (GSM8K)</h2>
+<h2 class="anchor" id="accuracy">Accuracy (GSM8K)</h2>
 <section class="panel">{gsm8k_block}</section>
-<h2>Agent tools (Hermes terminal)</h2>
+<h2 class="anchor" id="agent">Agent tools (Hermes terminal)</h2>
 <section class="panel">{hermes_terminal_block}</section>
-<h2>HumanEval micro (harness vs standalone)</h2>
+<h2 class="anchor" id="humaneval">HumanEval micro (harness vs standalone)</h2>
 <section class="panel">{humaneval_block}</section>
-<h2>Thermals &amp; power</h2>
+<h2 class="anchor" id="thermals">Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>{temp_min} / {temp_max} / {temp_avg} °C</b></div>
@@ -408,14 +546,17 @@ table.data th[scope="row"]{{
 <div class="stat"><span class="sub">GPU util</span><b>{util_avg}%</b></div>
 <div class="stat"><span class="sub">Container</span><b class="mono-sm">{meta.get("container_name", "laguna-m1-vllm")}</b></div>
 </div>
-<p class="sub">Telemetry: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
+<p class="sub">Telemetry: <code>{tel_rel}</code></p>
 </section>
-<h2>KV cache</h2>
+<h2 class="anchor" id="kv">KV cache</h2>
 <section class="panel">{kv_cache_html(kv_data)}</section>
-<h2>Runtime (SM121)</h2>
+<h2 class="anchor" id="runtime">Runtime (SM121)</h2>
 <section class="panel">{runtime_block}</section>
+<h2 class="anchor" id="repro">Reproduce</h2>
+{repro_block}
 <details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{json.dumps(meta, indent=2)}</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated {ts}</footer>
+</main>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git {git_sha or "—"} · generated {ts}</footer>
 </div></body></html>"""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(html, encoding="utf-8")

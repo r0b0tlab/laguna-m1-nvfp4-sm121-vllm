@@ -73,7 +73,9 @@ bash scripts/run_hermes_humaneval_micro.sh
 
 Env: `LIMIT` / `HUMANEVAL_MICRO_LIMIT` (default 10), `HUMANEVAL_TASK=humaneval_instruct`.
 
-HTML section **HumanEval micro (harness vs standalone)** compares pass@1.
+Standalone runs via `scripts/run_lm_eval_cli.py` (maps vLLM `reasoning` → completion text when `content` is empty).
+
+HTML section **HumanEval micro (harness vs standalone)** compares pass@1. On thinking models, standalone may under-score vs Hermes agent tasks — document both.
 
 ## Report
 
