@@ -207,7 +207,7 @@ def runtime_html(meta: dict) -> str:
         if lineage
         else ""
     )
-    pkg_url = "https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm/pkgs/container/vllm-laguna-m1-nvfp4-sm121"
+    pkg_url = "https://github.com/orgs/r0b0tlab/packages/container/package/vllm-laguna-m1-nvfp4-sm121"
     return f"""<div class="table-wrap"><table class="data"><tbody>
 <tr><th scope="row">GHCR package</th><td class="mono-sm">{image}</td></tr>
 <tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>

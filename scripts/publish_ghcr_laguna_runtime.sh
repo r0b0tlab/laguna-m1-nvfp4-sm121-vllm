@@ -30,5 +30,6 @@ docker push "$TARGET_LATEST"
 
 PUSHED_DIGEST="$(docker inspect "$TARGET_IMAGE" --format '{{index .RepoDigests 0}}' 2>/dev/null || true)"
 echo "Pushed: $PUSHED_DIGEST"
-echo "Package page: https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm/pkgs/container/vllm-laguna-m1-nvfp4-sm121"
+echo "Package page (org): https://github.com/orgs/r0b0tlab/packages/container/package/vllm-laguna-m1-nvfp4-sm121"
+echo "Note: new pushes default to private — set Public + link repo in GitHub Package settings (see docs/GHCR_PACKAGE.md)."
 echo "=== done $(date -Is) ==="

@@ -13,7 +13,8 @@
 
 LagunaForCausalLM, Poolside parsers, FlashInfer CUTLASS NVFP4 MoE. **Weights and Poolside parsers are serve-time flags** (`scripts/serve_tp2_cluster.sh`).
 
-**GHCR package (Laguna repo):** https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm/pkgs/container/vllm-laguna-m1-nvfp4-sm121
+**GHCR package (org):** https://github.com/orgs/r0b0tlab/packages/container/package/vllm-laguna-m1-nvfp4-sm121  
+**Setup (visibility + repo link):** `docs/GHCR_PACKAGE.md`
 
 **Lineage:** Same SM121 vLLM layers as `ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10` (DeepSeek-V4-Flash publication build, digest above). DSV4 repo keeps its own package; this is a **separate** GHCR package for Laguna M.1 users.
 
