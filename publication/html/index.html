@@ -92,7 +92,7 @@ table.data th[scope="row"]{
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:41 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:45 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -115,7 +115,13 @@ table.data th[scope="row"]{
 </section>
 <p class="sub">Electricity @ $0.12/kWh · telemetry power during loaded bench.</p>
 <h2>Accuracy (GSM8K)</h2>
-<section class="panel"><p class="sub">Pending — run <code>scripts/run_gsm8k_100.sh</code> before publish (see <code>docs/BENCHMARKS.md</code>).</p></section>
+<section class="panel"><div class="stat-grid">
+<div class="stat"><span class="sub">GSM8K exact_match</span><b>97.0%</b></div>
+<div class="stat"><span class="sub">Subset</span><b>n=100.0</b></div>
+<div class="stat"><span class="sub">Few-shot</span><b>5</b></div>
+<div class="stat"><span class="sub">Task</span><b class="mono-sm">gsm8k</b></div>
+</div>
+<p class="sub">lm-evaluation-harness · OpenAI GSM8K test subset ± 1.7% · <code>benchmarks/lm_eval/gsm8k_100_results.json</code></p></section>
 <h2>Agent tools (Hermes terminal)</h2>
 <section class="panel"><div class="stat-grid">
 <div class="stat"><span class="sub">Pass rate</span><b>5/5 (100%)</b></div>
@@ -224,8 +230,19 @@ table.data th[scope="row"]{
       "completed_at": "2026-06-20T20:11:29.114502+00:00"
     }
   },
+  "lm_eval": {
+    "gsm8k_100": {
+      "results_file": "benchmarks/lm_eval/gsm8k_100_results.json",
+      "manifest_file": "benchmarks/lm_eval/gsm8k_100_manifest.json",
+      "exact_match": 0.97,
+      "exact_match_stderr": 0.017144660799776522,
+      "limit": 100.0,
+      "task_id": "gsm8k",
+      "completed_at": "2026-06-20T20:44:22.885449+00:00"
+    }
+  },
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:41 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:45 UTC</footer>
 </div></body></html>
