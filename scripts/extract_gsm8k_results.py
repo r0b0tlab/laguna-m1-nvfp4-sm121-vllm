@@ -39,6 +39,14 @@ def _find_metric(results: dict) -> tuple[str, float | None, float | None]:
         if not isinstance(task_res, dict):
             continue
         for k, v in task_res.items():
+            if "exact_match" in k and "flexible" in k and isinstance(v, (int, float)):
+                stderr = None
+                for sk, sv in task_res.items():
+                    if "stderr" in sk and "flexible" in sk:
+                        stderr = sv
+                        break
+                return task_key, float(v), float(stderr) if stderr is not None else None
+        for k, v in task_res.items():
             if "exact_match" in k and isinstance(v, (int, float)):
                 stderr_key = k.replace("exact_match", "exact_match_stderr")
                 stderr = task_res.get(stderr_key)
@@ -54,17 +62,23 @@ def _find_metric(results: dict) -> tuple[str, float | None, float | None]:
 def extract(raw_path: Path) -> dict:
     data = json.loads(raw_path.read_text(encoding="utf-8"))
     config = data.get("config") or {}
+    configs = data.get("configs") or {}
     model_args = config.get("model_args") or ""
     task_key, em, stderr = _find_metric(data)
+    task_cfg = configs.get("gsm8k") or (configs.get(task_key) if task_key else None) or {}
 
     limit = config.get("limit")
+    if limit is None and task_cfg:
+        sl = (data.get("results") or {}).get("gsm8k", {}).get("sample_len")
+        if sl is not None:
+            limit = sl
     if limit is None:
         limit = 100
 
     summary = {
         "benchmark": "gsm8k",
         "limit": limit,
-        "num_fewshot": config.get("num_fewshot", 5),
+        "num_fewshot": task_cfg.get("num_fewshot") or config.get("num_fewshot", 5),
         "metric": "exact_match",
         "exact_match": em,
         "exact_match_stderr": stderr,
@@ -79,14 +93,22 @@ def extract(raw_path: Path) -> dict:
     return summary
 
 
-def _model_from_args(model_args: str) -> str | None:
+def _model_from_args(model_args) -> str | None:
+    if isinstance(model_args, dict):
+        return model_args.get("model")
+    if not isinstance(model_args, str):
+        return None
     for part in model_args.split(","):
         if part.strip().startswith("model="):
             return part.split("=", 1)[1].strip()
     return None
 
 
-def _base_url_from_args(model_args: str) -> str | None:
+def _base_url_from_args(model_args) -> str | None:
+    if isinstance(model_args, dict):
+        return model_args.get("base_url")
+    if not isinstance(model_args, str):
+        return None
     for part in model_args.split(","):
         if part.strip().startswith("base_url="):
             return part.split("=", 1)[1].strip()

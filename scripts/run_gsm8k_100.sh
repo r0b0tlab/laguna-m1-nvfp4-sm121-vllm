@@ -26,13 +26,14 @@ if [[ ! -x "$VENV/bin/python" ]]; then
   uv venv "$VENV" --python 3.12
   # shellcheck disable=SC1091
   source "$VENV/bin/activate"
-  uv pip install "lm-eval>=0.4.7"
+  uv pip install "lm-eval[api]>=0.4.7"
 else
   # shellcheck disable=SC1091
   source "$VENV/bin/activate"
+  python -c "import tenacity" 2>/dev/null || uv pip install "lm-eval[api]>=0.4.7"
 fi
 
-if ! python -m lm_eval --tasks list 2>/dev/null | grep -qx "$GSM8K_TASK"; then
+if ! python -m lm_eval --tasks list 2>/dev/null | grep -qE '(^|,)gsm8k(,|$)| gsm8k$'; then
   echo "Task $GSM8K_TASK not found; available gsm8k tasks:"
   python -m lm_eval --tasks list 2>/dev/null | grep -i gsm8k || true
   if python -m lm_eval --tasks list 2>/dev/null | grep -qx "gsm8k_cot"; then
@@ -58,5 +59,10 @@ python -m lm_eval \
   --gen_kwargs "max_gen_toks=2048,temperature=0" \
   --output_path "$RAW_OUT" 2>&1 | tee -a "$LOG"
 
-python3 "$ROOT/scripts/extract_gsm8k_results.py" "$RAW_OUT"
+LATEST="$(ls -t "$RAW_DIR"/gsm8k_100_*.json 2>/dev/null | head -1)"
+if [[ -z "${LATEST:-}" ]]; then
+  echo "No raw results under $RAW_DIR" >&2
+  exit 1
+fi
+python3 "$ROOT/scripts/extract_gsm8k_results.py" "$LATEST"
 echo "=== GSM8K done $(date -Is) ===" | tee -a "$LOG"

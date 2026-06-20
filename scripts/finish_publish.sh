@@ -16,10 +16,16 @@ fi
 SKIP_GSM8K="${SKIP_GSM8K:-0}"
 GSM8K_RESULTS="$ROOT/benchmarks/lm_eval/gsm8k_100_results.json"
 if [[ "$SKIP_GSM8K" != "1" ]]; then
-  if [[ "${FORCE_GSM8K:-0}" == "1" ]] || [[ ! -f "$GSM8K_RESULTS" ]]; then
+  RUN_GSM8K=1
+  if [[ -f "$GSM8K_RESULTS" ]] && [[ "${FORCE_GSM8K:-0}" != "1" ]]; then
+    LIM="$(python3 -c "import json; d=json.load(open('$GSM8K_RESULTS')); print(int(d.get('limit',0)))" 2>/dev/null || echo 0)"
+    if [[ "$LIM" -ge 100 ]]; then
+      RUN_GSM8K=0
+      echo "GSM8K@100 results present (limit=$LIM) — set FORCE_GSM8K=1 to re-run"
+    fi
+  fi
+  if [[ "$RUN_GSM8K" == "1" ]]; then
     bash "$ROOT/scripts/run_gsm8k_100.sh"
-  else
-    echo "GSM8K results exist — set FORCE_GSM8K=1 to re-run"
   fi
 fi
 
