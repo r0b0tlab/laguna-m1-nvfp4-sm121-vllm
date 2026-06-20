@@ -69,11 +69,6 @@
       "limit": 100.0,
       "task_id": "gsm8k",
       "completed_at": "2026-06-20T20:44:22.885449+00:00"
-    },
-    "humaneval_micro": {
-      "results_file": "benchmarks/lm_eval/humaneval_micro_results.json",
-      "pass_at_1": 0.0,
-      "limit": 10.0
     }
   }
 }

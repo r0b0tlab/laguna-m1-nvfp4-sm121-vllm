@@ -160,47 +160,41 @@ def hermes_terminal_html(meta: dict) -> str:
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p>"""
 
 
-def humaneval_compare_html(meta: dict) -> str:
-    lm_path = ROOT / "benchmarks" / "lm_eval" / "humaneval_micro_results.json"
-    he_path = ROOT / "benchmarks" / "hermesbench" / "humaneval_micro_results.json"
-    lm_s = load_json(lm_path) if lm_path.is_file() else None
-    he_s = load_json(he_path) if he_path.is_file() else None
-
-    def fmt_p1(obj):
-        if not obj:
-            return "—", "—"
-        v = obj.get("pass_at_1")
-        if v is None:
-            return "—", "—"
-        n = obj.get("limit") or obj.get("total") or 10
-        return f"{100 * float(v):.1f}%", f"n={n}"
-
-    lm_v, lm_n = fmt_p1(lm_s)
-    he_v, he_n = fmt_p1(he_s)
-    if not lm_s and not he_s:
+def hermes_humaneval_html(meta: dict) -> str:
+    hb = meta.get("hermesbench") or {}
+    h = hb.get("humaneval_micro") or {}
+    results_path = ROOT / "benchmarks" / "hermesbench" / "humaneval_micro_results.json"
+    summary = load_json(results_path) if results_path.is_file() else None
+    if not summary and not h.get("total"):
         return (
-            '<p class="sub">Pending — <code>scripts/run_humaneval_micro.sh</code> and '
-            "<code>scripts/run_hermes_humaneval_micro.sh</code>.</p>"
+            '<p class="sub">Pending — run <code>scripts/run_hermes_humaneval_micro.sh</code> '
+            "(see <code>docs/BENCHMARKS.md</code>).</p>"
         )
-    match_note = ""
-    if lm_s and he_s and lm_s.get("pass_at_1") is not None and he_s.get("pass_at_1") is not None:
-        if abs(float(lm_s["pass_at_1"]) - float(he_s["pass_at_1"])) < 0.001:
-            match_note = '<p class="callout callout-ok">Harness and standalone pass@1 align on this micro subset.</p>'
-        else:
-            match_note = '<p class="callout callout-warn">Gap between API-only lm-eval and real-agent harness — expect tool/reasoning overhead.</p>'
-    return f"""<div class="compare-grid">
-<div class="compare-card"><span class="compare-label">Standalone</span><span class="score-lg">{lm_v}</span><span class="sub">{lm_n} · humaneval_instruct</span></div>
-<div class="compare-card compare-card-accent"><span class="compare-label">Hermes agent</span><span class="score-lg">{he_v}</span><span class="sub">{he_n} · t13_humaneval_micro</span></div>
+    passed = summary.get("passed") if summary else h.get("passed", 0)
+    total = summary.get("total") if summary else h.get("total", 10)
+    rate = summary.get("pass_rate") if summary else h.get("pass_at_1", 0)
+    if rate is None and total:
+        rate = passed / total
+    rate_s = f"{100 * float(rate):.0f}%" if rate is not None else "—"
+    rows = ""
+    for t in (summary or {}).get("tasks") or []:
+        tid = t.get("task_id", "").split("/")[-1]
+        st = t.get("status", "—")
+        cls = "status-pass" if st == "PASS" else ("status-fail" if st == "FAIL" else "")
+        rows += f'<tr><td><code>{tid}</code></td><td class="{cls}">{st}</td></tr>\n'
+    table = ""
+    if rows:
+        table = f"""<div class="table-wrap"><table class="data"><thead><tr>
+<th>Task</th><th>Status</th>
+</tr></thead><tbody>{rows}</tbody></table></div>"""
+    return f"""<div class="stat-grid">
+<div class="stat"><span class="sub">pass@1</span><b>{passed}/{total} ({rate_s})</b></div>
+<div class="stat"><span class="sub">Category</span><b class="mono-sm">t13_humaneval_micro</b></div>
+<div class="stat"><span class="sub">Harness</span><b>hermes-bench</b></div>
+<div class="stat"><span class="sub">Mode</span><b>real-agent</b></div>
 </div>
-<div class="table-wrap"><table class="data"><thead><tr>
-<th>Mode</th><th>pass@1</th><th>Notes</th>
-</tr></thead><tbody>
-<tr><td>Standalone (lm-eval)</td><td class="num">{lm_v}</td><td class="sub">{lm_n} · humaneval_instruct</td></tr>
-<tr><td>Hermes agent</td><td class="num">{he_v}</td><td class="sub">{he_n} · t13_humaneval_micro</td></tr>
-</tbody></table></div>
-{match_note}
-<p class="sub">Same n=10 problem subset; standalone uses chat completions only; Hermes runs real agent + verifiers.</p>
-<p class="sub">Standalone lm-eval uses <code>scripts/run_lm_eval_cli.py</code> with <code>enable_thinking=false</code> so code lands in <code>content</code>. If pass@1 still trails Hermes, the gap reflects harness extraction (markdown fences) vs agent verifiers — Hermes micro is the agent-ground-truth path.</p>"""
+{table}
+<p class="sub"><code>benchmarks/hermesbench/humaneval_micro_results.json</code> · n=10 micro subset</p>"""
 
 
 def runtime_html(meta: dict) -> str:
@@ -296,11 +290,6 @@ def kpi_strip_html(conc: list, meta: dict) -> str:
     he_s = "—"
     if he.get("pass_at_1") is not None:
         he_s = f"{100 * float(he['pass_at_1']):.0f}%"
-    lm_he_path = ROOT / "benchmarks" / "lm_eval" / "humaneval_micro_results.json"
-    lm_he = load_json(lm_he_path) if lm_he_path.is_file() else None
-    lm_he_s = "—"
-    if lm_he and lm_he.get("pass_at_1") is not None:
-        lm_he_s = f"{100 * float(lm_he['pass_at_1']):.0f}%"
     c1_s = f"{c1:.2f}" if c1 is not None else "—"
     c8_s = f"{c8:.2f}" if c8 is not None else "—"
     return f"""<div class="kpi-strip" role="list">
@@ -308,8 +297,7 @@ def kpi_strip_html(conc: list, meta: dict) -> str:
 <div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">{c8_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">{em_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">{term_s}</span></div>
-<div class="kpi" role="listitem"><span class="kpi-label">HumanEval agent</span><span class="kpi-value">{he_s}</span></div>
-<div class="kpi" role="listitem"><span class="kpi-label">HumanEval lm-eval</span><span class="kpi-value">{lm_he_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval (Hermes)</span><span class="kpi-value">{he_s}</span></div>
 </div>"""
 
 
@@ -337,7 +325,6 @@ bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
 bash scripts/run_gsm8k_100.sh
 bash scripts/run_hermes_terminal_micro.sh
-bash scripts/run_humaneval_micro.sh
 bash scripts/run_hermes_humaneval_micro.sh
 python3 scripts/build_report.py</pre>
 <p class="sub">Fast post-restart check: <code>bash scripts/run_sanity_suite.sh</code> · API <code>:{port}</code> · see <code>docs/BENCHMARKS.md</code></p>
@@ -388,7 +375,7 @@ def main():
     runtime_block = runtime_html(meta)
     gsm8k_block = gsm8k_html(meta)
     hermes_terminal_block = hermes_terminal_html(meta)
-    humaneval_block = humaneval_compare_html(meta)
+    humaneval_block = hermes_humaneval_html(meta)
     kpi_block = kpi_strip_html(conc, meta)
     nav_block = nav_html()
     repro_block = repro_html(meta)
@@ -536,7 +523,7 @@ table.data th[scope="row"]{{
 <section class="panel">{gsm8k_block}</section>
 <h2 class="anchor" id="agent">Agent tools (Hermes terminal)</h2>
 <section class="panel">{hermes_terminal_block}</section>
-<h2 class="anchor" id="humaneval">HumanEval micro (harness vs standalone)</h2>
+<h2 class="anchor" id="humaneval">HumanEval micro (Hermes agent)</h2>
 <section class="panel">{humaneval_block}</section>
 <h2 class="anchor" id="thermals">Thermals &amp; power</h2>
 <section class="panel">

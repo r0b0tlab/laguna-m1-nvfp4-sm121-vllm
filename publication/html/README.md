@@ -8,7 +8,7 @@ Foundational **single-page benchmark report** for SM121 NVFP4 serve repos:
 
 - Throughput ladder (c1–c8)
 - lm-eval accuracy (GSM8K@100)
-- Hermes agent micros (terminal + HumanEval compare)
+- Hermes agent micros (terminal + HumanEval)
 - Thermals, KV tables, runtime pin, reproduce block
 
 ## Design system (CSS variables in `build_report.py`)

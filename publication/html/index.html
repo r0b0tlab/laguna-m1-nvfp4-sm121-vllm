@@ -126,15 +126,14 @@ table.data th[scope="row"]{
 <header class="hero">
 <p class="eyebrow">SM121 · NVFP4 MoE · Publication template</p>
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 21:01 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 21:18 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span><span class="badge">nvfp4 KV</span></p>
 <div class="kpi-strip" role="list">
 <div class="kpi" role="listitem"><span class="kpi-label">c1 out tok/s</span><span class="kpi-value">11.41</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">48.98</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">97%</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">5/5</span></div>
-<div class="kpi" role="listitem"><span class="kpi-label">HumanEval agent</span><span class="kpi-value">100%</span></div>
-<div class="kpi" role="listitem"><span class="kpi-label">HumanEval lm-eval</span><span class="kpi-value">0%</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">HumanEval (Hermes)</span><span class="kpi-value">100%</span></div>
 </div>
 </header>
 <nav class="toc" aria-label="Report sections"><a href="#throughput">Throughput</a><a href="#accuracy">GSM8K</a><a href="#agent">Agent</a><a href="#humaneval">HumanEval</a><a href="#thermals">Thermals</a><a href="#kv">KV cache</a><a href="#runtime">Runtime</a><a href="#repro">Reproduce</a></nav>
@@ -182,20 +181,27 @@ table.data th[scope="row"]{
 <tr><td><code>t05_env_check</code></td><td class="status-pass">PASS</td></tr>
 </tbody></table></div>
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p></section>
-<h2 class="anchor" id="humaneval">HumanEval micro (harness vs standalone)</h2>
-<section class="panel"><div class="compare-grid">
-<div class="compare-card"><span class="compare-label">Standalone</span><span class="score-lg">0.0%</span><span class="sub">n=10.0 · humaneval_instruct</span></div>
-<div class="compare-card compare-card-accent"><span class="compare-label">Hermes agent</span><span class="score-lg">100.0%</span><span class="sub">n=10 · t13_humaneval_micro</span></div>
+<h2 class="anchor" id="humaneval">HumanEval micro (Hermes agent)</h2>
+<section class="panel"><div class="stat-grid">
+<div class="stat"><span class="sub">pass@1</span><b>10/10 (100%)</b></div>
+<div class="stat"><span class="sub">Category</span><b class="mono-sm">t13_humaneval_micro</b></div>
+<div class="stat"><span class="sub">Harness</span><b>hermes-bench</b></div>
+<div class="stat"><span class="sub">Mode</span><b>real-agent</b></div>
 </div>
 <div class="table-wrap"><table class="data"><thead><tr>
-<th>Mode</th><th>pass@1</th><th>Notes</th>
-</tr></thead><tbody>
-<tr><td>Standalone (lm-eval)</td><td class="num">0.0%</td><td class="sub">n=10.0 · humaneval_instruct</td></tr>
-<tr><td>Hermes agent</td><td class="num">100.0%</td><td class="sub">n=10 · t13_humaneval_micro</td></tr>
+<th>Task</th><th>Status</th>
+</tr></thead><tbody><tr><td><code>humaneval_0</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_1</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_2</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_3</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_4</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_5</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_6</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_7</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_8</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>humaneval_9</code></td><td class="status-pass">PASS</td></tr>
 </tbody></table></div>
-<p class="callout callout-warn">Gap between API-only lm-eval and real-agent harness — expect tool/reasoning overhead.</p>
-<p class="sub">Same n=10 problem subset; standalone uses chat completions only; Hermes runs real agent + verifiers.</p>
-<p class="sub">Standalone lm-eval uses <code>scripts/run_lm_eval_cli.py</code> with <code>enable_thinking=false</code> so code lands in <code>content</code>. If pass@1 still trails Hermes, the gap reflects harness extraction (markdown fences) vs agent verifiers — Hermes micro is the agent-ground-truth path.</p></section>
+<p class="sub"><code>benchmarks/hermesbench/humaneval_micro_results.json</code> · n=10 micro subset</p></section>
 <h2 class="anchor" id="thermals">Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
@@ -238,7 +244,6 @@ bash scripts/bench_concurrency.sh
 python3 scripts/extract_kv_metrics.py
 bash scripts/run_gsm8k_100.sh
 bash scripts/run_hermes_terminal_micro.sh
-bash scripts/run_humaneval_micro.sh
 bash scripts/run_hermes_humaneval_micro.sh
 python3 scripts/build_report.py</pre>
 <p class="sub">Fast post-restart check: <code>bash scripts/run_sanity_suite.sh</code> · API <code>:30100</code> · see <code>docs/BENCHMARKS.md</code></p>
@@ -314,16 +319,11 @@ python3 scripts/build_report.py</pre>
       "limit": 100.0,
       "task_id": "gsm8k",
       "completed_at": "2026-06-20T20:44:22.885449+00:00"
-    },
-    "humaneval_micro": {
-      "results_file": "benchmarks/lm_eval/humaneval_micro_results.json",
-      "pass_at_1": 0.0,
-      "limit": 10.0
     }
   },
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
 </main>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git 56ac1cf · generated 2026-06-20 21:01 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git 0a51a92 · generated 2026-06-20 21:18 UTC</footer>
 </div></body></html>

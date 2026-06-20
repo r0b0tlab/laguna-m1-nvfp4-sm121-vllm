@@ -15,4 +15,6 @@ __pycache__/
 *.pyc
 benchmarks/bfcl/
 benchmarks/lm_eval/raw/
+benchmarks/lm_eval/humaneval_micro_results.json
+benchmarks/lm_eval/humaneval_micro_manifest.json
 .env

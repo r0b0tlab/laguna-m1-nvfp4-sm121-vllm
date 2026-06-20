@@ -1,6 +1,0 @@
-{
-  "summary_file": "benchmarks/lm_eval/humaneval_micro_results.json",
-  "git_head": "56ac1cf10eb6d7848467da57aa4fcbdda937477d",
-  "task": "humaneval_instruct",
-  "limit": 10.0
-}

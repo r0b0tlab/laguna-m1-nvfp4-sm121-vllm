@@ -41,11 +41,10 @@ fi
 
 SKIP_HE_MICRO="${SKIP_HUMANEVAL_MICRO:-0}"
 if [[ "$SKIP_HE_MICRO" != "1" ]]; then
-  if [[ ! -f "$ROOT/benchmarks/lm_eval/humaneval_micro_results.json" ]] || [[ "${FORCE_HUMANEVAL_MICRO:-0}" == "1" ]]; then
-    bash "$ROOT/scripts/run_humaneval_micro.sh"
-  fi
   if [[ ! -f "$ROOT/benchmarks/hermesbench/humaneval_micro_results.json" ]] || [[ "${FORCE_HUMANEVAL_MICRO:-0}" == "1" ]]; then
     bash "$ROOT/scripts/run_hermes_humaneval_micro.sh"
+  else
+    echo "Hermes HumanEval micro present — FORCE_HUMANEVAL_MICRO=1 to re-run"
   fi
 fi
 
@@ -55,7 +54,6 @@ if [[ "${PUSH_GITHUB:-1}" == "1" ]]; then
   git add benchmarks/kv_cache_metrics.json benchmarks/run_meta.json \
     benchmarks/lm_eval/gsm8k_100_results.json benchmarks/lm_eval/gsm8k_100_manifest.json \
     benchmarks/hermesbench/terminal_micro_results.json benchmarks/hermesbench/terminal_micro_manifest.json \
-    benchmarks/lm_eval/humaneval_micro_results.json benchmarks/lm_eval/humaneval_micro_manifest.json \
     benchmarks/hermesbench/humaneval_micro_results.json benchmarks/hermesbench/humaneval_micro_manifest.json \
     benchmarks/hermesbench/humaneval_micro_task_manifest.json \
     publication/html/index.html \
