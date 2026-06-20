@@ -7,6 +7,7 @@
   "image_note": "Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).",
   "headline_profile": "nvfp4-kv",
   "headline_kv": "nvfp4",
+  "kv_cache_metrics_file": "kv_cache_metrics.json",
   "headline": {
     "tensor_parallel_size": 2,
     "distributed_executor_backend": "ray",

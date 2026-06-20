@@ -77,6 +77,56 @@ def bfcl_table(scores_dir: Path) -> tuple[str, list]:
     return html_rows, summary
 
 
+def kv_cache_html(kv_data: dict | None) -> str:
+    if not kv_data:
+        return '<p class="sub">KV metrics pending — run scripts/extract_kv_metrics.py</p>'
+    h = kv_data.get("headline") or {}
+    b = kv_data.get("baseline_l1_fp8") or {}
+    tp = kv_data.get("throughput_c8") or {}
+    delta = kv_data.get("delta_tokens_vs_l1_fp8_pct")
+    bench_use = kv_data.get("bench_kv_usage_pct_max")
+
+    def fmt_tokens(n):
+        return f"{n:,}" if isinstance(n, int) else "—"
+
+    avail = h.get("kv_available_gib") or []
+    avail_s = " / ".join(f"{x:.2f}" for x in avail) if avail else "—"
+
+    stats = f"""
+<div class="stat-grid">
+<div class="stat"><span class="sub">KV dtype</span><b>{h.get('kv_cache_dtype', '—')}</b></div>
+<div class="stat"><span class="sub">GPU KV tokens</span><b>{fmt_tokens(h.get('gpu_kv_cache_tokens'))}</b></div>
+<div class="stat"><span class="sub">KV memory (GiB)</span><b style="font-size:.85rem">{avail_s}</b></div>
+<div class="stat"><span class="sub">max_model_len</span><b>{h.get('max_model_len', '—')}</b></div>
+<div class="stat"><span class="sub">block_size</span><b>{h.get('block_size', '—')}</b></div>
+<div class="stat"><span class="sub">Max conc @ len</span><b>{h.get('max_concurrency_at_max_model_len') or '—'}×</b></div>
+</div>"""
+
+    h_tok = h.get("gpu_kv_cache_tokens")
+    b_tok = b.get("gpu_kv_cache_tokens")
+    rows = ""
+    if b_tok:
+        rows += (
+            f"<tr><td>L1 fp8</td><td>fp8</td><td>{fmt_tokens(b_tok)}</td>"
+            f"<td>{tp.get('l1_fp8') or '—'}</td></tr>\n"
+        )
+    if h_tok:
+        rows += (
+            f"<tr><td>nvfp4-kv</td><td>{h.get('kv_cache_dtype', 'nvfp4')}</td>"
+            f"<td>{fmt_tokens(h_tok)}</td><td>{tp.get('nvfp4_kv') or '—'}</td></tr>\n"
+        )
+    table = f"""<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>KV dtype</th><th>GPU KV tokens</th><th>c8 out tok/s</th>
+</tr></thead><tbody>{rows or '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>"""
+
+    extra = ""
+    if delta is not None:
+        extra += f'<p class="sub">Δ tokens vs L1 fp8: <b>{delta:+.2f}%</b></p>'
+    if bench_use is not None:
+        extra += f'<p class="sub">Peak GPU KV usage @ c8 bench: <b>{bench_use}%</b></p>'
+    return stats + table + extra
+
+
 def main():
     meta = load_json(ROOT / "benchmarks" / "run_meta.json") or {}
     conc_name = meta.get("concurrency_summary_file", "chat-concurrency-summary.json")
@@ -84,6 +134,9 @@ def main():
     if not conc_path.is_file():
         conc_path = ROOT / "benchmarks" / "concurrency" / "chat-concurrency-summary-nvfp4-kv.json"
     conc = load_json(conc_path) or []
+
+    kv_path = ROOT / "benchmarks" / "kv_cache_metrics.json"
+    kv_data = load_json(kv_path)
 
     tel_path = ROOT / meta.get("telemetry_file", "evidence/telemetry/gpu-sample.jsonl")
     tel = parse_telemetry_jsonl(tel_path)
@@ -167,6 +220,8 @@ h1{{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}}h2{{color:#79c0ff;font-si
 <div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">{meta.get("container_name", "laguna_tp2")}</b></div>
 </div>
 <p class="sub">Source: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
+<h2>KV cache</h2>
+{kv_cache_html(kv_data)}
 <h2>BFCL (function calling)</h2>
 {bfcl_block}
 <h2>Runtime image</h2>

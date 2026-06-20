@@ -18,6 +18,7 @@ curl -sf "${OPENAI_BASE_URL}/models" >/dev/null || { echo "Start vLLM first (scr
 source "$ROOT/.venv/bin/activate"
 python3 "$ROOT/scripts/bfcl_run.py" generate
 python3 "$ROOT/scripts/bfcl_run.py" evaluate
+python3 "$ROOT/scripts/extract_kv_metrics.py"
 python3 "$ROOT/scripts/build_report.py"
 echo "BFCL results under $BFCL_PROJECT_ROOT/result and score/"
 if [[ "${PUSH_GITHUB:-0}" == "1" ]]; then
