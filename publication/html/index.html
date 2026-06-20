@@ -33,12 +33,16 @@ table.data tr.peak td{background:#132033;color:#79c0ff}
 details summary{cursor:pointer;color:#8b949e;font-size:.9rem;padding:4px 0}
 details[open] summary{margin-bottom:8px;color:#c9d1d9}
 .foot{margin-top:32px;padding-top:16px;border-top:1px solid #21262d;color:#6e7681;font-size:.8rem;text-align:center}
+.ul{list-style:none;padding:0;margin:8px 0 0}
+.runtime-list{margin:12px 0 0;padding-left:18px;color:#adbac7;font-size:.875rem}
+.runtime-list li{margin:6px 0}
+table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:transparent;border-bottom:1px solid #21262d}
 @media(max-width:520px){.bar-row{grid-template-columns:28px 1fr 44px}table.data{min-width:360px}}
 </style></head><body>
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 19:00 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 19:03 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -84,15 +88,27 @@ details[open] summary{margin-bottom:8px;color:#c9d1d9}
 </tr></thead><tbody><tr><td>L1 fp8</td><td>fp8</td><td>489,984</td><td>49.27</td></tr>
 <tr><td>nvfp4-kv</td><td>nvfp4</td><td>507,904</td><td>48.98</td></tr>
 </tbody></table></div><p class="sub">Δ tokens vs L1 fp8: <b>+3.66%</b></p><p class="sub">Peak GPU KV usage @ c8 bench: <b>0.4%</b></p></section>
-<h2>Runtime</h2>
-<section class="panel card"><p class="mono-sm">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</p><p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).</p></section>
+<h2>Runtime (SM121)</h2>
+<section class="panel"><div class="table-wrap"><table class="data"><tbody>
+<tr><th scope="row">Registry image</th><td class="mono-sm">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</td></tr>
+<tr><th scope="row">Pin (digest)</th><td class="mono-sm">sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8</td></tr>
+<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM with <strong>LagunaForCausalLM</strong>, Poolside parsers, native NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
+<tr><th scope="row">Headline launch</th><td><code>scripts/serve_tp2_cluster.sh</code> · container <code>laguna-m1-vllm</code></td></tr>
+</tbody></table></div>
+<ul class="runtime-list">
+<li><strong>v1:</strong> Same GHCR artifact as DeepSeek-V4 Flash GB10; Laguna is configured at <strong>serve time</strong> (weights mount, <code>poolside_v1</code> parsers, KV dtype, TP=2 Ray).</li>
+<li><strong>Future:</strong> Optional dedicated <code>ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121</code> if serve flags diverge.</li>
+</ul>
+<p class="sub">Details: <code>docs/CONTAINER.md</code></p></section>
 <details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{
   "topology": "dual GB10 TP=2 Ray",
   "served_model_name": "laguna-m1-nvfp4",
   "container_name": "laguna-m1-vllm",
   "port": 30100,
   "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
-  "image_note": "Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).",
+  "image_digest": "sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8",
+  "image_note": "Laguna M.1 headline runtime on SM121 (shared GHCR build; Laguna flags at serve time).",
+  "serve_script": "scripts/serve_tp2_cluster.sh",
   "headline_profile": "nvfp4-kv",
   "headline_kv": "nvfp4",
   "kv_cache_metrics_file": "kv_cache_metrics.json",
@@ -133,5 +149,5 @@ details[open] summary{margin-bottom:8px;color:#c9d1d9}
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 19:00 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 19:03 UTC</footer>
 </div></body></html>

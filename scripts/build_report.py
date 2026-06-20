@@ -98,6 +98,23 @@ def kv_cache_html(kv_data: dict | None) -> str:
     return stats + table + extra
 
 
+def runtime_html(meta: dict) -> str:
+    image = meta.get("image", "—")
+    digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
+    launch = meta.get("serve_script", "scripts/serve_tp2_cluster.sh")
+    return f"""<div class="table-wrap"><table class="data"><tbody>
+<tr><th scope="row">Registry image</th><td class="mono-sm">{image}</td></tr>
+<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
+<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM with <strong>LagunaForCausalLM</strong>, Poolside parsers, native NVFP4 MoE (FlashInfer CUTLASS)</td></tr>
+<tr><th scope="row">Headline launch</th><td><code>{launch}</code> · container <code>{meta.get('container_name', 'laguna-m1-vllm')}</code></td></tr>
+</tbody></table></div>
+<ul class="runtime-list">
+<li><strong>v1:</strong> Same GHCR artifact as DeepSeek-V4 Flash GB10; Laguna is configured at <strong>serve time</strong> (weights mount, <code>poolside_v1</code> parsers, KV dtype, TP=2 Ray).</li>
+<li><strong>Future:</strong> Optional dedicated <code>ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121</code> if serve flags diverge.</li>
+</ul>
+<p class="sub">Details: <code>docs/CONTAINER.md</code></p>"""
+
+
 def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price: float, avg_power: float) -> str:
     if not conc:
         return '<p class="sub">Pending — run scripts/bench_concurrency.sh</p>'
@@ -115,7 +132,7 @@ def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price:
         otps_s = f"{otps:.2f}" if otps is not None else "—"
         per_m_s = f"{per_m:.4f}" if per_m is not None else "—"
         pct = min(100, int(100 * otps / peak)) if peak else 0
-        highlight = " class=\"peak\"" if otps == peak else ""
+        highlight = ' class="peak"' if otps == peak else ""
         rows += (
             f"<tr{highlight}><td>c{c}</td><td class=\"num\">{otps_s}</td>"
             f"<td class=\"num\">{avg_power:.1f} W</td><td class=\"num\">{per_m_s}</td></tr>\n"
@@ -176,6 +193,8 @@ def main():
     util_avg = meta.get("gpu_util_pct_avg", "—")
     image = meta.get("image", "—")
 
+    runtime_block = runtime_html(meta)
+
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Laguna M.1 NVFP4 — SM121 Report</title>
@@ -211,6 +230,10 @@ table.data tr.peak td{{background:#132033;color:#79c0ff}}
 details summary{{cursor:pointer;color:#8b949e;font-size:.9rem;padding:4px 0}}
 details[open] summary{{margin-bottom:8px;color:#c9d1d9}}
 .foot{{margin-top:32px;padding-top:16px;border-top:1px solid #21262d;color:#6e7681;font-size:.8rem;text-align:center}}
+.ul{{list-style:none;padding:0;margin:8px 0 0}}
+.runtime-list{{margin:12px 0 0;padding-left:18px;color:#adbac7;font-size:.875rem}}
+.runtime-list li{{margin:6px 0}}
+table.data th[scope="row"]{{width:28%;color:#8b949e;font-weight:500;background:transparent;border-bottom:1px solid #21262d}}
 @media(max-width:520px){{.bar-row{{grid-template-columns:28px 1fr 44px}}table.data{{min-width:360px}}}}
 </style></head><body>
 <div class="wrap">
@@ -233,8 +256,8 @@ details[open] summary{{margin-bottom:8px;color:#c9d1d9}}
 </section>
 <h2>KV cache</h2>
 <section class="panel">{kv_cache_html(kv_data)}</section>
-<h2>Runtime</h2>
-<section class="panel card"><p class="mono-sm">{image}</p><p class="sub">{meta.get("image_note", "")}</p></section>
+<h2>Runtime (SM121)</h2>
+<section class="panel">{runtime_block}</section>
 <details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{json.dumps(meta, indent=2)}</pre></details>
 <footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated {ts}</footer>
 </div></body></html>"""
