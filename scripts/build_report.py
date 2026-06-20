@@ -86,7 +86,7 @@ def kv_cache_html(kv_data: dict | None) -> str:
             f"<tr><td>nvfp4-kv</td><td>{h.get('kv_cache_dtype', 'nvfp4')}</td>"
             f"<td>{fmt_tokens(h_tok)}</td><td>{tp.get('nvfp4_kv') and round(tp['nvfp4_kv'], 2) or '—'}</td></tr>\n"
         )
-    table = f"""<div class="table-wrap"><table><thead><tr>
+    table = f"""<div class="table-wrap"><table class="data"><thead><tr>
 <th>Profile</th><th>KV dtype</th><th>GPU KV tokens</th><th>c8 out tok/s</th>
 </tr></thead><tbody>{rows or '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>"""
 
@@ -96,6 +96,43 @@ def kv_cache_html(kv_data: dict | None) -> str:
     if bench_use is not None:
         extra += f'<p class="sub">Peak GPU KV usage @ c8 bench: <b>{bench_use}%</b></p>'
     return stats + table + extra
+
+
+def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price: float, avg_power: float) -> str:
+    if not conc:
+        return '<p class="sub">Pending — run scripts/bench_concurrency.sh</p>'
+    peak = max((s.get("output_tps") or 0) for s in conc) or 1
+    rows = ""
+    bars = ""
+    for s in conc:
+        c = s.get("concurrency")
+        otps = s.get("output_tps") or 0
+        wall = s.get("wall_s") or 1
+        out_tok = s.get("output_tokens") or 0
+        kwh = (avg_power * wall) / 3600 / 1000
+        cost = kwh * kwh_price
+        per_m = (cost / out_tok * 1e6) if out_tok else None
+        otps_s = f"{otps:.2f}" if otps is not None else "—"
+        per_m_s = f"{per_m:.4f}" if per_m is not None else "—"
+        pct = min(100, int(100 * otps / peak)) if peak else 0
+        highlight = " class=\"peak\"" if otps == peak else ""
+        rows += (
+            f"<tr{highlight}><td>c{c}</td><td class=\"num\">{otps_s}</td>"
+            f"<td class=\"num\">{avg_power:.1f} W</td><td class=\"num\">{per_m_s}</td></tr>\n"
+        )
+        bars += (
+            f'<div class="bar-row"><span class="bar-label">c{c}</span>'
+            f'<div class="bar-track"><div class="bar-fill" style="width:{pct}%"></div></div>'
+            f'<span class="bar-val">{otps_s}</span></div>\n'
+        )
+    return f"""<p class="sub">Profile: <code>{profile}</code> · <code>{conc_path_name}</code></p>
+<section class="panel">
+<div class="chart">{bars}</div>
+<div class="table-wrap"><table class="data"><thead><tr>
+<th>Concurrency</th><th>Output tok/s</th><th>Power</th><th>$/M out tok</th>
+</tr></thead><tbody>{rows}</tbody></table></div>
+</section>
+<p class="sub">Electricity @ ${kwh_price}/kWh · telemetry power during loaded bench.</p>"""
 
 
 def main():
@@ -126,23 +163,13 @@ def main():
         f"{topology} · NVFP4 weights · KV {kv} · vLLM · {ts}"
     )
 
-    rows = ""
-    for s in conc:
-        c = s.get("concurrency")
-        otps = s.get("output_tps")
-        wall = s.get("wall_s") or 1
-        out_tok = s.get("output_tokens") or 0
-        power = avg_power
-        kwh = (power * wall) / 3600 / 1000
-        cost = kwh * kwh_price
-        per_m = (cost / out_tok * 1e6) if out_tok else None
-        otps_s = f"{otps:.2f}" if otps is not None else "—"
-        per_m_s = f"{per_m:.4f}" if per_m is not None else "—"
-        rows += (
-            f"<tr><td>c{c}</td><td>{otps_s}</td>"
-            f"<td>{power:.1f} W</td><td>{per_m_s}</td></tr>\n"
-        )
-
+    throughput_html = throughput_section(
+        conc,
+        conc_path.name,
+        meta.get("headline_profile", "nvfp4-kv"),
+        kwh_price,
+        avg_power,
+    )
     temp_min = meta.get("temp_c_min", "—")
     temp_max = meta.get("temp_c_max", "—")
     temp_avg = meta.get("temp_c_avg", "—")
@@ -153,39 +180,64 @@ def main():
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Laguna M.1 NVFP4 — SM121 Report</title>
 <style>
-*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:ui-monospace,monospace;background:#0d1117;color:#c9d1d9;padding:16px;line-height:1.5;font-size:14px;overflow-x:hidden}}
-h1{{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}}h2{{color:#79c0ff;font-size:1.1rem;margin:1.5rem 0 .75rem;border-bottom:1px solid #21262d;padding-bottom:.5rem}}
-.sub{{color:#8b949e;margin:.5rem 0 1rem;font-size:.85rem}}.card{{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin:.75rem 0;overflow-x:auto}}
-.table-wrap{{overflow-x:auto}}table{{width:100%;border-collapse:collapse;min-width:480px;font-size:13px}}th,td{{padding:8px 10px;border-bottom:1px solid #21262d;text-align:left}}th{{color:#79c0ff}}
-.badge{{display:inline-block;background:#238636;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin:2px}}
-.stat-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:.5rem 0}}
-.stat{{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}}.stat b{{color:#58a6ff;display:block;font-size:1.1rem}}
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:#0a0e14;color:#e6edf3;line-height:1.55;font-size:15px}}
+.wrap{{max-width:920px;margin:0 auto;padding:20px 16px 48px}}
+.hero{{border:1px solid #30363d;border-left:4px solid #58a6ff;background:#0d1117;border-radius:12px;padding:20px 22px;margin-bottom:28px}}
+h1{{font-size:clamp(1.35rem,4vw,2rem);font-weight:650;letter-spacing:-.02em;color:#f0f6fc}}
+h2{{color:#79c0ff;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:28px 0 12px}}
+.sub{{color:#8b949e;margin:.35rem 0 .75rem;font-size:.875rem}}
+code{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:#21262d;padding:2px 6px;border-radius:4px}}
+.panel{{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:16px 18px;margin-bottom:8px}}
+.card p{{margin:.5rem 0}}
+.badge{{display:inline-block;background:#1f3d2a;color:#3fb950;border:1px solid #238636;padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:600;margin:4px 6px 0 0}}
+.table-wrap{{overflow-x:auto;margin-top:12px;-webkit-overflow-scrolling:touch}}
+table.data{{width:100%;border-collapse:collapse;min-width:420px;font-size:.9rem}}
+table.data th{{color:#79c0ff;font-weight:600;text-align:left;padding:10px 12px;border-bottom:2px solid #30363d;background:#161b22}}
+table.data td{{padding:10px 12px;border-bottom:1px solid #21262d}}
+table.data tr.peak td{{background:#132033;color:#79c0ff}}
+.num{{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace}}
+.stat-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}}
+.stat{{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px}}
+.stat b{{color:#58a6ff;display:block;font-size:1.15rem;margin-top:4px;font-variant-numeric:tabular-nums}}
+.mono-sm{{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;word-break:break-all}}
+.mono-block{{font-size:.75rem;overflow-x:auto;padding:12px 0;color:#adbac7}}
+.chart{{margin-bottom:16px}}
+.bar-row{{display:grid;grid-template-columns:36px 1fr 52px;align-items:center;gap:10px;margin:6px 0}}
+.bar-label{{color:#8b949e;font-size:.8rem;font-family:ui-monospace,monospace}}
+.bar-track{{height:10px;background:#21262d;border-radius:5px;overflow:hidden}}
+.bar-fill{{height:100%;background:#388bfd;border-radius:5px;min-width:2px}}
+.bar-val{{text-align:right;font-size:.8rem;color:#c9d1d9;font-family:ui-monospace,monospace}}
+details summary{{cursor:pointer;color:#8b949e;font-size:.9rem;padding:4px 0}}
+details[open] summary{{margin-bottom:8px;color:#c9d1d9}}
+.foot{{margin-top:32px;padding-top:16px;border-top:1px solid #21262d;color:#6e7681;font-size:.8rem;text-align:center}}
+@media(max-width:520px){{.bar-row{{grid-template-columns:28px 1fr 44px}}table.data{{min-width:360px}}}}
 </style></head><body>
-<h1>Laguna M.1 NVFP4 on SM121</h1>
+<div class="wrap">
+<header class="hero">
+<h1>Laguna M.1 NVFP4</h1>
 <p class="sub">{subtitle}</p>
-<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span></p>
-<h2>Throughput (chat completions)</h2>
-<p class="sub">Profile: <code>{meta.get("headline_profile", "nvfp4-kv")}</code> · source: <code>{conc_path.name}</code></p>
-<div class="table-wrap"><table><thead><tr><th>Concurrency</th><th>Output tok/s</th><th>Power (avg)</th><th>$/M out tok</th></tr></thead><tbody>
-{rows or '<tr><td colspan="4">Pending — run scripts/bench_concurrency.sh</td></tr>'}
-</tbody></table></div>
-<p class="sub">Electricity @ ${kwh_price}/kWh; power from GPU telemetry during loaded bench.</p>
-<h2>Thermals &amp; power (telemetry)</h2>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
+</header>
+<h2>Throughput</h2>
+{throughput_html}
+<h2>Thermals &amp; power</h2>
+<section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>{temp_min} / {temp_max} / {temp_avg} °C</b></div>
-<div class="stat"><span class="sub">Power avg (loaded)</span><b>{avg_power} W</b></div>
-<div class="stat"><span class="sub">GPU util avg</span><b>{util_avg}%</b></div>
-<div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">{meta.get("container_name", "laguna-m1-vllm")}</b></div>
+<div class="stat"><span class="sub">Power avg</span><b>{avg_power} W</b></div>
+<div class="stat"><span class="sub">GPU util</span><b>{util_avg}%</b></div>
+<div class="stat"><span class="sub">Container</span><b class="mono-sm">{meta.get("container_name", "laguna-m1-vllm")}</b></div>
 </div>
-<p class="sub">Source: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
+<p class="sub">Telemetry: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
+</section>
 <h2>KV cache</h2>
-{kv_cache_html(kv_data)}
-<h2>Runtime image</h2>
-<div class="card"><p style="font-size:12px;word-break:break-all">{image}</p>
-<p class="sub">{meta.get("image_note", "")}</p></div>
-<h2>Environment</h2>
-<div class="card"><pre>{json.dumps(meta, indent=2)}</pre></div>
-</body></html>"""
+<section class="panel">{kv_cache_html(kv_data)}</section>
+<h2>Runtime</h2>
+<section class="panel card"><p class="mono-sm">{image}</p><p class="sub">{meta.get("image_note", "")}</p></section>
+<details class="panel"><summary>Environment JSON</summary><pre class="mono-block">{json.dumps(meta, indent=2)}</pre></details>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated {ts}</footer>
+</div></body></html>"""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(html, encoding="utf-8")
     print(f"Wrote {OUT}")
