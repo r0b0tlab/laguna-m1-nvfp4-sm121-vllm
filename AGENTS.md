@@ -16,7 +16,7 @@ Publishable SM121-native claims require `evidence/kernels/native-kernel-check.tx
 
 **Headline:** `scripts/serve_tp2_cluster.sh` → container `laguna-m1-vllm`, port `30100`, **TP=2 Ray**, NVFP4 KV.
 
-**Runtime image:** `ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b` — see `docs/CONTAINER.md` for pull alias.
+**Runtime image:** `ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b` — see `docs/CONTAINER.md` (GHCR package on this repo; not the DSV4 package name).
 
 Required Poolside flags (in serve scripts):
 

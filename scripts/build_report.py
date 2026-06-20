@@ -200,23 +200,22 @@ def hermes_humaneval_html(meta: dict) -> str:
 def runtime_html(meta: dict) -> str:
     image = meta.get("image", "—")
     digest = meta.get("image_digest", "sha256:6e2dfa4…ad7712a8")
-    alias = meta.get("image_pull_alias", "")
+    lineage = meta.get("image_pull_alias", "")
     launch = meta.get("serve_script", "scripts/serve_tp2_cluster.sh")
-    pull_note = alias or image
-    alias_row = (
-        f'<tr><th scope="row">Pull alias</th><td class="mono-sm">{alias}</td></tr>\n'
-        if alias and alias != pull_note
+    lineage_row = (
+        f'<tr><th scope="row">Build lineage</th><td class="mono-sm">{lineage}</td></tr>\n'
+        if lineage
         else ""
     )
+    pkg_url = "https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm/pkgs/container/vllm-laguna-m1-nvfp4-sm121"
     return f"""<div class="table-wrap"><table class="data"><tbody>
-<tr><th scope="row">Canonical SM121 runtime</th><td class="mono-sm">{pull_note}</td></tr>
-<tr><th scope="row">Registry image</th><td class="mono-sm">{image}</td></tr>
-{alias_row}<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
-<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · Laguna weights + Poolside parsers at serve time (<code>{launch}</code>)</td></tr>
+<tr><th scope="row">GHCR package</th><td class="mono-sm">{image}</td></tr>
+<tr><th scope="row">Pin (digest)</th><td class="mono-sm">{digest}</td></tr>
+{lineage_row}<tr><th scope="row">Role</th><td>SM121 / cu130 / arm64 vLLM · Laguna weights + Poolside parsers at serve time (<code>{launch}</code>)</td></tr>
 <tr><th scope="row">Container</th><td><code>{meta.get('container_name', 'laguna-m1-vllm')}</code> · TP=2 Ray · nvfp4 KV</td></tr>
 </tbody></table></div>
-<p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated <code>vllm-laguna-m1</code> tag is published on GHCR; pull alias matches the same digest as the headline registry name.</p>
-<p class="sub"><code>docs/CONTAINER.md</code></p>"""
+<p class="sub">Published for this repo — separate from <code>vllm-dsv4-flash-gb10</code> (same digest, different GHCR package). <a href="{pkg_url}">Package page</a></p>
+<p class="sub"><code>docs/CONTAINER.md</code> · <code>scripts/publish_ghcr_laguna_runtime.sh</code></p>"""
 
 
 def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price: float, avg_power: float) -> str:

@@ -1,0 +1,138 @@
+=== Laguna GHCR publish 2026-06-20T16:24:06-05:00 ===
+SOURCE=ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+TARGET=ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:cu130-sm121-arm64-dda4668b
+LATEST=ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121:latest
+cu130-sm121-arm64-dda4668b: Pulling from r0b0tlab/vllm-dsv4-flash-gb10
+Digest: sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8
+Status: Image is up to date for ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
+Source digest: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10@sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8
+The push refers to repository [ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121]
+e3f82bf4b548: Preparing
+0f90c871fed5: Preparing
+300ee9ae48d5: Preparing
+cc24c7b85cf0: Preparing
+f67d9a716d1f: Preparing
+dc6340bc296f: Preparing
+338b4a48ec82: Preparing
+dc6340bc296f: Waiting
+9764fb4342be: Preparing
+26454e38ec05: Preparing
+26454e38ec05: Waiting
+84fbad02f97c: Preparing
+5f70bf18a086: Preparing
+557d105fc872: Preparing
+59a0bbf0604b: Preparing
+4cf29c1b5908: Preparing
+e67c3dff55b1: Preparing
+53f586ec0996: Preparing
+ed65183a4b40: Preparing
+9764fb4342be: Waiting
+26c4202e143a: Preparing
+eb9ffcd8102a: Preparing
+539926fe12da: Preparing
+59a0bbf0604b: Waiting
+4cf29c1b5908: Waiting
+e67c3dff55b1: Waiting
+5f70bf18a086: Waiting
+ed65183a4b40: Waiting
+26c4202e143a: Waiting
+a0aed9a26128: Preparing
+e5dae71ade43: Preparing
+eb9ffcd8102a: Waiting
+539926fe12da: Waiting
+84fbad02f97c: Waiting
+557d105fc872: Waiting
+a0aed9a26128: Waiting
+e5dae71ade43: Waiting
+53f586ec0996: Waiting
+338b4a48ec82: Waiting
+e3f82bf4b548: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+f67d9a716d1f: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+cc24c7b85cf0: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+0f90c871fed5: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+300ee9ae48d5: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+dc6340bc296f: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+9764fb4342be: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+338b4a48ec82: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+26454e38ec05: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+84fbad02f97c: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+557d105fc872: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+59a0bbf0604b: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+5f70bf18a086: Mounted from r0b0tlab/vibethinker-3b-nvfp4
+4cf29c1b5908: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+e67c3dff55b1: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+53f586ec0996: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+26c4202e143a: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+ed65183a4b40: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+eb9ffcd8102a: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+539926fe12da: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+e5dae71ade43: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+a0aed9a26128: Mounted from r0b0tlab/vllm-dsv4-flash-gb10
+cu130-sm121-arm64-dda4668b: digest: sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8 size: 4950
+The push refers to repository [ghcr.io/r0b0tlab/vllm-laguna-m1-nvfp4-sm121]
+e3f82bf4b548: Preparing
+0f90c871fed5: Preparing
+300ee9ae48d5: Preparing
+cc24c7b85cf0: Preparing
+f67d9a716d1f: Preparing
+dc6340bc296f: Preparing
+dc6340bc296f: Waiting
+338b4a48ec82: Preparing
+9764fb4342be: Preparing
+338b4a48ec82: Waiting
+26454e38ec05: Preparing
+84fbad02f97c: Preparing
+5f70bf18a086: Preparing
+557d105fc872: Preparing
+59a0bbf0604b: Preparing
+4cf29c1b5908: Preparing
+e67c3dff55b1: Preparing
+9764fb4342be: Waiting
+53f586ec0996: Preparing
+ed65183a4b40: Preparing
+26454e38ec05: Waiting
+26c4202e143a: Preparing
+84fbad02f97c: Waiting
+eb9ffcd8102a: Preparing
+5f70bf18a086: Waiting
+539926fe12da: Preparing
+59a0bbf0604b: Waiting
+a0aed9a26128: Preparing
+4cf29c1b5908: Waiting
+e5dae71ade43: Preparing
+557d105fc872: Waiting
+e67c3dff55b1: Waiting
+53f586ec0996: Waiting
+ed65183a4b40: Waiting
+26c4202e143a: Waiting
+a0aed9a26128: Waiting
+eb9ffcd8102a: Waiting
+e5dae71ade43: Waiting
+539926fe12da: Waiting
+0f90c871fed5: Layer already exists
+e3f82bf4b548: Layer already exists
+cc24c7b85cf0: Layer already exists
+300ee9ae48d5: Layer already exists
+f67d9a716d1f: Layer already exists
+dc6340bc296f: Layer already exists
+338b4a48ec82: Layer already exists
+9764fb4342be: Layer already exists
+26454e38ec05: Layer already exists
+84fbad02f97c: Layer already exists
+557d105fc872: Layer already exists
+4cf29c1b5908: Layer already exists
+59a0bbf0604b: Layer already exists
+5f70bf18a086: Layer already exists
+e67c3dff55b1: Layer already exists
+26c4202e143a: Layer already exists
+ed65183a4b40: Layer already exists
+eb9ffcd8102a: Layer already exists
+53f586ec0996: Layer already exists
+539926fe12da: Layer already exists
+a0aed9a26128: Layer already exists
+e5dae71ade43: Layer already exists
+latest: digest: sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8 size: 4950
+Pushed: ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10@sha256:6e2dfa4c48ac73965890a864dc1510017f42981e743b3f2834b4b189ad7712a8
+Package page: https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm/pkgs/container/vllm-laguna-m1-nvfp4-sm121
+=== done 2026-06-20T16:24:15-05:00 ===
