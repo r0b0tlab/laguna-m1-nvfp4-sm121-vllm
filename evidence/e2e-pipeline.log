@@ -34,3 +34,37 @@ Traceback (most recent call last):
     import soundfile as sf
 ModuleNotFoundError: No module named 'soundfile'
 Wrote /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/publication/html/index.html
+[main 6d07512] SM121 TP=2 Ray: e2e benches BFCL HTML (L0)
+ 29 files changed, 3484 insertions(+)
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c1-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c1.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c2-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c2.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c4-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c4.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c5-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c5.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c8-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c8.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-summary-L0.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-summary.json
+ create mode 100644 evidence/auto-tp2.log
+ create mode 100644 evidence/download-missing.log
+ create mode 100644 evidence/e2e-pipeline.log
+ create mode 100644 evidence/finish-v1.log
+ create mode 100644 evidence/hf-download-resume.log
+ create mode 100644 evidence/hf-download.log
+ create mode 100644 evidence/host-cleanup.log
+ create mode 100644 evidence/kernels/native-kernel-check.txt
+ create mode 100644 evidence/l1-optimize.log
+ create mode 100644 evidence/rsync-node2.log
+ create mode 100644 evidence/tp2-bringup.log
+ create mode 100644 evidence/tp2-finish-pipeline.log
+ create mode 100644 evidence/tp2-serve-ray.log
+ create mode 100644 evidence/tp2-serve.log
+ create mode 100644 evidence/v1-pipeline.log
+ create mode 100644 evidence/wait-then-v1.log
+ create mode 100644 publication/html/index.html
+To https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm.git
+   b24b00d..6d07512  main -> main
+=== e2e done 2026-06-19T18:29:19-05:00 ===

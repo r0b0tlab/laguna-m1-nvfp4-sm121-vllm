@@ -11,8 +11,8 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 .stat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}.stat b{color:#58a6ff;display:block;font-size:1.1rem}
 </style></head><body>
 <h1>Laguna M.1 NVFP4 on SM121</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · BFCL v1 · 2026-06-20 14:32 UTC</p>
-<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span> <span class="badge">BFCL public harness</span></p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 16:26 UTC</p>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span></p>
 <h2>Throughput (chat completions)</h2>
 <p class="sub">Profile: <code>nvfp4-kv</code> · source: <code>chat-concurrency-summary-nvfp4-kv.json</code></p>
 <div class="table-wrap"><table><thead><tr><th>Concurrency</th><th>Output tok/s</th><th>Power (avg)</th><th>$/M out tok</th></tr></thead><tbody>
@@ -46,12 +46,6 @@ h1{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}h2{color:#79c0ff;font-size:
 </tr></thead><tbody><tr><td>L1 fp8</td><td>fp8</td><td>489,984</td><td>49.27</td></tr>
 <tr><td>nvfp4-kv</td><td>nvfp4</td><td>507,904</td><td>48.98</td></tr>
 </tbody></table></div><p class="sub">Δ tokens vs L1 fp8: <b>+3.66%</b></p><p class="sub">Peak GPU KV usage @ c8 bench: <b>0.4%</b></p>
-<h2>BFCL (function calling)</h2>
-<div class="table-wrap"><table><thead><tr><th>Category</th><th>Score</th></tr></thead><tbody>
-<tr><td>multiple (72/200)</td><td>36.0%</td></tr>
-<tr><td>parallel (0/200)</td><td>0.0%</td></tr>
-<tr><td>simple_python (208/400)</td><td>52.0%</td></tr>
-</tbody></table></div>
 <h2>Runtime image</h2>
 <div class="card"><p style="font-size:12px;word-break:break-all">ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b</p>
 <p class="sub">Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).</p></div>

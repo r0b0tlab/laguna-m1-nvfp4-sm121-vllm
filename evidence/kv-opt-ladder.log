@@ -158,3 +158,16 @@ Wrote /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/evidence/telemetry/gpu-
 === PROFILE nvfp4-kv OK ===
 NVFP4_KV_STATUS=pass
 Wrote /home/r0b0tdgx/projects/laguna-m1-nvfp4-sm121-vllm/publication/html/index.html
+[main 120f6e2] NVFP4 KV ladder + fp8 tuned profile (nvfp4-kv)
+ 17 files changed, 1575 insertions(+), 185 deletions(-)
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c1-nvfp4-kv.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c2-nvfp4-kv.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c4-nvfp4-kv.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c5-nvfp4-kv.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-c8-nvfp4-kv.json
+ create mode 100644 benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json
+ create mode 100644 evidence/kv-opt-ladder.log
+ create mode 100755 scripts/run_kv_opt_ladder.sh
+To https://github.com/r0b0tlab/laguna-m1-nvfp4-sm121-vllm.git
+   96bdfc0..120f6e2  main -> main
+=== ladder done headline=nvfp4-kv kv=nvfp4 ===

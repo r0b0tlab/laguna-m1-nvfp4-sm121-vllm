@@ -33,21 +33,15 @@ Env:
 | `KV_CACHE_DTYPE` | `nvfp4` | Headline after ladder; `fp8` for first boot |
 | `MAX_MODEL_LEN` | `8192` | See `docs/MEMORY.md` |
 | `GPU_UTIL` | `0.85` | GB10: prefer 0.85 over 0.70 |
-| `PORT` | `30100` | BFCL uses `OPENAI_BASE_URL` |
+| `PORT` | `30100` | OpenAI-compatible API |
 
 ## Benchmark gate (v1)
 
 1. **Throughput:** `scripts/bench_concurrency.sh` — c1–c8; headline JSON `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json`.
 2. **Telemetry:** `scripts/capture_telemetry.sh` during bench → `evidence/telemetry/gpu-sample.jsonl`.
-3. **Agent:** `scripts/run_bfcl_v1.sh` — categories in `configs/bfcl_v1_categories.txt` (v1 may omit `live_*` if offline).
+3. **KV metrics:** `scripts/extract_kv_metrics.py` → `benchmarks/kv_cache_metrics.json`.
 4. **Report:** `python3 scripts/build_report.py` → `publication/html/index.html`.
 5. **Regression:** >10% drop vs FP8-KV baseline on c1 output tok/s blocks calling config optimized.
-
-## BFCL
-
-- Venv: `pip install 'bfcl-eval==2025.12.17' soundfile`
-- Registration runs **in-process** via `scripts/bfcl_run.py` (do not call bare `bfcl` CLI for custom model).
-- Serve must be up before BFCL.
 
 ## HTML gate
 
@@ -55,12 +49,11 @@ Visually verify `publication/html/index.html` (tables, overflow, mobile). Flat d
 
 ## Out of scope on public main
 
-Demo videos, HyperFrames, render pipelines.
+Demo videos, HyperFrames, render pipelines, **BFCL harness results** (local-only under `benchmarks/bfcl/`, gitignored).
 
 ## PR checklist
 
 - [ ] `scripts/verify_native_kernels.sh` PASS
 - [ ] KV dtype documented
-- [ ] BFCL scores under `benchmarks/bfcl/score/`
-- [ ] Raw JSON in `benchmarks/`
+- [ ] Raw concurrency JSON in `benchmarks/concurrency/`
 - [ ] `docs/CONTAINER.md` image pin accurate

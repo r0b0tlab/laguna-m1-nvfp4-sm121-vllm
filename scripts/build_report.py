@@ -48,37 +48,6 @@ def parse_telemetry_jsonl(path: Path) -> dict:
     return out
 
 
-def bfcl_table(scores_dir: Path) -> tuple[str, list]:
-    rows = []
-    summary = []
-    if scores_dir.is_dir():
-        for p in sorted(scores_dir.glob("**/*_score.json")):
-            try:
-                lines = [ln.strip() for ln in p.read_text().splitlines() if ln.strip()]
-                if not lines:
-                    continue
-                data = json.loads(lines[0])
-                summary.append({"file": p.name, "data": data})
-                acc = data.get("accuracy")
-                if acc is None:
-                    continue
-                stem = p.stem.replace("BFCL_v4_", "").replace("_score", "")
-                cat = stem
-                correct = data.get("correct_count")
-                total = data.get("total_count")
-                label = cat
-                if correct is not None and total is not None:
-                    label = f"{cat} ({correct}/{total})"
-                rows.append((label, acc))
-            except Exception:
-                pass
-    html_rows = ""
-    for cat, acc in rows[:30]:
-        pct = f"{acc * 100:.1f}%" if isinstance(acc, float) and acc <= 1 else str(acc)
-        html_rows += f"<tr><td>{cat}</td><td>{pct}</td></tr>\n"
-    return html_rows, summary
-
-
 def kv_cache_html(kv_data: dict | None) -> str:
     if not kv_data:
         return '<p class="sub">KV metrics pending — run scripts/extract_kv_metrics.py</p>'
@@ -154,7 +123,7 @@ def main():
     tp = headline.get("tensor_parallel_size", 2)
     topology = meta.get("topology", f"dual GB10 TP={tp} Ray")
     subtitle = (
-        f"{topology} · NVFP4 weights · KV {kv} · vLLM · BFCL v1 · {ts}"
+        f"{topology} · NVFP4 weights · KV {kv} · vLLM · {ts}"
     )
 
     rows = ""
@@ -172,19 +141,6 @@ def main():
         rows += (
             f"<tr><td>c{c}</td><td>{otps_s}</td>"
             f"<td>{power:.1f} W</td><td>{per_m_s}</td></tr>\n"
-        )
-
-    bfcl_rows, bfcl_summary = bfcl_table(ROOT / "benchmarks" / "bfcl" / "score")
-    bfcl_pending = '<tr><td colspan="2">Pending — run scripts/run_bfcl_v1.sh</td></tr>'
-    bfcl_block = (
-        '<div class="table-wrap"><table><thead><tr><th>Category</th><th>Score</th></tr></thead><tbody>\n'
-        + (bfcl_rows or bfcl_pending)
-        + "</tbody></table></div>"
-    )
-    if not bfcl_rows and bfcl_summary:
-        bfcl_block += (
-            f'<div class="card"><pre style="white-space:pre-wrap;font-size:12px">'
-            f"{json.dumps(bfcl_summary, indent=2)[:6000]}</pre></div>"
         )
 
     temp_min = meta.get("temp_c_min", "—")
@@ -207,7 +163,7 @@ h1{{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}}h2{{color:#79c0ff;font-si
 </style></head><body>
 <h1>Laguna M.1 NVFP4 on SM121</h1>
 <p class="sub">{subtitle}</p>
-<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span> <span class="badge">BFCL public harness</span></p>
+<p><span class="badge">poolside/Laguna-M.1-NVFP4</span> <span class="badge">FLASHINFER_CUTLASS MoE</span></p>
 <h2>Throughput (chat completions)</h2>
 <p class="sub">Profile: <code>{meta.get("headline_profile", "nvfp4-kv")}</code> · source: <code>{conc_path.name}</code></p>
 <div class="table-wrap"><table><thead><tr><th>Concurrency</th><th>Output tok/s</th><th>Power (avg)</th><th>$/M out tok</th></tr></thead><tbody>
@@ -224,8 +180,6 @@ h1{{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}}h2{{color:#79c0ff;font-si
 <p class="sub">Source: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
 <h2>KV cache</h2>
 {kv_cache_html(kv_data)}
-<h2>BFCL (function calling)</h2>
-{bfcl_block}
 <h2>Runtime image</h2>
 <div class="card"><p style="font-size:12px;word-break:break-all">{image}</p>
 <p class="sub">{meta.get("image_note", "")}</p></div>
