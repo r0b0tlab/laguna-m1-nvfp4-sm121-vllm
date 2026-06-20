@@ -29,7 +29,7 @@ Foundational **single-page benchmark report** for SM121 NVFP4 serve repos:
 - `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json`
 - `benchmarks/kv_cache_metrics.json`
 - `benchmarks/lm_eval/gsm8k_100_results.json`
-- `benchmarks/lm_eval/humaneval_micro_results.json`
+- `benchmarks/hermesbench/humaneval_micro_results.json`
 - `benchmarks/hermesbench/*_micro_results.json`
 
 ## Regenerate
