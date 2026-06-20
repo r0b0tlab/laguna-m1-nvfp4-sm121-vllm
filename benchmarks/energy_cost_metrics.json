@@ -1,0 +1,17 @@
+{
+  "electricity_usd_per_kwh": 0.12,
+  "avg_power_w": 33.0,
+  "power_w_min": 11.11,
+  "power_w_max": 36.85,
+  "temp_c_avg": 58,
+  "gpu_util_pct_avg": 96,
+  "usd_per_million_output_tokens": {
+    "c1": 0.096423,
+    "c2": 0.056651,
+    "c4": 0.03702,
+    "c5": 0.034731,
+    "c8": 0.022456
+  },
+  "headline_profile": "nvfp4-kv",
+  "note": "Power from telemetry during concurrency bench; cost = avg_power * wall_s / output_tokens."
+}

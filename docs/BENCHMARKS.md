@@ -12,7 +12,8 @@ kill $TEL 2>/dev/null || true
 python3 scripts/extract_kv_metrics.py
 ```
 
-Headline JSON: `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json` (c1–c8).
+Headline JSON: `benchmarks/concurrency/chat-concurrency-summary-nvfp4-kv.json` (c1–c8).  
+Energy/cost: `benchmarks/energy_cost_metrics.json` (from `build_report.py`).
 
 ## Accuracy — GSM8K@100 (pre-publish)
 

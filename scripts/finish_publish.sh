@@ -51,7 +51,7 @@ fi
 python3 scripts/extract_kv_metrics.py
 python3 scripts/build_report.py
 if [[ "${PUSH_GITHUB:-1}" == "1" ]]; then
-  git add benchmarks/kv_cache_metrics.json benchmarks/run_meta.json \
+  git add benchmarks/kv_cache_metrics.json benchmarks/energy_cost_metrics.json benchmarks/run_meta.json \
     benchmarks/lm_eval/gsm8k_100_results.json benchmarks/lm_eval/gsm8k_100_manifest.json \
     benchmarks/hermesbench/terminal_micro_results.json benchmarks/hermesbench/terminal_micro_manifest.json \
     benchmarks/hermesbench/humaneval_micro_results.json benchmarks/hermesbench/humaneval_micro_manifest.json \

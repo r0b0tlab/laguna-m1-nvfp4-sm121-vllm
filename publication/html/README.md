@@ -10,6 +10,7 @@ Foundational **single-page benchmark report** for SM121 NVFP4 serve repos:
 - lm-eval accuracy (GSM8K@100)
 - Hermes agent micros (terminal + HumanEval)
 - Thermals, KV tables, runtime pin, reproduce block
+- **Power & token cost** (`benchmarks/energy_cost_metrics.json`, HTML `#energy`)
 
 ## Design system (CSS variables in `build_report.py`)
 

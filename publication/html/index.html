@@ -126,17 +126,20 @@ table.data th[scope="row"]{
 <header class="hero">
 <p class="eyebrow">SM121 · NVFP4 MoE · Publication template</p>
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 21:37 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 22:00 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span><span class="badge">nvfp4 KV</span></p>
 <div class="kpi-strip" role="list">
 <div class="kpi" role="listitem"><span class="kpi-label">c1 out tok/s</span><span class="kpi-value">11.41</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">48.98</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">Power (avg)</span><span class="kpi-value">33 W</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">$/M out c1</span><span class="kpi-value">$0.096</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">$/M out c8</span><span class="kpi-value">$0.022</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">97%</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">5/5</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">HumanEval (Hermes)</span><span class="kpi-value">100%</span></div>
 </div>
 </header>
-<nav class="toc" aria-label="Report sections"><a href="#throughput">Throughput</a><a href="#accuracy">GSM8K</a><a href="#agent">Agent</a><a href="#humaneval">HumanEval</a><a href="#thermals">Thermals</a><a href="#kv">KV cache</a><a href="#runtime">Runtime</a><a href="#repro">Reproduce</a></nav>
+<nav class="toc" aria-label="Report sections"><a href="#throughput">Throughput</a><a href="#energy">Power & cost</a><a href="#accuracy">GSM8K</a><a href="#agent">Agent</a><a href="#humaneval">HumanEval</a><a href="#thermals">Thermals</a><a href="#kv">KV cache</a><a href="#runtime">Runtime</a><a href="#repro">Reproduce</a></nav>
 <main id="main">
 <h2 class="anchor" id="throughput">Throughput</h2>
 <p class="sub">Profile: <code>nvfp4-kv</code> · <code>chat-concurrency-summary-nvfp4-kv.json</code></p>
@@ -157,6 +160,25 @@ table.data th[scope="row"]{
 </tbody></table></div>
 </section>
 <p class="sub">Electricity @ $0.12/kWh · telemetry power during loaded bench.</p>
+<h3 class="anchor" id="energy" style="margin-top:22px;font-size:.9rem;font-weight:600">Power &amp; token cost</h3>
+<section class="panel">
+<div class="stat-grid">
+<div class="stat"><span class="sub">Avg power (bench)</span><b>33.0 W</b></div>
+<div class="stat"><span class="sub">Power min / max</span><b>11.11 / 36.85 W</b></div>
+<div class="stat"><span class="sub">Electricity rate</span><b>$0.12/kWh</b></div>
+<div class="stat"><span class="sub">$/M out @ c1</span><b class="mono-sm">$0.0964</b></div>
+<div class="stat"><span class="sub">$/M out @ c8</span><b class="mono-sm">$0.0225</b></div>
+</div>
+<div class="table-wrap"><table class="data"><thead><tr>
+<th>Concurrency</th><th>Power (W)</th><th>Bench wall</th><th>Out tokens</th><th>$/M out tok</th>
+</tr></thead><tbody><tr><td>c1</td><td class="num">33.0</td><td class="num">44.9 s</td><td class="num">512</td><td class="num">$0.0964</td></tr>
+<tr><td>c2</td><td class="num">33.0</td><td class="num">52.7 s</td><td class="num">1024</td><td class="num">$0.0567</td></tr>
+<tr><td>c4</td><td class="num">33.0</td><td class="num">68.9 s</td><td class="num">2048</td><td class="num">$0.0370</td></tr>
+<tr><td>c5</td><td class="num">33.0</td><td class="num">80.8 s</td><td class="num">2560</td><td class="num">$0.0347</td></tr>
+<tr><td>c8</td><td class="num">33.0</td><td class="num">83.6 s</td><td class="num">4096</td><td class="num">$0.0225</td></tr>
+</tbody></table></div>
+<p class="sub">Estimated from telemetry <code>avg_power_w</code> × bench wall time ÷ output tokens. Artifact: <code>benchmarks/energy_cost_metrics.json</code></p>
+</section>
 <h2 class="anchor" id="accuracy">Accuracy (GSM8K)</h2>
 <section class="panel"><div class="stat-grid">
 <div class="stat"><span class="sub">GSM8K exact_match</span><b>97.0%</b></div>
@@ -206,8 +228,10 @@ table.data th[scope="row"]{
 <section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>47 / 64 / 58 °C</b></div>
-<div class="stat"><span class="sub">Power avg</span><b>33.0 W</b></div>
+<div class="stat"><span class="sub">Power avg (telemetry)</span><b>33.0 W</b></div>
+<div class="stat"><span class="sub">Power min / max</span><b>11.11 / 36.85 W</b></div>
 <div class="stat"><span class="sub">GPU util</span><b>96%</b></div>
+<div class="stat"><span class="sub">Electricity</span><b>$0.12/kWh</b></div>
 <div class="stat"><span class="sub">Container</span><b class="mono-sm">laguna-m1-vllm</b></div>
 </div>
 <p class="sub">Telemetry: <code>evidence/telemetry/gpu-sample.jsonl</code></p>
@@ -326,5 +350,5 @@ python3 scripts/build_report.py</pre>
   "power_w_max": 36.85
 }</pre></details>
 </main>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git 1e2aedb · generated 2026-06-20 21:37 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · git ca8ff60 · generated 2026-06-20 22:00 UTC</footer>
 </div></body></html>

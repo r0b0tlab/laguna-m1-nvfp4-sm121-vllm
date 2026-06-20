@@ -255,6 +255,78 @@ def throughput_section(conc: list, conc_path_name: str, profile: str, kwh_price:
 <p class="sub">Electricity @ ${kwh_price}/kWh · telemetry power during loaded bench.</p>"""
 
 
+def usd_per_million_output_tokens(step: dict, avg_power_w: float, kwh_price: float) -> float | None:
+    wall = step.get("wall_s") or 0
+    out_tok = step.get("output_tokens") or 0
+    if not out_tok or not wall:
+        return None
+    kwh = (avg_power_w * wall) / 3600 / 1000
+    return (kwh * kwh_price / out_tok) * 1e6
+
+
+def write_energy_cost_json(conc: list, meta: dict, kwh_price: float, avg_power: float) -> None:
+    per_m = {}
+    for s in conc or []:
+        c = s.get("concurrency")
+        v = usd_per_million_output_tokens(s, avg_power, kwh_price)
+        if c is not None and v is not None:
+            per_m[f"c{c}"] = round(v, 6)
+    payload = {
+        "electricity_usd_per_kwh": kwh_price,
+        "avg_power_w": avg_power,
+        "power_w_min": meta.get("power_w_min"),
+        "power_w_max": meta.get("power_w_max"),
+        "temp_c_avg": meta.get("temp_c_avg"),
+        "gpu_util_pct_avg": meta.get("gpu_util_pct_avg"),
+        "usd_per_million_output_tokens": per_m,
+        "headline_profile": meta.get("headline_profile", "nvfp4-kv"),
+        "note": "Power from telemetry during concurrency bench; cost = avg_power * wall_s / output_tokens.",
+    }
+    out = ROOT / "benchmarks" / "energy_cost_metrics.json"
+    out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def energy_cost_html(conc: list, kwh_price: float, avg_power: float, meta: dict) -> str:
+    if not conc:
+        return ""
+    by_c = {s.get("concurrency"): s for s in conc}
+    c1_cost = usd_per_million_output_tokens(by_c.get(1) or {}, avg_power, kwh_price)
+    c8_cost = usd_per_million_output_tokens(by_c.get(8) or {}, avg_power, kwh_price)
+    pmin = meta.get("power_w_min", "—")
+    pmax = meta.get("power_w_max", "—")
+    c1_s = f"${c1_cost:.4f}" if c1_cost is not None else "—"
+    c8_s = f"${c8_cost:.4f}" if c8_cost is not None else "—"
+    rows = ""
+    for s in sorted(conc, key=lambda x: x.get("concurrency") or 0):
+        c = s.get("concurrency")
+        v = usd_per_million_output_tokens(s, avg_power, kwh_price)
+        if v is None:
+            continue
+        rows += (
+            f'<tr><td>c{c}</td><td class="num">{avg_power:.1f}</td>'
+            f'<td class="num">{s.get("wall_s", 0):.1f} s</td>'
+            f'<td class="num">{s.get("output_tokens", 0)}</td>'
+            f'<td class="num">${v:.4f}</td></tr>\n'
+        )
+    table = ""
+    if rows:
+        table = f"""<div class="table-wrap"><table class="data"><thead><tr>
+<th>Concurrency</th><th>Power (W)</th><th>Bench wall</th><th>Out tokens</th><th>$/M out tok</th>
+</tr></thead><tbody>{rows}</tbody></table></div>"""
+    return f"""<h3 class="anchor" id="energy" style="margin-top:22px;font-size:.9rem;font-weight:600">Power &amp; token cost</h3>
+<section class="panel">
+<div class="stat-grid">
+<div class="stat"><span class="sub">Avg power (bench)</span><b>{avg_power} W</b></div>
+<div class="stat"><span class="sub">Power min / max</span><b>{pmin} / {pmax} W</b></div>
+<div class="stat"><span class="sub">Electricity rate</span><b>${kwh_price}/kWh</b></div>
+<div class="stat"><span class="sub">$/M out @ c1</span><b class="mono-sm">{c1_s}</b></div>
+<div class="stat"><span class="sub">$/M out @ c8</span><b class="mono-sm">{c8_s}</b></div>
+</div>
+{table}
+<p class="sub">Estimated from telemetry <code>avg_power_w</code> × bench wall time ÷ output tokens. Artifact: <code>benchmarks/energy_cost_metrics.json</code></p>
+</section>"""
+
+
 def git_short_sha() -> str:
     try:
         return (
@@ -291,9 +363,20 @@ def kpi_strip_html(conc: list, meta: dict) -> str:
         he_s = f"{100 * float(he['pass_at_1']):.0f}%"
     c1_s = f"{c1:.2f}" if c1 is not None else "—"
     c8_s = f"{c8:.2f}" if c8 is not None else "—"
+    kwh_price = float(meta.get("electricity_usd_per_kwh", 0.12))
+    avg_power = float(meta.get("avg_power_w", 35))
+    by_c = {s.get("concurrency"): s for s in (conc or [])}
+    c1_cost = usd_per_million_output_tokens(by_c.get(1) or {}, avg_power, kwh_price)
+    c8_cost = usd_per_million_output_tokens(by_c.get(8) or {}, avg_power, kwh_price)
+    pwr_s = f"{avg_power:.0f} W"
+    c1m_s = f"${c1_cost:.3f}" if c1_cost is not None else "—"
+    c8m_s = f"${c8_cost:.3f}" if c8_cost is not None else "—"
     return f"""<div class="kpi-strip" role="list">
 <div class="kpi" role="listitem"><span class="kpi-label">c1 out tok/s</span><span class="kpi-value">{c1_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">c8 out tok/s</span><span class="kpi-value kpi-highlight">{c8_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">Power (avg)</span><span class="kpi-value">{pwr_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">$/M out c1</span><span class="kpi-value">{c1m_s}</span></div>
+<div class="kpi" role="listitem"><span class="kpi-label">$/M out c8</span><span class="kpi-value">{c8m_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">GSM8K@100</span><span class="kpi-value">{em_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">Hermes terminal</span><span class="kpi-value">{term_s}</span></div>
 <div class="kpi" role="listitem"><span class="kpi-label">HumanEval (Hermes)</span><span class="kpi-value">{he_s}</span></div>
@@ -303,6 +386,7 @@ def kpi_strip_html(conc: list, meta: dict) -> str:
 def nav_html() -> str:
     links = [
         ("throughput", "Throughput"),
+        ("energy", "Power & cost"),
         ("accuracy", "GSM8K"),
         ("agent", "Agent"),
         ("humaneval", "HumanEval"),
@@ -365,6 +449,8 @@ def main():
         kwh_price,
         avg_power,
     )
+    energy_html = energy_cost_html(conc, kwh_price, avg_power, meta)
+    write_energy_cost_json(conc, meta, kwh_price, avg_power)
     temp_min = meta.get("temp_c_min", "—")
     temp_max = meta.get("temp_c_max", "—")
     temp_avg = meta.get("temp_c_avg", "—")
@@ -518,6 +604,7 @@ table.data th[scope="row"]{{
 <main id="main">
 <h2 class="anchor" id="throughput">Throughput</h2>
 {throughput_html}
+{energy_html}
 <h2 class="anchor" id="accuracy">Accuracy (GSM8K)</h2>
 <section class="panel">{gsm8k_block}</section>
 <h2 class="anchor" id="agent">Agent tools (Hermes terminal)</h2>
@@ -528,8 +615,10 @@ table.data th[scope="row"]{{
 <section class="panel">
 <div class="stat-grid">
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>{temp_min} / {temp_max} / {temp_avg} °C</b></div>
-<div class="stat"><span class="sub">Power avg</span><b>{avg_power} W</b></div>
+<div class="stat"><span class="sub">Power avg (telemetry)</span><b>{avg_power} W</b></div>
+<div class="stat"><span class="sub">Power min / max</span><b>{meta.get("power_w_min", "—")} / {meta.get("power_w_max", "—")} W</b></div>
 <div class="stat"><span class="sub">GPU util</span><b>{util_avg}%</b></div>
+<div class="stat"><span class="sub">Electricity</span><b>${kwh_price}/kWh</b></div>
 <div class="stat"><span class="sub">Container</span><b class="mono-sm">{meta.get("container_name", "laguna-m1-vllm")}</b></div>
 </div>
 <p class="sub">Telemetry: <code>{tel_rel}</code></p>
