@@ -2,47 +2,97 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Laguna M.1 NVFP4 — SM121 Report</title>
 <style>
+:root{
+  --bg:#f4f5f7;--surface:#fff;--surface-muted:#f9fafb;--text:#111827;--text-secondary:#4b5563;
+  --text-muted:#6b7280;--border:#e5e7eb;--border-strong:#d1d5db;--accent:#0d9488;--accent-soft:#ccfbf1;
+  --accent-text:#0f766e;--peak:#eff6ff;--peak-text:#1d4ed8;--code-bg:#f3f4f6;--shadow:0 1px 2px rgba(17,24,39,.06),0 4px 16px rgba(17,24,39,.04);
+  --radius:12px;--radius-sm:8px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:#0a0e14;color:#e6edf3;line-height:1.55;font-size:15px}
-.wrap{max-width:920px;margin:0 auto;padding:20px 16px 48px}
-.hero{border:1px solid #30363d;border-left:4px solid #58a6ff;background:#0d1117;border-radius:12px;padding:20px 22px;margin-bottom:28px}
-h1{font-size:clamp(1.35rem,4vw,2rem);font-weight:650;letter-spacing:-.02em;color:#f0f6fc}
-h2{color:#79c0ff;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:28px 0 12px}
-.sub{color:#8b949e;margin:.35rem 0 .75rem;font-size:.875rem}
-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:#21262d;padding:2px 6px;border-radius:4px}
-.panel{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:16px 18px;margin-bottom:8px}
-.card p{margin:.5rem 0}
-.badge{display:inline-block;background:#1f3d2a;color:#3fb950;border:1px solid #238636;padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:600;margin:4px 6px 0 0}
-.table-wrap{overflow-x:auto;margin-top:12px;-webkit-overflow-scrolling:touch}
-table.data{width:100%;border-collapse:collapse;min-width:420px;font-size:.9rem}
-table.data th{color:#79c0ff;font-weight:600;text-align:left;padding:10px 12px;border-bottom:2px solid #30363d;background:#161b22}
-table.data td{padding:10px 12px;border-bottom:1px solid #21262d}
-table.data tr.peak td{background:#132033;color:#79c0ff}
+body{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:32px 20px 56px}
+.hero{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 28px 24px;margin-bottom:36px;box-shadow:var(--shadow);
+}
+h1{font-size:clamp(1.5rem,4vw,2.125rem);font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.2}
+h2{
+  color:var(--text);font-size:.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.sub{color:var(--text-muted);margin:.4rem 0 .65rem;font-size:.875rem;line-height:1.5}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8em;
+  background:var(--code-bg);color:#374151;padding:2px 7px;border-radius:6px;border:1px solid var(--border);
+}
+.panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:10px;box-shadow:var(--shadow);
+}
+.badge{
+  display:inline-block;background:var(--accent-soft);color:var(--accent-text);
+  border:1px solid #99f6e4;padding:5px 12px;border-radius:999px;font-size:.7rem;font-weight:600;
+  margin:6px 8px 0 0;letter-spacing:.02em;
+}
+.table-wrap{overflow-x:auto;margin-top:14px;-webkit-overflow-scrolling:touch;border-radius:var(--radius-sm);border:1px solid var(--border)}
+table.data{width:100%;border-collapse:collapse;min-width:420px;font-size:.875rem;background:var(--surface)}
+table.data th{
+  color:var(--text-secondary);font-weight:600;text-align:left;padding:11px 14px;
+  border-bottom:1px solid var(--border-strong);background:var(--surface-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;
+}
+table.data td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+table.data tbody tr:last-child td{border-bottom:none}
+table.data tr.peak td{background:var(--peak);color:var(--peak-text);font-weight:600}
 .num{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.stat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px}
-.stat b{color:#58a6ff;display:block;font-size:1.15rem;margin-top:4px;font-variant-numeric:tabular-nums}
-.mono-sm{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;word-break:break-all}
-.mono-block{font-size:.75rem;overflow-x:auto;padding:12px 0;color:#adbac7}
-.chart{margin-bottom:16px}
-.bar-row{display:grid;grid-template-columns:36px 1fr 52px;align-items:center;gap:10px;margin:6px 0}
-.bar-label{color:#8b949e;font-size:.8rem;font-family:ui-monospace,monospace}
-.bar-track{height:10px;background:#21262d;border-radius:5px;overflow:hidden}
-.bar-fill{height:100%;background:#388bfd;border-radius:5px;min-width:2px}
-.bar-val{text-align:right;font-size:.8rem;color:#c9d1d9;font-family:ui-monospace,monospace}
-details summary{cursor:pointer;color:#8b949e;font-size:.9rem;padding:4px 0}
-details[open] summary{margin-bottom:8px;color:#c9d1d9}
-.foot{margin-top:32px;padding-top:16px;border-top:1px solid #21262d;color:#6e7681;font-size:.8rem;text-align:center}
-.ul{list-style:none;padding:0;margin:8px 0 0}
-.runtime-list{margin:12px 0 0;padding-left:18px;color:#adbac7;font-size:.875rem}
-.runtime-list li{margin:6px 0}
-table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:transparent;border-bottom:1px solid #21262d}
-@media(max-width:520px){.bar-row{grid-template-columns:28px 1fr 44px}table.data{min-width:360px}}
+.status-pass{color:#047857;font-weight:600;font-variant-numeric:tabular-nums}
+.status-fail{color:#b91c1c;font-weight:600}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px}
+.stat{
+  background:var(--surface-muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;
+}
+.stat .sub{margin:0 0 6px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}
+.stat b{color:var(--accent-text);display:block;font-size:1.125rem;margin-top:2px;font-variant-numeric:tabular-nums;font-weight:700}
+.mono-sm{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;word-break:break-all;color:var(--text-secondary)}
+.mono-block{
+  font-size:.75rem;overflow-x:auto;padding:14px 0;color:var(--text-secondary);
+  font-family:ui-monospace,Menlo,monospace;line-height:1.45;
+}
+.chart{margin-bottom:18px;padding:4px 0}
+.bar-row{display:grid;grid-template-columns:40px 1fr 56px;align-items:center;gap:12px;margin:8px 0}
+.bar-label{color:var(--text-muted);font-size:.8rem;font-family:ui-monospace,monospace;font-weight:500}
+.bar-track{height:8px;background:var(--code-bg);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;background:var(--accent);border-radius:99px;min-width:3px}
+.bar-val{text-align:right;font-size:.8rem;color:var(--text-secondary);font-family:ui-monospace,monospace;font-weight:600}
+details.panel summary{
+  cursor:pointer;color:var(--text-secondary);font-size:.875rem;font-weight:500;padding:2px 0;list-style:none;
+}
+details.panel summary::-webkit-details-marker{display:none}
+details.panel summary::before{content:"▸ ";color:var(--accent)}
+details[open].panel summary::before{content:"▾ "}
+details[open].panel summary{margin-bottom:10px;color:var(--text)}
+.foot{
+  margin-top:40px;padding-top:20px;border-top:1px solid var(--border);
+  color:var(--text-muted);font-size:.8rem;text-align:center;
+}
+table.data th[scope="row"]{
+  width:30%;color:var(--text-muted);font-weight:500;background:var(--surface-muted);
+  border-bottom:1px solid var(--border);font-size:.8125rem;text-transform:none;letter-spacing:0;
+}
+@media(max-width:520px){
+  .wrap{padding:20px 14px 40px}
+  .hero{padding:20px 18px}
+  .bar-row{grid-template-columns:32px 1fr 48px}
+  table.data{min-width:340px}
+}
 </style></head><body>
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:11 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:17 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -75,11 +125,11 @@ table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:tr
 </div>
 <div class="table-wrap"><table class="data"><thead><tr>
 <th>Task</th><th>Status</th>
-</tr></thead><tbody><tr><td><code>t01_echo</code></td><td class="num">PASS</td></tr>
-<tr><td><code>t02_ls</code></td><td class="num">PASS</td></tr>
-<tr><td><code>t03_compile_check</code></td><td class="num">PASS</td></tr>
-<tr><td><code>t04_pipeline</code></td><td class="num">PASS</td></tr>
-<tr><td><code>t05_env_check</code></td><td class="num">PASS</td></tr>
+</tr></thead><tbody><tr><td><code>t01_echo</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>t02_ls</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>t03_compile_check</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>t04_pipeline</code></td><td class="status-pass">PASS</td></tr>
+<tr><td><code>t05_env_check</code></td><td class="status-pass">PASS</td></tr>
 </tbody></table></div>
 <p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p></section>
 <h2>Thermals &amp; power</h2>
@@ -175,5 +225,5 @@ table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:tr
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:11 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:17 UTC</footer>
 </div></body></html>
