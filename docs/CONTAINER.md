@@ -17,7 +17,7 @@ Single GB10 OOMs during MoE weight init (~113 GiB). Use **TP=2 + Ray**:
 ```bash
 export MODEL_DIR=/path/to/Laguna-M.1-NVFP4
 export IMAGE=ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b
-bash scripts/serve_tp2_cluster.sh   # container name: laguna_tp2
+bash scripts/serve_tp2_cluster.sh   # container name: laguna-m1-vllm
 ```
 
 ## Single-node dev (not headline)

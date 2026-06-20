@@ -1,7 +1,7 @@
 {
   "topology": "dual GB10 TP=2 Ray",
   "served_model_name": "laguna-m1-nvfp4",
-  "container_name": "laguna_tp2",
+  "container_name": "laguna-m1-vllm",
   "port": 30100,
   "image": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
   "image_note": "Canonical SM121 vLLM runtime for Laguna M.1 until a dedicated vllm-laguna-m1 tag is published; Laguna weights + poolside parsers are serve-time flags (scripts/serve_tp2_cluster.sh).",

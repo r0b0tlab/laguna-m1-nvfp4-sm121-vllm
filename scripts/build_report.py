@@ -217,7 +217,7 @@ h1{{color:#58a6ff;font-size:clamp(1.1rem,4vw,1.75rem)}}h2{{color:#79c0ff;font-si
 <div class="stat"><span class="sub">Temp min / max / avg</span><b>{temp_min} / {temp_max} / {temp_avg} °C</b></div>
 <div class="stat"><span class="sub">Power avg (loaded)</span><b>{avg_power} W</b></div>
 <div class="stat"><span class="sub">GPU util avg</span><b>{util_avg}%</b></div>
-<div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">{meta.get("container_name", "laguna_tp2")}</b></div>
+<div class="stat"><span class="sub">Container</span><b style="font-size:.75rem">{meta.get("container_name", "laguna-m1-vllm")}</b></div>
 </div>
 <p class="sub">Source: <code>{tel_path.relative_to(ROOT) if tel_path.is_relative_to(ROOT) else tel_path}</code></p>
 <h2>KV cache</h2>

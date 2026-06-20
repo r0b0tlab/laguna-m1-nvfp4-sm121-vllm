@@ -14,7 +14,7 @@ Publishable SM121-native claims require `evidence/kernels/native-kernel-check.tx
 
 ## Canonical serve
 
-**Headline:** `scripts/serve_tp2_cluster.sh` → container `laguna_tp2`, port `30100`, **TP=2 Ray**, NVFP4 KV.
+**Headline:** `scripts/serve_tp2_cluster.sh` → container `laguna-m1-vllm`, port `30100`, **TP=2 Ray**, NVFP4 KV.
 
 **Runtime image:** see `docs/CONTAINER.md` — reuses `ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b`.
 

@@ -6,7 +6,7 @@ mkdir -p "$(dirname "$LOG")"
 exec > >(tee -a "$LOG") 2>&1
 echo "=== bringup wait $(date -Is) ==="
 PORT="${PORT:-30100}"
-NAME="${NAME:-laguna_tp2}"
+NAME="${NAME:-laguna-m1-vllm}"
 for i in $(seq 1 480); do
   if curl -sf "http://127.0.0.1:${PORT}/v1/models" >/dev/null 2>&1; then
     echo "API ready iter=$i"

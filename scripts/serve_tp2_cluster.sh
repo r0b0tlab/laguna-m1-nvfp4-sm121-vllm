@@ -5,7 +5,7 @@ MODEL_DIR="${MODEL_DIR:-/home/r0b0tdgx/models/llm/nvfp4/poolside/Laguna-M.1-NVFP
 SPARK=/home/r0b0tdgx/spark-vllm-docker
 NODES="${NODES:-192.168.100.10,192.168.100.11}"
 IMAGE="${IMAGE:-ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b}"
-NAME="${NAME:-laguna_tp2}"
+NAME="${NAME:-laguna-m1-vllm}"
 SSH_KEY="${SSH_KEY:-/home/r0b0tdgx/.ssh/id_ed25519_shared}"
 REMOTE=r0b0tdgx@192.168.100.11
 
@@ -23,7 +23,7 @@ export VLLM_SPARK_EXTRA_DOCKER_ARGS="-v ${MODEL_DIR}:/mnt/model:ro \
   -e VLLM_NVFP4_GEMM_BACKEND=flashinfer-cutlass \
   -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
   -e PORT=${PORT:-30100} \
-  -e KV_CACHE_DTYPE=${KV_CACHE_DTYPE:-fp8} \
+  -e KV_CACHE_DTYPE=${KV_CACHE_DTYPE:-nvfp4} \
   -e ENFORCE_EAGER=${ENFORCE_EAGER:-1} \
   -e GPU_UTIL=${GPU_UTIL:-0.82} \
   -e MAX_MODEL_LEN=${MAX_MODEL_LEN:-4096} \

@@ -7,7 +7,7 @@ exec > >(tee -a "$LOG") 2>&1
 echo "=== e2e pipeline $(date -Is) ==="
 
 export PORT="${PORT:-30100}"
-export NAME="${NAME:-laguna_tp2}"
+export NAME="${NAME:-laguna-m1-vllm}"
 export MODEL="${MODEL:-laguna-m1-nvfp4}"
 
 curl -sf "http://127.0.0.1:${PORT}/v1/models" >/dev/null || { echo "API not ready"; exit 1; }

@@ -3,7 +3,7 @@
 Optimized **vLLM** serving and benchmarks for [`poolside/Laguna-M.1-NVFP4`](https://huggingface.co/poolside/Laguna-M.1-NVFP4) on **NVIDIA GB10 / SM12.1**.
 
 - **TP=2** on dual GB10 is **required** for full M.1 weights (single Spark OOM at ~113 GiB during MoE init — see `docs/MEMORY.md`).
-- **Headline:** NVFP4 weights + **`--kv-cache-dtype nvfp4`** on TP=2 (`laguna_tp2`, port `30100`).
+- **Headline:** NVFP4 weights + **`--kv-cache-dtype nvfp4`** on TP=2 (`laguna-m1-vllm`, port `30100`).
 - **Container:** reuses [`docs/CONTAINER.md`](docs/CONTAINER.md) DSV4 SM121 image (no separate Laguna GHCR tag in v1).
 - **Agent metric:** **[BFCL](https://gorilla.cs.berkeley.edu/leaderboard.html)** via `bfcl-eval` + `scripts/bfcl_run.py` (in-process model registration).
 

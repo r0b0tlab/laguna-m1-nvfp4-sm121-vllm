@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # After launch-cluster (Ray): copy fixed launch script and start vllm if missing.
 set -euo pipefail
-NAME="${NAME:-laguna_tp2}"
+NAME="${NAME:-laguna-m1-vllm}"
 SPARK="${SPARK:-/home/r0b0tdgx/spark-vllm-docker}"
 LAUNCH="$SPARK/examples/laguna-m1-launch.sh"
 [[ -f "$LAUNCH" ]] || exit 0
