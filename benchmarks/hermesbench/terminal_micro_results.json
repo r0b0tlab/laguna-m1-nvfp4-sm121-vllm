@@ -1,0 +1,54 @@
+{
+  "benchmark": "hermesbench",
+  "category": "t01_terminal_smoke",
+  "model": "laguna-m1-nvfp4",
+  "passed": 5,
+  "total": 5,
+  "pass_rate": 1.0,
+  "tasks": [
+    {
+      "task_id": "t01_terminal_smoke/t01_echo",
+      "status": "PASS",
+      "score": 1.0,
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-151027_e92add54/t01_terminal_smoke/t01_echo/verifier_result.json"
+    },
+    {
+      "task_id": "t01_terminal_smoke/t02_ls",
+      "status": "PASS",
+      "score": 1.0,
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-151041_2b64693b/t01_terminal_smoke/t02_ls/verifier_result.json"
+    },
+    {
+      "task_id": "t01_terminal_smoke/t03_compile_check",
+      "status": "PASS",
+      "score": 1.0,
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-151050_28354350/t01_terminal_smoke/t03_compile_check/verifier_result.json"
+    },
+    {
+      "task_id": "t01_terminal_smoke/t04_pipeline",
+      "status": "PASS",
+      "score": 1.0,
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-151106_59cfa874/t01_terminal_smoke/t04_pipeline/verifier_result.json"
+    },
+    {
+      "task_id": "t01_terminal_smoke/t05_env_check",
+      "status": "PASS",
+      "score": 1.0,
+      "reason": "ok",
+      "source": "results/laguna-m1-nvfp4_20260620-151119_7d525690/t01_terminal_smoke/t05_env_check/verifier_result.json"
+    }
+  ],
+  "hermes_bench_repo": "/home/r0b0tdgx/hermes-bench-tool-call",
+  "run_dirs": [
+    "results/laguna-m1-nvfp4_20260620-151027_e92add54",
+    "results/laguna-m1-nvfp4_20260620-151041_2b64693b",
+    "results/laguna-m1-nvfp4_20260620-151050_28354350",
+    "results/laguna-m1-nvfp4_20260620-151106_59cfa874",
+    "results/laguna-m1-nvfp4_20260620-151119_7d525690"
+  ],
+  "completed_at": "2026-06-20T20:11:29.114502+00:00"
+}

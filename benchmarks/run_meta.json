@@ -44,5 +44,14 @@
     "gpu_util": 0.85,
     "max_num_seqs": 8
   },
-  "image_pull_alias": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b"
+  "image_pull_alias": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
+  "hermesbench": {
+    "terminal_micro": {
+      "results_file": "benchmarks/hermesbench/terminal_micro_results.json",
+      "passed": 5,
+      "total": 5,
+      "pass_rate": 1.0,
+      "completed_at": "2026-06-20T20:11:29.114502+00:00"
+    }
+  }
 }

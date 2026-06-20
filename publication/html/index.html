@@ -42,7 +42,7 @@ table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:tr
 <div class="wrap">
 <header class="hero">
 <h1>Laguna M.1 NVFP4</h1>
-<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 19:43 UTC</p>
+<p class="sub">dual GB10 TP=2 Ray · NVFP4 weights · KV nvfp4 · vLLM · 2026-06-20 20:11 UTC</p>
 <p><span class="badge">poolside/Laguna-M.1-NVFP4</span><span class="badge">FLASHINFER_CUTLASS</span></p>
 </header>
 <h2>Throughput</h2>
@@ -66,6 +66,22 @@ table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:tr
 <p class="sub">Electricity @ $0.12/kWh · telemetry power during loaded bench.</p>
 <h2>Accuracy (GSM8K)</h2>
 <section class="panel"><p class="sub">Pending — run <code>scripts/run_gsm8k_100.sh</code> before publish (see <code>docs/BENCHMARKS.md</code>).</p></section>
+<h2>Agent tools (Hermes terminal)</h2>
+<section class="panel"><div class="stat-grid">
+<div class="stat"><span class="sub">Pass rate</span><b>5/5 (100%)</b></div>
+<div class="stat"><span class="sub">Category</span><b class="mono-sm">t01_terminal_smoke</b></div>
+<div class="stat"><span class="sub">Harness</span><b>hermes-bench</b></div>
+<div class="stat"><span class="sub">Mode</span><b>real-agent</b></div>
+</div>
+<div class="table-wrap"><table class="data"><thead><tr>
+<th>Task</th><th>Status</th>
+</tr></thead><tbody><tr><td><code>t01_echo</code></td><td class="num">PASS</td></tr>
+<tr><td><code>t02_ls</code></td><td class="num">PASS</td></tr>
+<tr><td><code>t03_compile_check</code></td><td class="num">PASS</td></tr>
+<tr><td><code>t04_pipeline</code></td><td class="num">PASS</td></tr>
+<tr><td><code>t05_env_check</code></td><td class="num">PASS</td></tr>
+</tbody></table></div>
+<p class="sub"><code>benchmarks/hermesbench/terminal_micro_results.json</code></p></section>
 <h2>Thermals &amp; power</h2>
 <section class="panel">
 <div class="stat-grid">
@@ -147,8 +163,17 @@ table.data th[scope="row"]{width:28%;color:#8b949e;font-weight:500;background:tr
     "max_num_seqs": 8
   },
   "image_pull_alias": "ghcr.io/r0b0tlab/vllm-dsv4-flash-gb10:cu130-sm121-arm64-dda4668b",
+  "hermesbench": {
+    "terminal_micro": {
+      "results_file": "benchmarks/hermesbench/terminal_micro_results.json",
+      "passed": 5,
+      "total": 5,
+      "pass_rate": 1.0,
+      "completed_at": "2026-06-20T20:11:29.114502+00:00"
+    }
+  },
   "power_w_min": 11.11,
   "power_w_max": 36.85
 }</pre></details>
-<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 19:43 UTC</footer>
+<footer class="foot">r0b0tlab/laguna-m1-nvfp4-sm121-vllm · SM121 GB10 · generated 2026-06-20 20:11 UTC</footer>
 </div></body></html>
